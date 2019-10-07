@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c8a978d-d3d9-4661-a8d7-022c11004858" name="Default" comment="" />
+    <list default="true" id="7c8a978d-d3d9-4661-a8d7-022c11004858" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -70,6 +72,11 @@
               <item name="Chatos-Lavandos" type="b2602c69:ProjectViewProjectNode" />
               <item name="Chatos-Lavandos" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Chatos-Lavandos" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chatos-Lavandos" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -79,6 +86,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -105,12 +113,20 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1570458488194</updated>
-      <workItem from="1570458489272" duration="110000" />
+      <workItem from="1570458489272" duration="249000" />
     </task>
+    <task id="LOCAL-00001" summary="add gitignore">
+      <created>1570458640077</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1570458640077</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="110000" />
+    <option name="totallyTimeSpent" value="249000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1040" extended-state="6" />
@@ -139,6 +155,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="add gitignore" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
