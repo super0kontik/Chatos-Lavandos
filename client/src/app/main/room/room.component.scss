@@ -1,0 +1,87 @@
+.room-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+
+    ::ng-deep .mat-list {
+        display: flex;
+        flex-direction: column;
+        min-height: 50%;
+        height: auto;
+        max-height: 87%;
+        overflow: scroll;
+        overflow-x: hidden;
+
+    }
+
+    .message-text {
+        word-break: break-all;
+    }
+
+    .input-area {
+        background-color: #ec4d37;
+        display: flex;
+        width: 100%;
+        position: relative;
+        height: auto;
+        min-height: 12%;
+        bottom: 0px;
+
+        .composer_rich_textarea, .composer_textarea {
+
+            overflow: scroll;
+            overflow-x: hidden;
+            border: 0;
+            outline: none;
+            box-shadow: 0 1px 0 0 #e8e8e8;
+            padding: 1px 28px 1px 0;
+            margin: 0;
+            min-height: 30px;
+            line-height: 20px;
+            height: auto;
+            box-sizing: border-box;
+            background-color: white;
+            border-radius: 15px;
+            width: 70%;
+        }
+
+        .input-message {
+            transition: 0.5s;
+            border-radius: 20px;
+            background-color: white;
+            width: 80%;
+            height: auto;
+            min-height: 30px;
+            padding: 15px;
+
+            &:focus {
+                transition: 0.5s;
+                box-shadow: 0 0 15px black;
+            }
+        }
+    }
+}
+
+.mt-lst {
+    ::ng-deep .mat-list-item {
+        height: auto;
+    }
+
+    ::ng-deep  .mat-list-item-content {
+        display: flex;
+        flex-direction: column !important;
+        align-items: flex-start ;
+        margin: 8px 20px 8px 20px;
+    }
+
+    .message-user {
+        color: white;
+    }
+    .message-text {
+        background-color: white;
+        border-radius: 20px;
+        max-width: 40% !important;
+        height: auto !important;
+    }
+}

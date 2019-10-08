@@ -1,0 +1,29 @@
+.chat-wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: #1d1b1b;
+}
+
+::ng-deep .mat-tab-label {
+    font-size: 22px;
+    color: rgb(0, 0, 0);
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: 500;
+}
+
+::ng-deep .mat-tab-group {
+    width: 100%;
+}
+
+::ng-deep .mat-tab-body-wrapper {
+    height: 100%;
+}
+
+::ng-deep .mat-tab-header {
+    background-color: #fffffb;
+}
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #ec4d37;
+}

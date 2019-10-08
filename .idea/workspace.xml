@@ -2,34 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d48f9a4d-7948-4ee2-ad8f-1f1ed9885cfd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/app/login-page/login-page.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/login-page/login-page.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/register-page/register-page.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/register-page/register-page.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/register-page/register-page.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/shared/components/loader/loader.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/shared/components/loader/loader.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/shared/components/loader/loader.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/shared/layouts/auth-layout/auth-layout.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/shared/layouts/auth-layout/auth-layout.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/shared/layouts/auth-layout/auth-layout.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/shared/layouts/site-layout/site-layout.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/shared/layouts/site-layout/site-layout.component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/shared/layouts/site-layout/site-layout.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/shared/models/User.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/app.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/client/.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/login-page/login-page.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/app-routing.module.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/login-page/login-page.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/login-page/login-page.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/login-page/login-page.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/register-page/register-page.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/register-page/register-page.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/models/Message.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/register-page/register-page.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/auth-layout/auth-layout.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/auth-layout/auth-layout.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/auth-layout/auth-layout.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/site-layout/site-layout.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/site-layout/site-layout.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/models/Room.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/site-layout/site-layout.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/models/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/models/User.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles.scss" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,15 +28,24 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1RsZvM1sDDTz44NPMQrEMHeTgo7" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/client/src/app" />
-    <property name="ts.external.directory.path" value="C:\Users\Santanyan\Documents\Chatos-Lavandos-master\client\node_modules\typescript\lib" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Material File Colors" />
+    <property name="ts.external.directory.path" value="C:\Users\cools\Documents\Chatos-Lavandos\client\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -84,6 +83,8 @@
       <option name="presentableId" value="Default" />
       <updated>1570460800250</updated>
       <workItem from="1570460804030" duration="5180000" />
+      <workItem from="1570525422334" duration="1028000" />
+      <workItem from="1570526483892" duration="17025000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
@@ -96,7 +97,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
