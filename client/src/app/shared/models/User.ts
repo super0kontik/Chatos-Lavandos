@@ -1,6 +1,6 @@
 export interface User {
-    userId: string;
-    username: string;
+    id: string;
+    name: string;
     isOnline: boolean;
     isPremium: boolean;
 }

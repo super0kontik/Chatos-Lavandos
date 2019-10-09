@@ -1,6 +1,11 @@
 import {Injectable} from '@angular/core';
 import {User} from "../models/User";
-import {me} from "../data";
+import {HttpClient} from "@angular/common/http";
+import {AuthService} from "./auth.service";
+import {Observable} from "rxjs";
+import {Room} from "../models/Room";
+import {config} from "../config";
+import {Message} from "../models/Message";
 
 @Injectable({
     providedIn: 'root'
@@ -8,15 +13,19 @@ import {me} from "../data";
 export class ChatService {
     public currentUser: User;
 
-    constructor() {
-
+    constructor(private http: HttpClient, private authService: AuthService) {
+        this.authService.auth().subscribe(user => {
+            this.currentUser = user;
+            console.log(this.currentUser);
+        });
     }
 
-    public getUserId(): string {
-        return me.userId;
+    public getRooms(): Observable<Room[]> {
+        return this.http.get<Room[]>(`${config.API_URL}/mock/rooms`);
     }
 
-    public getStatus(): boolean {
-        return me.isOnline;
+    public getRoomContent(id: string): Observable<Message[]> {
+        return this.http.get<Message[]>(`${config.API_URL}/mock/roomContent/${id}`);
     }
+
 }

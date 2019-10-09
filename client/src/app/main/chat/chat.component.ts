@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Room} from "../../shared/models/Room";
-import {User} from "../../shared/models/User";
-import {fakeAsync} from "@angular/core/testing";
+import {ChatService} from "../../shared/services/chat.service";
 
 @Component({
     selector: 'app-chat',
@@ -11,27 +10,13 @@ import {fakeAsync} from "@angular/core/testing";
 export class ChatComponent implements OnInit {
     public rooms: Room[];
 
-    constructor() {
+    constructor(private chatService: ChatService) {
     }
 
     ngOnInit() {
-        this.getRooms();
-    }
-
-    public getRooms(): void {
-        this.rooms = [
-            {
-                name: 'Gavno-chat',
-                messages: [
-                    {
-                        createdAt: new Date(),
-                        content: 'ffafasfdasfdasfasfas',
-                        userId: '124',
-                    },
-                ],
-                users: ['124']
-            }
-        ];
+        this.chatService.getRooms().subscribe(rooms => {
+            this.rooms = rooms;
+        });
     }
 
 }

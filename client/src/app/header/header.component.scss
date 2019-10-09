@@ -3,10 +3,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ec4d37;
+    background-color: rgba(76, 75, 98, 0.69);
     padding: 10px 60px 5px 0px;
 
     .brand-logo {
+        color: #1d1b1b;
+        user-select: none;
         margin-left: 50px;
         cursor: pointer;
         transition: 0.3s;
@@ -26,13 +28,14 @@
         justify-content: space-between;
 
         .nav-link {
+            user-select: none;
             transition: 0.3s;
             font-family: 'Montserrat Alternates', sans-serif;
             font-weight: 300;
             display: flex;
             justify-content: center;
             border-radius: 50px;
-            background-color: black;
+            background-color: #1d1b1b;
             color: white;
             font-size: 1.3vw;
             animation: piu-piu 10s ease-in-out infinite;

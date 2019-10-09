@@ -1,6 +1,6 @@
 <div class="chat-wrapper">
     <mat-tab-group>
-        <mat-tab *ngFor="let room of rooms" [label]="room.name">
+        <mat-tab *ngFor="let room of rooms" [label]="room.title">
             <app-room [currentRoom]="room"></app-room>
         </mat-tab>
     </mat-tab-group>

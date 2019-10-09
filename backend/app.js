@@ -35,7 +35,7 @@ app.get('/mock/rooms',
     (req,res) => {
     return res.json([
         {
-            id: 'roomId',
+            id: 'roomId1',
             title: 'Common',
             users: [
                 {id: '8805553535', name: 'Alex_Shavik', isOnline: true, isPremium: true},

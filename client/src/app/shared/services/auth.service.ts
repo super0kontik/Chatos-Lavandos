@@ -1,4 +1,8 @@
 import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {User} from "../models/User";
+import {Observable} from "rxjs";
+import {config} from "../config";
 
 
 @Injectable({
@@ -6,6 +10,10 @@ import {Injectable} from '@angular/core';
 })
 export class AuthService {
 
-    constructor() {
+    constructor(private http: HttpClient) {
+    }
+
+    public auth(): Observable<User> {
+        return this.http.get<User>(`${config.API_URL}/mock/user`);
     }
 }
