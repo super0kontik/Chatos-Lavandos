@@ -13,6 +13,7 @@ const messageSchema = new Schema({
     room:{
         type:Schema.Types.ObjectId,
         ref:'Room'
-    }
+    },
+    content:String
 });
 module.exports = mongoose.model('Message',roomSchema);

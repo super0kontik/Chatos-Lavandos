@@ -11,7 +11,7 @@ const userSchema = new Schema({
         type:String,
         required:true
     },
-    isPrem:{
+    isPremium:{
         type:Boolean,
         default: false
     },
