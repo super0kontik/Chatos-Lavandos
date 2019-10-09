@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {User} from "../../shared/models/User";
+import {fakeAsync} from "@angular/core/testing";
 
 @Component({
     selector: 'app-chat',
@@ -20,83 +21,16 @@ export class ChatComponent implements OnInit {
     public getRooms(): void {
         this.rooms = [
             {
-                name: 'ЗАЕБАЛИ ВСЯКИЕ ВОЛОДИ',
-                users: [
+                name: 'Gavno-chat',
+                messages: [
                     {
-                        username: 'Toxa',
-                        isOnline: true,
-                        isPremium: false,
+                        createdAt: new Date(),
+                        content: 'ffafasfdasfdasfasfas',
+                        userId: '124',
                     },
-                    {
-                        username: 'Tox',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Toy',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Torelka',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Torelka',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Torelka',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Torelka',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Torelka',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Torelka',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Torelka',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Torelka',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Torelka',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                    {
-                        username: 'Torelka',
-                        isOnline: true,
-                        isPremium: false,
-                    },
-                ]
-            },
-            {
-                name: 'Private',
-                users: [{
-                    username: 'Debil',
-                    isOnline: false,
-                    isPremium: false,
-                }]
-            },
+                ],
+                users: ['124']
+            }
         ];
     }
 

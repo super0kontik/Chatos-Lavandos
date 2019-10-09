@@ -2,24 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d48f9a4d-7948-4ee2-ad8f-1f1ed9885cfd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/app/app.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/data.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/services/chat.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app-routing.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/login-page/login-page.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/login-page/login-page.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/login-page/login-page.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/register-page/register-page.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/register-page/register-page.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/models/Message.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/register-page/register-page.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/auth-layout/auth-layout.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/auth-layout/auth-layout.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/auth-layout/auth-layout.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/site-layout/site-layout.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/site-layout/site-layout.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/models/Room.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/layouts/site-layout/site-layout.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/header/header.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/header/header.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/room/room.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/room/room.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/room/room.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/models/Message.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/models/Message.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/models/Room.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/models/Room.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/shared/models/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/models/User.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/services/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/services/auth.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles.scss" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
