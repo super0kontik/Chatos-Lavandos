@@ -1,9 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~perfect-scrollbar/css/perfect-scrollbar.css';
 @import url('https://fonts.googleapis.com/css?family=Bungee+Inline|Montserrat+Alternates:300,400,500,600&display=swap');
 
 
 html, body {
     height: 100%;
-    overflow: hidden;
+    //overflow: hidden;
 }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

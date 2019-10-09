@@ -1,0 +1,27 @@
+<div class="room-wrapper">
+    <perfect-scrollbar [config]="config">
+        <mat-list class="mt-lst">
+            <mat-list-item [ngClass]="{'own': message.userId === me ,
+            'foreign' : message.userId !== me}" *ngFor="let message of currentRoom.messages">
+                <span class="message-user">
+                    <span class="online" *ngIf="true" >Online</span>
+                    {{message}}
+                </span>
+                <p class="message-text">
+                    {{message.content}}
+                </p>
+                <small class="message-date">{{message.createdAt | date: 'HH:MM:ss | dd.MM'}}</small>
+            </mat-list-item>
+        </mat-list>
+    </perfect-scrollbar>
+
+    <div class="input-area">
+        <div class="input-message" dir="auto">
+            <perfect-scrollbar  [config]="config">
+                <div class="composer_rich_textarea" contenteditable="true" dir="auto" placeholder="Write a message...">
+                </div>
+            </perfect-scrollbar>
+
+        </div>
+    </div>
+</div>

@@ -1,47 +1,47 @@
 .nav-wrapper {
+    height: 10%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(228, 178, 71, 0.96);
-    padding: 10px 20px 5px 50px;
+    background-color: #ec4d37;
+    padding: 10px 60px 5px 0px;
 
     .brand-logo {
+        margin-left: 50px;
+        cursor: pointer;
         transition: 0.3s;
-        font-size: 40px;
+        font-size: 4vw;
+        line-height: 20px;
         font-family: 'Bungee Inline', cursive;
 
         &:hover {
             transition: 0.3s;
-            filter: drop-shadow(0 15px 5px black);
-            transform: scale(1.2) translateX(30px);
+            filter: drop-shadow(5px 10px 7px black);
+            transform: scale(1.1) translateX(70px) ;
         }
     }
 
     .nav-links {
         display: flex;
-        justify-content: space-around;
-        width: 20%;
+        justify-content: space-between;
 
         .nav-link {
             transition: 0.3s;
             font-family: 'Montserrat Alternates', sans-serif;
             font-weight: 300;
-            width: 140px;
             display: flex;
             justify-content: center;
             border-radius: 50px;
-            background-color: white;
-            font-size: 24px;
+            background-color: black;
+            color: white;
+            font-size: 1.3vw;
             animation: piu-piu 10s ease-in-out infinite;
 
-            &:hover {
-                transition: 0.3s;
-                background-color: #ffd66b;
-                box-shadow: 0 0 15px black;
-            }
-
-            &:last-child {
-                animation-delay: 0.09s;
+            &:first-child {
+                &:hover {
+                    transition: 0.3s;
+                    box-shadow: 0 0 15px black;
+                }
             }
         }
     }
@@ -54,24 +54,18 @@
 
 @keyframes piu-piu {
     0% {
-        background-color: white;
+
     }
     1% {
         transform: translateY(-10px);
-        background-color: #ffd66b;
     }
     4% {
         transform: translateY(0px);
-        background-color: white;
     }
     7% {
         transform: translateY(-10px);
-        background-color: #ffd66b;
     }
     10% {
         transform: translateY(0px);
-        background-color: white;
     }
 }
-
-

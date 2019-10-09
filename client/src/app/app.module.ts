@@ -1,36 +1,56 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {AuthLayoutComponent} from "./shared/layouts/auth-layout/auth-layout.component";
-import {SiteLayoutComponent} from "./shared/layouts/site-layout/site-layout.component";
+
 import {LoaderComponent} from "./shared/components/loader/loader.component";
-import {RegisterPageComponent} from "./register-page/register-page.component";
-import {LoginPageComponent} from "./login-page/login-page.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatListModule} from "@angular/material/list";
+import {MainComponent} from './main/main.component';
+import {HeaderComponent} from './header/header.component';
+import {ChatComponent} from './main/chat/chat.component';
+import {ContactListComponent} from './main/contact-list/contact-list.component';
+import {RoomComponent} from './main/room/room.component';
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+import {PERFECT_SCROLLBAR_CONFIG} from 'ngx-perfect-scrollbar';
+import {PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+    suppressScrollX: true
+};
 
 @NgModule({
     declarations: [
         AppComponent,
-        AuthLayoutComponent,
-        SiteLayoutComponent,
         LoaderComponent,
-        RegisterPageComponent,
-        LoginPageComponent,
+        MainComponent,
+        HeaderComponent,
+        ChatComponent,
+        ContactListComponent,
+        RoomComponent,
     ],
     imports: [
         BrowserModule,
-        AppRoutingModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
         MatToolbarModule,
-        MatListModule
+        MatListModule,
+        MatTabsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        PerfectScrollbarModule
     ],
-    providers: [],
+    providers: [
+        {
+            provide: PERFECT_SCROLLBAR_CONFIG,
+            useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
