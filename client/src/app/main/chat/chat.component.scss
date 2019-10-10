@@ -1,0 +1,35 @@
+.chat-wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #003b3f, #8bcd00);
+}
+
+::ng-deep .mat-tab-label {
+    font-size: 22px;
+    user-select: none;
+    color: #92cd00;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: 500;
+}
+
+::ng-deep .mat-tab-group {
+    width: 100%;
+}
+
+::ng-deep .mat-tab-body-wrapper {
+    height: 100%;
+}
+
+::ng-deep .mat-tab-header {
+    height: 45px;
+    background: rgba(0, 0, 0, 0.18);
+}
+
+::ng-deep .mat-tab-header, .mat-tab-nav-bar {
+    border-top: 1px solid black;
+}
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #84cd00;
+}

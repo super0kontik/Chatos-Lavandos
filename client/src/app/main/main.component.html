@@ -1,0 +1,15 @@
+<div class="main-wrapper">
+    <app-chat></app-chat>
+    <div class="flip-card">
+        <div class="flip-card-inner" #cardInner>
+            <div class="flip-card-front" (click)="flipCardToggler()">
+                <app-contact-list></app-contact-list>
+            </div>
+            <div class="flip-card-back" (click)="flipCardToggler()">
+                <app-smiles></app-smiles>
+            </div>
+        </div>
+    </div>
+
+</div>
+

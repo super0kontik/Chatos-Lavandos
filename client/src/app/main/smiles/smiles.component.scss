@@ -1,0 +1,42 @@
+.smiles-wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.51);
+    flex-direction: column;
+
+    .title {
+        display: flex;
+        justify-content: center;
+        font-family: 'Montserrat Alternates', sans-serif;
+        align-items: center;
+        width: 100%;
+        color: white;
+        height: 47px;
+        background: rgba(0, 0, 0, 0.51);
+
+        p {
+            font-weight: 300;
+            font-size: 30px;
+        }
+    }
+
+    .smiles-list {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+        justify-content: space-between;
+        align-content: space-between;
+
+        .smile-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.51);
+            width: 65px;
+            height: 65px;
+            border-radius: 50px;
+        }
+    }
+}

@@ -1,15 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d48f9a4d-7948-4ee2-ad8f-1f1ed9885cfd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+    <list default="true" id="09bb1c1f-a2ed-4757-ac10-9d75bdfec7f8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/config/client_secret_138347420904-b72oif3jnot616rmd8higgulsol512t7.apps.googleusercontent.com.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/config/config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/message.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/room.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/user.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/passport/google-strat.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/server.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/header/header.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/header/header.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/header/header.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/main.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/main.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/main.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/components/loader/loader.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/components/loader/loader.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/components/loader/loader.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/data.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/imgs/green-hexagons-background-Large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/imgs/ngx-perfect-scrollbar-master.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/imgs/referralheader.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/models/Message.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/models/Room.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/models/User.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/services/auth.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/app/shared/services/chat.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/client/.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/app-routing.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.module.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles.scss" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +113,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

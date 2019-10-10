@@ -1,0 +1,13 @@
+<div class="smiles-wrapper">
+    <div class="title">
+        <p>👑SMILES👑</p>
+    </div>
+    <perfect-scrollbar [scrollIndicators]="true">
+        <div class="smiles-list">
+            <div class="smile-item" *ngFor="let smile of smiles">
+                {{smile}}
+            </div>
+        </div>
+    </perfect-scrollbar>
+
+</div>
