@@ -2,10 +2,10 @@
     <app-chat></app-chat>
     <div class="flip-card">
         <div class="flip-card-inner" #cardInner>
-            <div class="flip-card-front" (click)="flipCardToggler()">
-                <app-contact-list></app-contact-list>
+            <div class="flip-card-front">
+                <app-contact-list [isDisplayed]="isFlipped" ></app-contact-list>
             </div>
-            <div class="flip-card-back" (click)="flipCardToggler()">
+            <div class="flip-card-back">
                 <app-smiles></app-smiles>
             </div>
         </div>

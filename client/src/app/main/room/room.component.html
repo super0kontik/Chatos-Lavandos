@@ -23,9 +23,24 @@
     <div class="input-area">
         <div class="input-message" dir="auto">
             <perfect-scrollbar  [config]="config" [autoPropagation]="true" >
-                <div class="composer_rich_textarea" contenteditable="true" dir="auto" placeholder="Write a message...">
+                <div class="composer_rich_textarea"
+                     contenteditable="true"
+                     dir="auto"
+                     #inputText
+                >
                 </div>
             </perfect-scrollbar>
+        </div>
+        <div class="wrap-btn">
+            <div class="send-btn">
+                <img style="width: 50px; height: 50px" class="send-img" src="../../../assets/imgs/373675-200.png" alt="">
+            </div>
+
+        </div>
+        <div class="wrap-btn" (click)="openSmiles()">
+            <div class="smile-btn">
+                <img style="width: 50px; height: 50px" src="../../../assets/imgs/smile.png" alt="" #smileImg>
+            </div>
 
         </div>
     </div>

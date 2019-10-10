@@ -20,7 +20,7 @@
 
     .input-area {
         padding: 20px 0px 10px 40px;
-        background: rgba(0, 0, 0, 0.18);
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent);
         position: relative;
         height: auto;
         min-height: 12%;
@@ -41,6 +41,7 @@
 
         .input-message {
             transition: 0.5s;
+            display: inline-block;
             width: 70%;
             height: auto;
             background-color: rgba(247, 255, 252, 0.69);
@@ -51,6 +52,43 @@
             &:focus {
                 transition: 0.5s;
                 box-shadow: 0 0 15px black;
+            }
+        }
+
+        .wrap-btn {
+            display: inline-block;
+            z-index: 2;
+            background: transparent;
+            border-radius: 50px;
+            width: 70px;
+            height: 70px;
+            margin: 0px 0 0 20px;
+            transition: .3s;
+            position: relative;
+            top: 4px;
+            text-align: center;
+
+            .send-btn {
+                padding-left: 5px;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .smile-btn {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            &:hover {
+                transition: .3s;
+                background: rgba(0, 0, 0, 0.49);
+
             }
         }
     }

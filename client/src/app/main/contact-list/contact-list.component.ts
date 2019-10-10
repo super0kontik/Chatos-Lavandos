@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {range, Subscription} from "rxjs";
+import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 
 @Component({
     selector: 'app-contact-list',
@@ -7,6 +8,11 @@ import {range, Subscription} from "rxjs";
     styleUrls: ['./contact-list.component.scss']
 })
 export class ContactListComponent implements OnInit {
+    @Input() isDisplayed: boolean;
+    public config: PerfectScrollbarConfigInterface = {
+        wheelSpeed: 0.5,
+        scrollingThreshold: 0,
+    };
     public list: number[] = [];
     public ranger: Subscription;
 
