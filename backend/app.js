@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 const passport = require('passport');
 require('./passport/google-strat');
-
+const {API_URL} = require('./config/config');
 app.use(bp.json());
 app.use(bp.urlencoded({extended:false}));
 app.use(cors());
@@ -25,7 +25,7 @@ app.get(
 app.get(
     '/auth/callback',
     passport.authenticate('google', { failureRedirect: '/' }),(req, res) => {
-        res.send(req.user)
+        res.redirect(`${API_URL}/auth?token=js&id=${req.user.id}&name=${req.user.name}`)
     }
 );
 
