@@ -25,11 +25,11 @@ app.get(
 app.get(
     '/auth/callback',
     passport.authenticate('google', { failureRedirect: '/' }),(req, res) => {
-        res.redirect(`${API_URL}/auth?token=js&id=${req.user.id}&name=${req.user.name}`)
+        res.redirect(`${API_URL}/auth?token=js&id=${req.user.id}&name=${req.user.name}&isPremium=true`)
     }
 );
 
-app.get('/mock/user',(req,res)=>res.send({id:'8805553535', name: 'Alex_Shavik', isOnline:true, isPremium:true}))
+app.get('/mock/user',(req,res)=>res.send({id:'8805553535', name: 'Alex_Shavik', isOnline:true, isPremium:true}));
 
 app.get('/mock/rooms',
     (req,res) => {
