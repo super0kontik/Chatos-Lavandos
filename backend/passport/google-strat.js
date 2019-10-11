@@ -11,9 +11,8 @@ passport.use(
             let user = await User.findOne({id: profile.id});
             if (!user) {
                 user = await User.create({id: profile.id, name: profile.displayName});
-
             }
-            const token = jwt.sign({id: user.id, name: user.name},SECRET_WORD);
+            const token = jwt.sign({id: profile.id, name: profile.name},SECRET_WORD);
             return done(null, {id: user.id, name: user.name, isPremium: user.isPremium, token});
         }catch (e){
             throw new Error(e.message)

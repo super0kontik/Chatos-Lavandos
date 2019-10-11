@@ -2,7 +2,8 @@ const app = require('./app');
 const mongoose = require('mongoose');
 const http = require('http');
 const conf = require('./config/config');
-const socketIO = require('socket.io');
+const soketInit = require('./socket');
+
 
 const server = http.createServer(app,{
     handlePreflightRequest: (req, res) => {
@@ -16,15 +17,7 @@ const server = http.createServer(app,{
     }
 });
 
-const io = socketIO(server);
-
-io.on('connection', socket => {
-        socket.join('common');
-            if(socket.handshake.headers.Authorization === 'Bearer js'){
-                io.to('common').emit('join',{message:"welcome, js fan"})
-            }
-});
-
+soketInit(server);
 
 mongoose.connect(conf.MONGO_URL, {useNewUrlParser: true})
     .then(()=>{
