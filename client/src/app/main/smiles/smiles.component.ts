@@ -14,10 +14,11 @@ export class SmilesComponent implements OnInit {
         wheelSpeed: 0.5,
         scrollingThreshold: 0,
     };
+
     constructor(private chatService: ChatService) {
     }
 
-    ngOnInit() {
+    public ngOnInit(): void {
         this.smiles = Object.values(SMILES);
     }
 

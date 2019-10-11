@@ -3,12 +3,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    //background-color: rgb(216, 187, 139);
-    background-image: url("../../assets/imgs/green-hexagons-background-Large.png");
-    background-size: cover;
+    //background-image: url("../../assets/imgs/green-hexagons-background-Large.png");
+    //background-size: cover;
+    background: linear-gradient(60deg, #b3ade3, #d4d4d4);
     padding: 10px 60px 5px 0;
     border-bottom: 1px solid black;
-    //box-shadow: inset 0px -20px 60px black;
 
     .brand-logo {
         color: rgb(0, 0, 0);
@@ -18,11 +17,12 @@
         transition: 0.3s;
         font-size: 4vw;
         line-height: 20px;
-        font-family: 'Bungee Inline', cursive;
+        //font-family: 'Bungee Inline', cursive;
+        font-family: 'Kaushan Script', cursive;
 
         &:hover {
             transition: 0.3s;
-            filter: drop-shadow(5px 10px 7px #83e209);
+            filter: drop-shadow(5px 10px 7px #4e3da0);
             transform: scale(1.1) translateX(70px) ;
         }
     }

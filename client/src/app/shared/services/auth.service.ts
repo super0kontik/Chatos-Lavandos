@@ -16,4 +16,8 @@ export class AuthService {
     public auth(): Observable<User> {
         return this.http.get<User>(`${config.API_URL}/mock/user`);
     }
+
+    public authGoogle(): Observable<any> {
+        return this.http.get<any>(`${config.API_URL}/auth`);
+    }
 }

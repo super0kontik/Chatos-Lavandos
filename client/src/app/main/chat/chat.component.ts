@@ -13,7 +13,7 @@ export class ChatComponent implements OnInit {
     constructor(private chatService: ChatService) {
     }
 
-    ngOnInit() {
+    public ngOnInit(): void {
         this.chatService.getRooms().subscribe(rooms => {
             this.rooms = rooms;
         });

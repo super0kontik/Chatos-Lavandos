@@ -9,26 +9,22 @@ import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 })
 export class ContactListComponent implements OnInit {
     @Input() isDisplayed: boolean;
+
+    public list: number[] = [];
     public config: PerfectScrollbarConfigInterface = {
         wheelSpeed: 0.5,
         scrollingThreshold: 0,
     };
-    public list: number[] = [];
-    public ranger: Subscription;
 
     constructor() {
     }
 
-    ngOnInit() {
-        this.ranger = range(1, 100).subscribe(
+    public ngOnInit(): void {
+        range(1, 100).subscribe(
             num => {
                 this.list.push(num);
             }
         );
-    }
-
-    public aSub() {
-        this.ranger.unsubscribe();
     }
 
 }

@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d48f9a4d-7948-4ee2-ad8f-1f1ed9885cfd" name="Default Changelist" comment="">
+    <list default="true" id="09bb1c1f-a2ed-4757-ac10-9d75bdfec7f8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/header/header.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/header/header.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/header/header.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/header/header.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/header/header.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/main/main.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/main.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/main/main.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/main.component.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/main/main.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/main.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/main/room/room.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/main/room/room.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/main/room/room.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/data.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/imgs/green-hexagons-background-Large.png" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/assets/imgs/green-hexagons-background-Large.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/imgs/ngx-perfect-scrollbar-master.zip" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/assets/imgs/ngx-perfect-scrollbar-master.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/imgs/referralheader.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/assets/imgs/referralheader.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/services/chat.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/services/chat.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/services/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/services/auth.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/styles.scss" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,6 +37,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Santanyan\Documents\Chatos-Lavandos-master\client\src\app" />
       <recent name="C:\Users\cools\Documents\Chatos-Lavandos\client\src\assets" />
     </key>
   </component>

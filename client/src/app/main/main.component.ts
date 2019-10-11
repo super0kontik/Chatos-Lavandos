@@ -9,15 +9,14 @@ import {ChatService} from "../shared/services/chat.service";
 export class MainComponent implements OnInit, AfterViewInit {
     @ViewChild('cardInner', {static: false}) card: ElementRef;
 
-
     public isFlipped: boolean = false;
     public isLoaded: boolean = false;
 
     constructor(private chatService: ChatService) {
     }
 
-    ngOnInit() {
-        this.chatService.flipCard.subscribe(flip => {
+    public ngOnInit(): void {
+        this.chatService.flipCard.subscribe(() => {
             if (this.isLoaded) {
                 this.flipCardToggler();
             }
