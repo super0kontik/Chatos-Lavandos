@@ -62,7 +62,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
     }
 
     public ngDoCheck(): void {
-        console.log(1);
         if (this.isLoadedTemplate) {
             this.scrollToBottom();
         }
