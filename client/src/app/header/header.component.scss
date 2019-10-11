@@ -10,6 +10,7 @@
     border-bottom: 1px solid black;
 
     .brand-logo {
+
         color: rgb(0, 0, 0);
         user-select: none;
         margin-left: 50px;
@@ -41,7 +42,8 @@
             border-radius: 50px;
             background-color: rgba(0, 0, 0, 0.33);
             color: white;
-            font-size: 1.25vw;
+            font-size: 1.3vw;
+            white-space: nowrap;
             animation: piu-piu 10s ease-in-out infinite;
 
             &:first-child {

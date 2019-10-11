@@ -13,7 +13,7 @@ import {Message} from "../models/Message";
 export class ChatService {
     public currentUser: User;
     public flipCard: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public sendSmile: BehaviorSubject<string> = new BehaviorSubject<string>('');
+    //public sendSmile: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
 
     constructor(private http: HttpClient, private authService: AuthService) {

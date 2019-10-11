@@ -8,7 +8,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatListModule} from "@angular/material/list";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {PERFECT_SCROLLBAR_CONFIG} from 'ngx-perfect-scrollbar';
@@ -25,6 +25,7 @@ import { SmilesComponent } from './main/smiles/smiles.component';
 import {MatCardModule} from "@angular/material/card";
 import { AuthComponent } from './auth/auth.component';
 import {TokenInterceptor} from "./shared/classes/token.interceptor";
+import { SetReferenceDirective } from './shared/directives/set-reference.directive';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -41,6 +42,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         RoomComponent,
         SmilesComponent,
         AuthComponent,
+        SetReferenceDirective,
     ],
     imports: [
         BrowserModule,
@@ -54,7 +56,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         PerfectScrollbarModule,
         HttpClientModule,
         MatCardModule,
-        AppRoutingModule
+        AppRoutingModule,
+        FormsModule
     ],
     providers: [
         {

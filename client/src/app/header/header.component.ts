@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../shared/services/auth.service";
-import {config} from "../shared/config";
-import {LocalStorageService} from "../shared/services/local-storage.service";
 
 @Component({
     selector: 'app-header',
@@ -13,7 +11,7 @@ export class HeaderComponent implements OnInit{
     public user: object = {
         name: '',
     };
-    public isGetingUser: boolean = false;
+    public isUser: boolean = false;
 
     constructor(private authService: AuthService) {
     }
@@ -21,11 +19,11 @@ export class HeaderComponent implements OnInit{
     public ngOnInit(): void {
         this.authService.user.subscribe(user => {
             if (Object.keys(user).length == 0) {
-                this.isGetingUser = false;
+                this.isUser = false;
             } else {
                 console.log(user);
                 this.user = user;
-                this.isGetingUser = true;
+                this.isUser = true;
             }
         });
     }

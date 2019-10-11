@@ -17,6 +17,8 @@ import {
     PerfectScrollbarConfigInterface,
     PerfectScrollbarDirective
 } from "ngx-perfect-scrollbar";
+import {log} from "util";
+import {FormControl} from "@angular/forms";
 
 @Component({
     selector: 'app-room',
@@ -27,13 +29,14 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
     @Input() currentRoom: Room;
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
-    @ViewChild('inputText', {static: false}) input: ElementRef;
+    //@ViewChild('inputText', {static: false}) input: ElementRef;
 
     public messages: Message[] = [];
     public me: string;
     public users: object[] = [];
     public isLoadedTemplate = false;
     public isSmiles = false;
+    public smile: string = '';
     public config: PerfectScrollbarConfigInterface = {
         wheelSpeed: 0.5,
         scrollingThreshold: 0,
@@ -54,10 +57,18 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
         this.chatService.getRoomContent(this.currentRoom.id).subscribe(content => {
             this.messages = content;
         });
-        this.chatService.sendSmile.subscribe(smile => {
-            if (this.isLoadedTemplate) {
-                this.insertSmileIntoInput(smile);
+        // this.chatService.sendSmile.subscribe(smile => {
+        //     if (this.isLoadedTemplate) {
+        //         this.smile = smile;
+        //
+        //         //this.insertSmileIntoInput(smile);
+        //     }
+        // });
+        this.chatService.flipCard.subscribe((flag) => {
+            if (this.isLoadedTemplate && flag) {
+                this.animateSmile();
             }
+
         });
     }
 
@@ -68,10 +79,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
     }
 
     public ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.scrollToBottom();
-        }, 500);
-        clearTimeout();
         this.isLoadedTemplate = true;
     }
 
@@ -80,6 +87,10 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
     }
 
     public openSmiles(): void {
+        this.chatService.flipCard.next(true);
+    }
+
+    public animateSmile(): void {
         if(!this.isSmiles) {
             this.smileImg.nativeElement.style.filter = 'invert(100%) drop-shadow(0px 5px 5px black)';
             this.isSmiles = true;
@@ -87,10 +98,9 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
             this.smileImg.nativeElement.style.filter = '';
             this.isSmiles = false;
         }
-        this.chatService.flipCard.next(true);
     }
 
-    public insertSmileIntoInput(smile: string): void {
-        this.input.nativeElement.innerText += smile;
-    }
+    // public insertSmileIntoInput(smile: string): void {
+    //     this.input.nativeElement.innerText += smile;
+    // }
 }

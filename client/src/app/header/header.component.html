@@ -1,10 +1,10 @@
 <mat-nav-list class="nav-wrapper">
     <span class="brand-logo">CHATOS-LAVANDOS</span>
     <div class="nav-links">
-        <mat-list-item *ngIf="isGetingUser">{{user.name}}</mat-list-item>
-        <mat-list-item class="nav-link" *ngIf="!isGetingUser" (click)="signIn()">
+        <mat-list-item *ngIf="isUser">{{user.name}}</mat-list-item>
+        <mat-list-item class="nav-link" *ngIf="!isUser" (click)="signIn()">
             <a href="http://localhost:8080/auth">Sign in with Google</a>
         </mat-list-item>
-        <mat-list-item class="nav-link" [style.animation]="'none'" *ngIf="isGetingUser" (click)="logOut()">Log out</mat-list-item>
+        <mat-list-item class="nav-link" *ngIf="isUser" (click)="logOut()">Log out</mat-list-item>
     </div>
 </mat-nav-list>
