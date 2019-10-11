@@ -22,7 +22,7 @@
 
 
 
-    <div class="input-area">
+    <div class="input-area" *ngIf="access">
             <div class="input-message" dir="auto">
                 <perfect-scrollbar [config]="config" [autoPropagation]="true">
                     <div class="composer_rich_textarea"
@@ -36,7 +36,7 @@
             </div>
 
         <div class="wrap-btn">
-            <div class="send-btn">
+            <div class="send-btn" (click)="sendMessage()">
                 <img style="width: 50px; height: 50px" class="send-img" src="../../../assets/imgs/373675-200.png"
                      alt="">
             </div>

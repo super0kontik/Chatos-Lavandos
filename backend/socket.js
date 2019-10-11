@@ -12,17 +12,16 @@ module.exports = (server) => {
         const sockets = Object.keys(io.sockets.sockets);
         console.log(sockets);
         socket.join('common');
-        io.use(sjwt.authorize({
-            secret: SECRET_WORD,
-            handshake: true
-        }));
-        io.to('common').emit('join', {message: `welcome, ${socket.decoded_token.name} `});
+        // io.use(sjwt.authorize({
+        //     secret: SECRET_WORD,
+        //     handshake: true
+        // }));
+        io.to(socket.id).emit('join', {message: `welcome, world `});
 
-        io.on('createMessage', params=>{
-            io.to(params.room).emit('newMessage', {message:params.message})
+        socket.on('createMessage', params=>{
+            console.log(params)
+            io.to('common').emit('newMessage', {message:params.message,room:'common'})
         })
-
-
 
     });
 

@@ -19,6 +19,8 @@ import {
 } from "ngx-perfect-scrollbar";
 import {log} from "util";
 import {FormControl} from "@angular/forms";
+import {SocketService} from "../../shared/services/socket.service";
+import {AuthService} from "../../shared/services/auth.service";
 
 @Component({
     selector: 'app-room',
@@ -29,7 +31,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
     @Input() currentRoom: Room;
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
-    //@ViewChild('inputText', {static: false}) input: ElementRef;
+    @ViewChild('inputText', {static: false}) input: ElementRef;
 
     public messages: Message[] = [];
     public me: string;
@@ -37,15 +39,26 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
     public isLoadedTemplate = false;
     public isSmiles = false;
     public smile: string = '';
+    public access: boolean = false;
     public config: PerfectScrollbarConfigInterface = {
         wheelSpeed: 0.5,
         scrollingThreshold: 0,
     };
 
-    constructor(private chatService: ChatService) {
+    constructor(private chatService: ChatService,
+                private socketService: SocketService,
+                private authService: AuthService
+                ) {
     }
 
     public ngOnInit(): void {
+        if (this.authService.isAuthenticated()) {
+            this.access = true;
+        }
+
+        this.socketService.listen('newMessage').subscribe(data => {
+            console.log(data);
+        });
         this.me = this.chatService.currentUser.id;
         this.currentRoom.users.forEach(user => {
             this.users[user.id] = {
@@ -98,6 +111,10 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
             this.smileImg.nativeElement.style.filter = '';
             this.isSmiles = false;
         }
+    }
+
+    public sendMessage(): void {
+        this.socketService.emit('createMessage', {message: this.input.nativeElement.innerText});
     }
 
     // public insertSmileIntoInput(smile: string): void {

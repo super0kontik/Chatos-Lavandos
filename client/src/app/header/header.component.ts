@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../shared/services/auth.service";
+import {LocalStorageService} from "../shared/services/local-storage.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-header',
@@ -13,7 +15,7 @@ export class HeaderComponent implements OnInit{
     };
     public isUser: boolean = false;
 
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthService, private router: Router) {
     }
 
     public ngOnInit(): void {
@@ -34,6 +36,8 @@ export class HeaderComponent implements OnInit{
 
     public logOut(): void {
         this.signButton = true;
+        LocalStorageService.logout();
+        this.router.navigate(['/auth']);
     }
 
 }

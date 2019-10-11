@@ -17,7 +17,7 @@ export class LocalStorageService {
 
     public static getToken(): string {
         const user = JSON.parse(localStorage.getItem('user'));
-        return user ? JSON.parse(localStorage.getItem('user'))['token'] : 'token';
+        return user ? JSON.parse(localStorage.getItem('user'))['token'] : false;
     }
 
     public static logout(): void {
