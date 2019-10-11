@@ -16,4 +16,4 @@ const messageSchema = new Schema({
     },
     content:String
 });
-module.exports = mongoose.model('Message',roomSchema);
+module.exports = mongoose.model('Message',messageSchema);
