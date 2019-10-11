@@ -16,7 +16,7 @@ module.exports = (server) => {
             secret: SECRET_WORD,
             handshake: true
         }));
-        io.to('common').emit('join', {message: "welcome, js fan"});
+        io.to('common').emit('join', {message: `welcome, ${socket.decoded_token.name} `});
 
         io.on('createMessage', params=>{
             io.to(params.room).emit('newMessage', {message:params.message})
