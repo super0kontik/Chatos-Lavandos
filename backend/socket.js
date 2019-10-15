@@ -41,10 +41,13 @@ module.exports = (server) => {
         }
 
 
-        socket.on('createMessage', params=>{
+        socket.on('createMessage', async  params=>{
             console.log(params);
             const date = Date.now();
             const creator= socket.decoded_token.id;
+            if(params.room !== 'common'){
+                const message = await Message.create({createdAt:date,creator,room:params.room,content:params.message})
+            }
             io.to(params.room).emit('newMessage', {message:params.message,room:params.room, date,creator})
         });
 
