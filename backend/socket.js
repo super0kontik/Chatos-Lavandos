@@ -29,12 +29,27 @@ module.exports = (server) => {
                 });
             io.emit('userJoined',{user})
         }catch (e){
-            console.log(e.message)
+            console.log(e.message);
+            io.to(socket.id).emit('error',{error:e.message});
         }
 
         socket.on('createMessage', params=>{
             console.log(params);
-            io.to(params.room).emit('newMessage', {message:params.message,room:params.room})
+            const date = Date.now();
+            const creator= socket.decoded_token.id;
+            io.to(params.room).emit('newMessage', {message:params.message,room:params.room, date,creator})
+        });
+
+        socket.on('createRoom', params=>{
+            console.log(params);
+            try{
+                if(params.roomTitle.trim().toLowerCase() === 'common'|| params.roomTitle.trim().length <= 3){
+                    throw new Error('invalid name')
+                }
+
+            }catch (e){
+                io.to(socket.id).emit('error',{error:e.message});
+            }
         })
 
     });
