@@ -12,7 +12,7 @@ passport.use(
             if (!user) {
                 user = await User.create({id: profile.id, name: profile.displayName});
             }
-            const token = jwt.sign({id: profile.id, name: profile.name},SECRET_WORD);
+            const token = jwt.sign({id: profile.id, name: user.name},SECRET_WORD);
             return done(null, {
                 id: user.id,
                 name: user.name,
