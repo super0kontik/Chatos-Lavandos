@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
-import {User} from "../models/User";
 import {HttpClient} from "@angular/common/http";
-import {AuthService} from "./auth.service";
 import {BehaviorSubject, Observable} from "rxjs";
 import {Room} from "../models/Room";
 import {config} from "../config";
@@ -11,15 +9,10 @@ import {Message} from "../models/Message";
     providedIn: 'root'
 })
 export class ChatService {
-    public currentUser: User;
     public flipCard: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    //public sendSmile: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
 
-    constructor(private http: HttpClient, private authService: AuthService) {
-        this.authService.auth().subscribe(user => {
-            this.currentUser = user;
-        });
+    constructor(private http: HttpClient) {
     }
 
     public getRooms(): Observable<Room[]> {

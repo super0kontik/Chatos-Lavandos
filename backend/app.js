@@ -25,11 +25,11 @@ app.get(
 app.get(
     '/auth/callback',
     passport.authenticate('google', { failureRedirect: '/' }),(req, res) => {
-        res.redirect(`${API_URL}/auth?token=js&id=${req.user.id}&name=${req.user.name}&isPremium=true`)
+        res.redirect(`${API_URL}/auth?token=${req.user.token}&id=${req.user.id}&name=${req.user.name}&isPremium=true`)
     }
 );
 
-app.get('/mock/user',(req,res)=>res.send({id:'8805553535', name: 'Alex_Shavik', isOnline:true, isPremium:true}));
+//app.get('/mock/user',(req,res)=>res.send({id:'111215483671211658136', name: 'Alex_Shavik', isOnline:true, isPremium:true}));
 
 app.get('/mock/rooms',
     (req,res) => {
@@ -38,7 +38,7 @@ app.get('/mock/rooms',
             id: 'roomId2',
             title: 'Xyeta',
             users: [
-                {id: '8805553535', name: 'Alex_Shavik', isOnline: true, isPremium: true},
+                {id: '111215483671211658136', name: 'Alex_Shavik', isOnline: true, isPremium: true},
                 {id: 'ebala', name: 'Lexa_Lepexa', isOnline: false, isPremium: false},
                 {id: '131313', name: 'Pahan_Kontugan', isOnline: false, isPremium: false}
             ]
@@ -47,7 +47,7 @@ app.get('/mock/rooms',
             id: 'common',
             title: 'Common',
             users: [
-                {id: '8805553535', name: 'Alex_Shavik', isOnline: true, isPremium: true},
+                {id: '111215483671211658136', name: 'Alex_Shavik', isOnline: true, isPremium: true},
                 {id: '131313', name: 'Pahan_Kontugan', isOnline: false, isPremium: false}
             ]
         }]
@@ -58,7 +58,7 @@ app.get('/mock/roomContent/:id',(req,res)=>{
     if(req.params.id === 'common'){
         return res.json([{
             createdAt:Date.now(),
-            creator: '8805553535',
+            creator: '111215483671211658136',
             content: 'I love angular'
         }, {
             createdAt:Date.now(),
@@ -68,7 +68,7 @@ app.get('/mock/roomContent/:id',(req,res)=>{
     }else if(req.params.id === 'roomId2'){
         return res.json([{
             createdAt:Date.now(),
-            creator: '8805553535',
+            creator: '111215483671211658136',
             content: 'Lutche pozvonit chem u kogoto zanimat'
         },{
             createdAt:Date.now(),
@@ -84,7 +84,7 @@ app.get('/mock/roomContent/:id',(req,res)=>{
             content: 'Hello, bitches!'
         },{
             createdAt:Date.now(),
-            creator: '8805553535',
+            creator: '111215483671211658136',
             content: 'I love angular'
         },{
             createdAt:Date.now(),
@@ -92,7 +92,7 @@ app.get('/mock/roomContent/:id',(req,res)=>{
             content: 'Mne pohuy'
         },{
             createdAt:Date.now(),
-            creator: '8805553535',
+            creator: '111215483671211658136',
             content: 'Are you ahuel ?'
         },{
             createdAt:Date.now(),

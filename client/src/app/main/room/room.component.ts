@@ -21,6 +21,7 @@ import {log} from "util";
 import {FormControl} from "@angular/forms";
 import {SocketService} from "../../shared/services/socket.service";
 import {AuthService} from "../../shared/services/auth.service";
+import {LocalStorageService} from "../../shared/services/local-storage.service";
 
 @Component({
     selector: 'app-room',
@@ -52,6 +53,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
     }
 
     public ngOnInit(): void {
+        this.me = LocalStorageService.getUser()['id'];
         if (this.authService.isAuthenticated()) {
             this.access = true;
             this.socketService.listen('newMessage').subscribe(data => {
@@ -59,8 +61,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
             });
         }
 
-
-        this.me = this.chatService.currentUser.id;
         this.currentRoom.users.forEach(user => {
             this.users[user.id] = {
                 name: user.name,
@@ -71,13 +71,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
         this.chatService.getRoomContent(this.currentRoom.id).subscribe(content => {
             this.messages = content;
         });
-        // this.chatService.sendSmile.subscribe(smile => {
-        //     if (this.isLoadedTemplate) {
-        //         this.smile = smile;
-        //
-        //         //this.insertSmileIntoInput(smile);
-        //     }
-        // });
         this.chatService.flipCard.subscribe((flag) => {
             if (this.isLoadedTemplate && flag) {
                 this.animateSmile();
@@ -120,8 +113,4 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
             room: this.currentRoom.id,
         });
     }
-
-    // public insertSmileIntoInput(smile: string): void {
-    //     this.input.nativeElement.innerText += smile;
-    // }
 }

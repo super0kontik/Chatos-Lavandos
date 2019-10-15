@@ -24,7 +24,6 @@ export class ChatComponent implements OnInit {
             this.rooms = rooms;
         });
         if (this.authService.isAuthenticated()) {
-            console.log(1);
             this.socketService.listen('join').subscribe(data => {
                 console.log(data);
             });
