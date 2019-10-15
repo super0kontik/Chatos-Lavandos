@@ -4,13 +4,14 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {Room} from "../models/Room";
 import {config} from "../config";
 import {Message} from "../models/Message";
+import {User} from "../models/User";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ChatService {
     public flipCard: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
+    public currentRoomUsers: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
 
     constructor(private http: HttpClient) {
     }

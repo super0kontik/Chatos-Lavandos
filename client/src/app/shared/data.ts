@@ -1,11 +1,3 @@
-import {User} from "./models/User";
-
-export const me: User = {
-    id: '124',
-    name: 'Suka',
-    isOnline: true,
-    isPremium: true,
-};
 
 export const SMILES: object = {
     0: "😃",

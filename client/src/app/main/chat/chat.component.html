@@ -1,7 +1,9 @@
 <div class="chat-wrapper">
     <mat-tab-group>
         <mat-tab *ngFor="let room of rooms" [label]="room.title">
-            <app-room [currentRoom]="room" ></app-room>
+            <app-room [currentRoom]="room"
+                      [newMessage]="newMessage['room'] === room.id ? newMessage['message'] : false"
+            ></app-room>
         </mat-tab>
     </mat-tab-group>
 </div>
