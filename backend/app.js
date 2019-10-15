@@ -44,7 +44,7 @@ app.get('/mock/rooms',
             ]
         },
         {
-            id: 'roomId1',
+            id: 'common',
             title: 'Common',
             users: [
                 {id: '8805553535', name: 'Alex_Shavik', isOnline: true, isPremium: true},
@@ -55,7 +55,7 @@ app.get('/mock/rooms',
 });
 
 app.get('/mock/roomContent/:id',(req,res)=>{
-    if(req.params.id === 'roomId1'){
+    if(req.params.id === 'common'){
         return res.json([{
             createdAt:Date.now(),
             creator: '8805553535',

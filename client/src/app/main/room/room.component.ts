@@ -54,11 +54,12 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
     public ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
             this.access = true;
+            this.socketService.listen('newMessage').subscribe(data => {
+                console.log(data);
+            });
         }
 
-        this.socketService.listen('newMessage').subscribe(data => {
-            console.log(data);
-        });
+
         this.me = this.chatService.currentUser.id;
         this.currentRoom.users.forEach(user => {
             this.users[user.id] = {
@@ -114,7 +115,10 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
     }
 
     public sendMessage(): void {
-        this.socketService.emit('createMessage', {message: this.input.nativeElement.innerText});
+        this.socketService.emit('createMessage', {
+            message: this.input.nativeElement.innerText,
+            room: this.currentRoom.id,
+        });
     }
 
     // public insertSmileIntoInput(smile: string): void {
