@@ -27,7 +27,7 @@ module.exports = (server) => {
                     usersOnline,
                     rooms
                 });
-
+            io.emit('userJoined',{user})
         }catch (e){
             console.log(e.message)
         }
