@@ -1,4 +1,3 @@
-
 export const SMILES: object = {
     0: "😃",
     1: "🐻",

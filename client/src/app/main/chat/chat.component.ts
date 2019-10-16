@@ -1,13 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {ChatService} from "../../shared/services/chat.service";
 import {SocketService} from "../../shared/services/socket.service";
 import {AuthService} from "../../shared/services/auth.service";
-import {Message} from "../../shared/models/Message";
 import {User} from "../../shared/models/User";
-import {log} from "util";
-import {MatDialog} from "@angular/material/dialog";
-import {DialogOverviewExampleDialogComponent} from "../../dialog-overview-example-dialog/dialog-overview-example-dialog.component";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {DialogAddingRoomComponent} from "../../dialog-adding-room/dialog-adding-room.component";
+import {AddRoomProps} from "../../shared/models/AddRoomProps";
+
+
 
 @Component({
     selector: 'app-chat',
@@ -18,9 +20,7 @@ export class ChatComponent implements OnInit {
     public rooms: Room[];
     public newMessage: object = {};
     public newUser: User;
-
-    public name = 'Dialog';
-    public animal = 'Me';
+    public addRoom: AddRoomProps;
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
@@ -41,18 +41,21 @@ export class ChatComponent implements OnInit {
                 this.newMessage = data;
             });
         }
-
     }
 
     public openDialog(): void {
-        const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
-            width: '250px',
-            data: {name: this.name, animal: this.animal}
-        });
+        const dialogRef = this.dialog.open(DialogAddingRoomComponent, {width: '400px', height: '400px'});
 
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
-            this.animal = result;
+            if (result) {
+                console.log(result);
+            } else {
+                console.log('Not added')
+            }
+
         });
     }
 }
+
+

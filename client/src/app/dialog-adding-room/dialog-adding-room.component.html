@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Create new room</h1>
+
+<form [formGroup]="addRoomForm">
+    <mat-form-field>
+        <label>
+            <input matInput placeholder="Title" formControlName="title">
+        </label>
+    </mat-form-field>
+
+    <h2>Participants</h2>
+    <button type="button" mat-button (click)="addSellingPoint()">Add Selling Point</button>
+    <div formArrayName="participants">
+        <div *ngFor="let item of participants.controls; let pointIndex=index" [formGroupName]="pointIndex">
+            <mat-form-field>
+                <label>
+                    <input matInput [placeholder]="'Participant-' + (pointIndex + 1)" formControlName="id"/>
+                </label>
+
+            </mat-form-field>
+            <button type="button" mat-button (click)="deleteSellingPoint(pointIndex)">Delete participant</button>
+        </div>
+    </div>
+</form>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button (click)="onAdd()">Add</button>
+</div>

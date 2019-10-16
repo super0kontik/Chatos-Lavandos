@@ -27,9 +27,9 @@ import { AuthComponent } from './auth/auth.component';
 import {TokenInterceptor} from "./shared/classes/token.interceptor";
 import { SetReferenceDirective } from './shared/directives/set-reference.directive';
 import { SignInComponent } from './sign-in/sign-in.component';
-import { DialogOverviewExampleDialogComponent } from './dialog-overview-example-dialog/dialog-overview-example-dialog.component';
-import {MatDialogModule} from "@angular/material/dialog";
+import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
+import { DialogAddingRoomComponent } from './dialog-adding-room/dialog-adding-room.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -48,7 +48,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         AuthComponent,
         SetReferenceDirective,
         SignInComponent,
-        DialogOverviewExampleDialogComponent,
+        DialogAddingRoomComponent
     ],
     imports: [
         BrowserModule,
@@ -67,6 +67,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatDialogModule,
         MatButtonModule
     ],
+    entryComponents: [
+        DialogAddingRoomComponent
+    ],
     providers: [
         {
             provide: PERFECT_SCROLLBAR_CONFIG,
@@ -76,7 +79,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
             provide: HTTP_INTERCEPTORS,
             multi: true,
             useClass: TokenInterceptor
-        }
+        },
+        {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
     ],
     bootstrap: [AppComponent]
 })
