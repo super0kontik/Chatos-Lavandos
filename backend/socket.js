@@ -22,7 +22,7 @@ module.exports = (server) => {
             const user = await User.findOne({id: socket.decoded_token.id});
             await user.updateOne({socketId:socket.id,isOnline:true});
             const usersOnline = await User.find({isOnline: true});
-            const rooms = await Room.find({$where : `this.users.indexOf("${user.id}") != -1`});
+            const rooms = await Room.find({$where : `this.users.indexOf("${user.id}") != -1`}).populate('users');
             rooms.push({
                 id: 'common',
                 title: 'Common',
