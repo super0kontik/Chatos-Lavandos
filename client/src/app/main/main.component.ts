@@ -1,5 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ChatService} from "../shared/services/chat.service";
+import {AuthService} from "../shared/services/auth.service";
+import {SocketService} from "../shared/services/socket.service";
 
 @Component({
     selector: 'app-main',
@@ -12,7 +14,13 @@ export class MainComponent implements OnInit, AfterViewInit {
     public isFlipped: boolean = false;
     public isLoaded: boolean = false;
 
-    constructor(private chatService: ChatService) {
+    constructor(private chatService: ChatService,
+                private authService: AuthService,
+                private socketService: SocketService
+                ) {
+        if (this.authService.isAuthenticated()) {
+            this.socketService.connect();
+        }
     }
 
     public ngOnInit(): void {

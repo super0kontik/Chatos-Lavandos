@@ -10,16 +10,21 @@ import {AuthService} from "./auth.service";
 export class SocketService {
     public socket: any;
     public readonly uri: string = 'http://localhost:8080';
+    public isConnected: boolean = false;
 
     constructor(private authService: AuthService) {
-        if (this.authService.isAuthenticated()) {
+
+    }
+
+    public connect(): void {
+        if (this.authService.isAuthenticated() && !this.isConnected) {
             this.socket = io(this.uri, {
                 query: `token=${LocalStorageService.getToken()}`,
             });
+            this.isConnected = true;
         } else {
             console.log('Unauthorized');
         }
-
     }
 
     public listen(eventName: string): Observable<any> {
@@ -32,5 +37,9 @@ export class SocketService {
 
     public emit(eventName: string, data: any): void {
         this.socket.emit(eventName, data);
+    }
+
+    public disconnect(): void {
+        this.socket.disconnect();
     }
 }

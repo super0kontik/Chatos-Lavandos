@@ -6,6 +6,8 @@ import {AuthService} from "../../shared/services/auth.service";
 import {Message} from "../../shared/models/Message";
 import {User} from "../../shared/models/User";
 import {log} from "util";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogOverviewExampleDialogComponent} from "../../dialog-overview-example-dialog/dialog-overview-example-dialog.component";
 
 @Component({
     selector: 'app-chat',
@@ -14,15 +16,16 @@ import {log} from "util";
 })
 export class ChatComponent implements OnInit {
     public rooms: Room[];
-    public newMessage: object = {
-        message: '',
-        room: '',
-    };
+    public newMessage: object = {};
     public newUser: User;
+
+    public name = 'Dialog';
+    public animal = 'Me';
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
-                private authService: AuthService
+                private authService: AuthService,
+                public dialog: MatDialog
                 ) {
     }
 
@@ -36,9 +39,20 @@ export class ChatComponent implements OnInit {
             });
             this.socketService.listen('newMessage').subscribe(data => {
                 this.newMessage = data;
-                console.log(this.newMessage);
             });
         }
 
+    }
+
+    public openDialog(): void {
+        const dialogRef = this.dialog.open(DialogOverviewExampleDialogComponent, {
+            width: '250px',
+            data: {name: this.name, animal: this.animal}
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+            this.animal = result;
+        });
     }
 }

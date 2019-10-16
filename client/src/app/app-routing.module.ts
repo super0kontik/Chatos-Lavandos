@@ -7,7 +7,8 @@ import {SignInComponent} from "./sign-in/sign-in.component";
 
 
 const routes: Routes = [
-    {path: '', component: MainComponent, canActivate: [AuthGuard]},
+    {path: '', redirectTo: '/chat', pathMatch: 'full'},
+    {path: 'chat', component: MainComponent, canActivate: [AuthGuard]},
     {path: 'auth', component: AuthComponent},
     {path: 'signIn', component: SignInComponent}
 ];

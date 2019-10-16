@@ -11,7 +11,7 @@ import {User} from "../models/User";
 })
 export class ChatService {
     public flipCard: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public currentRoomUsers: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+    public currentRoomUsers: BehaviorSubject<object[]> = new BehaviorSubject<object[]>([]);
 
     constructor(private http: HttpClient) {
     }

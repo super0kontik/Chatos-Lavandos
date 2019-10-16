@@ -31,12 +31,12 @@ import {User} from "../../shared/models/User";
 })
 export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges {
     @Input() currentRoom: Room;
-    @Input() newMessage: Message | boolean;
+    @Input() newMessage: object | boolean;
+    @Input() newUser: object;
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
 
-    public roomUsers: User[];
     public messages: Message[] = [];
     public me: string = '';
     public users: object[] = [];
@@ -54,6 +54,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     }
 
     public ngOnInit(): void {
+
         this.chatService.currentRoomUsers.next(this.currentRoom.users);
         this.me = LocalStorageService.getUser()['id'];
 
@@ -65,19 +66,37 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             };
         });
 
-        this.chatService.getRoomContent(this.currentRoom._id).subscribe(content => {
-            this.messages = content;
-        });
-
         this.chatService.flipCard.subscribe((flag) => {
             if (this.isLoadedTemplate && flag) {
                 this.animateSmile();
             }
         });
+
+        this.socketService.listen('userDisconnected').subscribe(userId => {
+            if (this.currentRoom._id === 'common') {
+
+                const updatedUsers = {};
+                Object.assign(updatedUsers,this.users);
+                delete updatedUsers[userId];
+                this.chatService.currentRoomUsers.next(Object.values(updatedUsers));
+            }
+        });
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
-        this.messages.push();
+        if(changes['newMessage']) {
+            if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
+                this.messages.push(changes['newMessage'].currentValue.message);
+            }
+        }
+        if (changes['newUser']) {
+            this.users[changes['newUser'].currentValue.id] = {
+                name: changes['newUser'].currentValue.name,
+                online: changes['newUser'].currentValue.isOnline,
+                premium: changes['newUser'].currentValue.isPremium
+            };
+            this.chatService.currentRoomUsers.next(Object.values(this.users));
+        }
     }
 
     public ngDoCheck(): void {

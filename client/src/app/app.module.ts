@@ -27,6 +27,9 @@ import { AuthComponent } from './auth/auth.component';
 import {TokenInterceptor} from "./shared/classes/token.interceptor";
 import { SetReferenceDirective } from './shared/directives/set-reference.directive';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { DialogOverviewExampleDialogComponent } from './dialog-overview-example-dialog/dialog-overview-example-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -45,6 +48,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         AuthComponent,
         SetReferenceDirective,
         SignInComponent,
+        DialogOverviewExampleDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -59,7 +63,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         HttpClientModule,
         MatCardModule,
         AppRoutingModule,
-        FormsModule
+        FormsModule,
+        MatDialogModule,
+        MatButtonModule
     ],
     providers: [
         {

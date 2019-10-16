@@ -61,7 +61,6 @@ app.get('/mock/rooms',
             title: 'Common',
             users: [
                 {id: '111215483671211658136', name: 'Alex_Shavik', isOnline: true, isPremium: true},
-                {id: '131313', name: 'Pahan_Kontugan', isOnline: false, isPremium: false}
             ]
         }]
     )
@@ -73,10 +72,6 @@ app.get('/mock/roomContent/:id',(req,res)=>{
             createdAt:Date.now(),
             creator: '111215483671211658136',
             content: 'I love angular'
-        }, {
-            createdAt:Date.now(),
-            creator: '131313',
-            content: 'I love node js, python'
         }])
     }else if(req.params.id === 'roomId2'){
         return res.json([{

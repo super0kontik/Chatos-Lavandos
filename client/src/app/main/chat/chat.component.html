@@ -1,8 +1,12 @@
 <div class="chat-wrapper">
+    <div class="add-btn" (click)="openDialog()">
+        <img src="../../../assets/imgs/plus-icon-plus-math-icon-download-icons-9.png" alt="">
+    </div>
     <mat-tab-group>
         <mat-tab *ngFor="let room of rooms" [label]="room.title">
             <app-room [currentRoom]="room"
-                      [newMessage]="newMessage['room'] === room.id ? newMessage['message'] : false"
+                      [newMessage]="newMessage"
+                      [newUser]="newUser"
             ></app-room>
         </mat-tab>
     </mat-tab-group>

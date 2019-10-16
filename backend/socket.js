@@ -19,12 +19,14 @@ module.exports = (server) => {
         const sockets = Object.keys(io.sockets.sockets);
         socket.join('common');
         try {
-            const user = await User.findOne({id: socket.decoded_token.id});
+            let user = await User.findOne({id: socket.decoded_token.id});
             await user.updateOne({socketId:socket.id,isOnline:true});
+            user.isOnline = true;
+            user.socketId = socket.id;
             const usersOnline = await User.find({isOnline: true});
             const rooms = await Room.find({$where : `this.users.indexOf("${user.id}") != -1`}).populate('users');
             rooms.push({
-                id: 'common',
+                _id: 'common',
                 title: 'Common',
                 users: usersOnline
             });
@@ -35,7 +37,7 @@ module.exports = (server) => {
                     usersOnline,
                     rooms
                 });
-            io.emit('userJoined',{user})
+            io.emit('userJoined',user);
         }catch (e){
             console.log(e.message);
             io.to(socket.id).emit('error',{error:e.message});
@@ -43,14 +45,18 @@ module.exports = (server) => {
 
 
         socket.on('createMessage', async  params=>{
-            console.log(params);
-            const date = Date.now();
-            const creator= socket.decoded_token.id;
-            if(params.room !== 'common'){
-                const content = crypto.AES.encrypt(params.message, MESSAGE_KEY).toString();
-                const message = await Message.create({createdAt:date,creator,room:params.room,content})
+            try {
+                const createdAt = Date.now();
+                const creator = await User.findOne({id :socket.decoded_token.id});
+                if (params.room !== 'common') {
+                    const content = crypto.AES.encrypt(params.message, MESSAGE_KEY).toString();
+                    const message = await Message.create({createdAt, creator, room: params.room, content})
+                }
+                io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, creator}, room: params.room })
+            }catch(e){
+                console.log(e.message);
+                io.to(socket.id).emit('error',{error:e.message});
             }
-            io.to(params.room).emit('newMessage', {message:params.message,room:params.room, date,creator})
         });
 
 
@@ -91,7 +97,8 @@ module.exports = (server) => {
             try {
                 const id = socket.decoded_token.id;
                 const user = await User.updateOne({id:id},{isOnline:false});
-                io.emit('userDisconnected',user.id);
+                io.emit('userDisconnected',id);
+                console.log('DISCANECT', user);
             } catch(e){
                 console.log(e);
             }

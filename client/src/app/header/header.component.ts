@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../shared/services/auth.service";
 import {LocalStorageService} from "../shared/services/local-storage.service";
 import {Router} from "@angular/router";
+import {SocketService} from "../shared/services/socket.service";
 
 @Component({
     selector: 'app-header',
@@ -15,7 +16,10 @@ export class HeaderComponent implements OnInit{
     };
     public isUser: boolean = false;
 
-    constructor(private authService: AuthService, private router: Router) {
+    constructor(private authService: AuthService,
+                private router: Router,
+                private socketService: SocketService
+                ) {
     }
 
     public ngOnInit(): void {
@@ -41,10 +45,13 @@ export class HeaderComponent implements OnInit{
     }
 
     public logOut(): void {
+        console.log(1);
         this.signButton = true;
         LocalStorageService.logout();
         this.isUser = false;
+        this.socketService.disconnect();
         this.router.navigate(['/auth']);
+
     }
 
 }

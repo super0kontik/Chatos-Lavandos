@@ -14,7 +14,7 @@ import {AuthService} from "../../shared/services/auth.service";
 export class ContactListComponent implements OnInit {
     @Input() isDisplayed: boolean;
 
-    public list: User[] = [];
+    public list: object[] = [];
     public roomId: string = '';
     public config: PerfectScrollbarConfigInterface = {
         wheelSpeed: 0.5,
