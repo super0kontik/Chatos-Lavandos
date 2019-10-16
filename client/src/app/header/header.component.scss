@@ -1,13 +1,15 @@
 .nav-wrapper {
+    z-index: 100;
     height: 10%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     //background-image: url("../../assets/imgs/green-hexagons-background-Large.png");
     //background-size: cover;
-    background: linear-gradient(60deg, #b3ade3, #d4d4d4);
+    background: linear-gradient(60deg, #004e59, #969bd4);
     padding: 10px 60px 5px 0;
     border-bottom: 1px solid black;
+    box-shadow: 0 0 20px black;
 
     .brand-logo {
 
@@ -23,7 +25,7 @@
 
         &:hover {
             transition: 0.3s;
-            filter: drop-shadow(5px 10px 7px #4e3da0);
+            filter: drop-shadow(5px 10px 7px #000000);
             transform: scale(1.1) translateX(70px) ;
         }
     }
@@ -44,12 +46,21 @@
             color: white;
             font-size: 1.3vw;
             white-space: nowrap;
-            animation: piu-piu 10s ease-in-out infinite;
 
             &:first-child {
-                &:hover {
+                animation: piu-piu 10s ease-in-out infinite;
+            }
+
+            span {
+                transition: 0.3s;
+            }
+
+            &:hover {
+                transition: 0.3s;
+                box-shadow: 0 0 15px black;
+                span {
                     transition: 0.3s;
-                    box-shadow: 0 0 15px black;
+                    filter: drop-shadow(0 5px 15px white);
                 }
             }
         }

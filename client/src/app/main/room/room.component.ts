@@ -22,44 +22,40 @@ import {FormControl} from "@angular/forms";
 import {SocketService} from "../../shared/services/socket.service";
 import {AuthService} from "../../shared/services/auth.service";
 import {LocalStorageService} from "../../shared/services/local-storage.service";
+import {User} from "../../shared/models/User";
 
 @Component({
     selector: 'app-room',
     templateUrl: './room.component.html',
     styleUrls: ['./room.component.scss']
 })
-export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
+export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges {
     @Input() currentRoom: Room;
+    @Input() newMessage: Message | boolean;
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
 
+    public roomUsers: User[];
     public messages: Message[] = [];
-    public me: string;
+    public me: string = '';
     public users: object[] = [];
     public isLoadedTemplate = false;
     public isSmiles = false;
     public smile: string = '';
-    public access: boolean = false;
     public config: PerfectScrollbarConfigInterface = {
         wheelSpeed: 0.5,
         scrollingThreshold: 0,
     };
 
     constructor(private chatService: ChatService,
-                private socketService: SocketService,
-                private authService: AuthService
+                private socketService: SocketService
                 ) {
     }
 
     public ngOnInit(): void {
+        this.chatService.currentRoomUsers.next(this.currentRoom.users);
         this.me = LocalStorageService.getUser()['id'];
-        if (this.authService.isAuthenticated()) {
-            this.access = true;
-            this.socketService.listen('newMessage').subscribe(data => {
-                console.log(data);
-            });
-        }
 
         this.currentRoom.users.forEach(user => {
             this.users[user.id] = {
@@ -68,15 +64,20 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
                 premium: user.isPremium,
             };
         });
-        this.chatService.getRoomContent(this.currentRoom.id).subscribe(content => {
+
+        this.chatService.getRoomContent(this.currentRoom._id).subscribe(content => {
             this.messages = content;
         });
+
         this.chatService.flipCard.subscribe((flag) => {
             if (this.isLoadedTemplate && flag) {
                 this.animateSmile();
             }
-
         });
+    }
+
+    public ngOnChanges(changes: SimpleChanges): void {
+        this.messages.push();
     }
 
     public ngDoCheck(): void {
@@ -110,7 +111,8 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck {
     public sendMessage(): void {
         this.socketService.emit('createMessage', {
             message: this.input.nativeElement.innerText,
-            room: this.currentRoom.id,
+            room: this.currentRoom._id,
         });
+        this.input.nativeElement.innerText = '';
     }
 }

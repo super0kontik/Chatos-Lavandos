@@ -26,6 +26,7 @@ import {MatCardModule} from "@angular/material/card";
 import { AuthComponent } from './auth/auth.component';
 import {TokenInterceptor} from "./shared/classes/token.interceptor";
 import { SetReferenceDirective } from './shared/directives/set-reference.directive';
+import { SignInComponent } from './sign-in/sign-in.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -43,6 +44,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         SmilesComponent,
         AuthComponent,
         SetReferenceDirective,
+        SignInComponent,
     ],
     imports: [
         BrowserModule,

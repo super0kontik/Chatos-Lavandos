@@ -14,39 +14,33 @@
                 <p class="message-text">
                     {{message.content}}
                 </p>
-                <small class="message-date" [ngClass]="{'right': message.creator === me ,
-            'left' : message.creator !== me}">{{message.createdAt | date: 'HH:MM:ss | dd.MM'}}</small>
+                <small class="message-date">{{message.createdAt | date: 'HH:MM:ss | dd.MM'}}</small>
             </mat-list-item>
         </mat-list>
     </perfect-scrollbar>
 
-
-
-    <div class="input-area" *ngIf="access">
-            <div class="input-message" dir="auto">
-                <perfect-scrollbar [config]="config" [autoPropagation]="true">
-                    <div class="composer_rich_textarea"
-                         contenteditable="true"
-                         #inputText
-                         [id]="currentRoom.title"
-                         [appSetReference]="smile"
-                    >
-                    </div>
-                </perfect-scrollbar>
-            </div>
-
+    <div class="input-area">
+        <div class="input-message" dir="auto">
+            <perfect-scrollbar [config]="config" [autoPropagation]="true">
+                <div class="composer_rich_textarea"
+                     contenteditable="true"
+                     #inputText
+                     [id]="currentRoom.title"
+                     [appSetReference]="smile"
+                >
+                </div>
+            </perfect-scrollbar>
+        </div>
         <div class="wrap-btn">
             <div class="send-btn" (click)="sendMessage()">
                 <img style="width: 50px; height: 50px" class="send-img" src="../../../assets/imgs/373675-200.png"
                      alt="">
             </div>
-
         </div>
         <div class="wrap-btn" (click)="openSmiles()">
             <div class="smile-btn">
                 <img style="width: 50px; height: 50px" src="../../../assets/imgs/smile.png" alt="" #smileImg>
             </div>
-
         </div>
     </div>
 </div>

@@ -20,14 +20,20 @@ export class HeaderComponent implements OnInit{
 
     public ngOnInit(): void {
         this.authService.user.subscribe(user => {
-            if (Object.keys(user).length == 0) {
-                this.isUser = false;
-            } else {
-                console.log(user);
+            if (Object.keys(user).length > 0 && this.authService.isAuthenticated()) {
                 this.user = user;
                 this.isUser = true;
+            } else {
+                this.isUser = false;
             }
         });
+        const user = LocalStorageService.getUser();
+        if (user && !this.isUser && this.authService.isAuthenticated()) {
+            this.user = user;
+            this.isUser = true;
+        } else {
+            this.isUser = false;
+        }
     }
 
     public signIn(): void {
@@ -37,6 +43,7 @@ export class HeaderComponent implements OnInit{
     public logOut(): void {
         this.signButton = true;
         LocalStorageService.logout();
+        this.isUser = false;
         this.router.navigate(['/auth']);
     }
 

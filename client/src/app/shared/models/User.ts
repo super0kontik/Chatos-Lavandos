@@ -3,5 +3,6 @@ export interface User {
     name: string;
     isOnline: boolean;
     isPremium: boolean;
+    socketId: string;
 }
 
