@@ -73,16 +73,27 @@ module.exports = (server) => {
         });
 
 
-        socket.on('join', params=>{
+        socket.on('join', async params=>{
             try {
-                const room = Room.findById(params.roomId).populate('users');
+                const room = await Room.findById(params.roomId).populate('users');
                 if(room.users.indexOf(socket.decoded_token.id)!==-1) {
                     socket.join(params.roomId);
                     return io.to(socket.id).emit('newRoom',{room:room})
                 }
-                throw new Error('Not allowed')
+                throw new Error('Not allowed');
             }catch (e){
                 io.to(socket.id).emit('error',{error:e.message});
+            }
+        });
+
+
+        socket.on('disconnect', async () => {
+            try {
+                const id = socket.decoded_token.id;
+                const user = await User.updateOne({id:id},{isOnline:false});
+                io.emit('userDisconnected',user.id);
+            } catch(e){
+                console.log(e);
             }
         })
 
