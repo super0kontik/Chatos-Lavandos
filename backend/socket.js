@@ -3,7 +3,8 @@ const User = require('./models/user');
 const Room = require('./models/room');
 const Message = require('./models/message');
 const sjwt = require('socketio-jwt');
-const {SECRET_WORD} = require('./config/config');
+const {SECRET_WORD, MESSAGE_KEY} = require('./config/config');
+const crypto = require('crypto-js');
 
 module.exports = (server) => {
     const io = socketIO(server);
@@ -46,7 +47,8 @@ module.exports = (server) => {
             const date = Date.now();
             const creator= socket.decoded_token.id;
             if(params.room !== 'common'){
-                const message = await Message.create({createdAt:date,creator,room:params.room,content:params.message})
+                const content = crypto.AES.encrypt(params.message, MESSAGE_KEY).toString();
+                const message = await Message.create({createdAt:date,creator,room:params.room,content})
             }
             io.to(params.room).emit('newMessage', {message:params.message,room:params.room, date,creator})
         });

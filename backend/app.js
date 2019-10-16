@@ -4,8 +4,11 @@ const socket = require('socket.io');
 const cors = require('cors');
 const app = express();
 const passport = require('passport');
+const Message = require('./models/message');
 require('./passport/google-strat');
-const {API_URL} = require('./config/config');
+const {API_URL,MESSAGE_KEY} = require('./config/config');
+const crypto = require('crypto-js');
+
 app.use(bp.json());
 app.use(bp.urlencoded({extended:false}));
 app.use(cors());
@@ -28,6 +31,16 @@ app.get(
         res.redirect(`${API_URL}/auth?token=${req.user.token}&id=${req.user.id}&name=${req.user.name}&isPremium=true`)
     }
 );
+
+app.get('/roomContent/:id',(req,res)=>{
+    try {
+        const messages = Message.find({room: req.params.id}, {}, {sort: {createdAt: -1}});
+        const messagesDecrypted = messages.map(i => i.content = JSON.parse(crypto.AES.decrypt(i.content, MESSAGE_KEY)).toString(crypto.enc.Utf8))
+        res.send(messagesDecrypted)
+    }catch(e){
+        res.status(500).send('error')
+    }
+});
 
 //app.get('/mock/user',(req,res)=>res.send({id:'111215483671211658136', name: 'Alex_Shavik', isOnline:true, isPremium:true}));
 
