@@ -96,14 +96,11 @@ module.exports = (server) => {
         socket.on('disconnect', async () => {
             try {
                 const id = socket.decoded_token.id;
-                const user = await User.updateOne({id:id},{isOnline:false});
+                await User.updateOne({id:id},{isOnline:false});
                 io.emit('userDisconnected',id);
-                console.log('DISCANECT', user);
             } catch(e){
                 console.log(e);
             }
-        })
-
+        });
     });
-
 };
