@@ -13,6 +13,7 @@ app.use(bp.json());
 app.use(bp.urlencoded({extended:false}));
 app.use(cors());
 app.use(passport.initialize());
+app.disable('x-powered-by');
 
 app.get('/', (req,res)=>{
     res.send('hello')

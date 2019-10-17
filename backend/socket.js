@@ -5,6 +5,7 @@ const Message = require('./models/message');
 const sjwt = require('socketio-jwt');
 const {SECRET_WORD, MESSAGE_KEY} = require('./config/config');
 const crypto = require('crypto-js');
+const validator = require('validator');
 
 module.exports = (server) => {
     const io = socketIO(server);
@@ -40,7 +41,7 @@ module.exports = (server) => {
             io.emit('userJoined',user);
         }catch (e){
             console.log(e.message);
-            io.to(socket.id).emit('error',{error:e.message});
+            io.to(socket.id).emit('error',{error:{type: e.message}});
         }
 
 
@@ -48,14 +49,17 @@ module.exports = (server) => {
             try {
                 const createdAt = Date.now();
                 const creator = await User.findOne({id :socket.decoded_token.id});
+                if(params.message.trim().length<1){
+                    throw new Error('invalid message')
+                }
                 if (params.room !== 'common') {
-                    const content = crypto.AES.encrypt(params.message, MESSAGE_KEY).toString();
+                    const content = crypto.AES.encrypt(validator.escape(params.message), MESSAGE_KEY).toString();
                     const message = await Message.create({createdAt, creator, room: params.room, content})
                 }
                 io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, creator}, room: params.room })
             }catch(e){
                 console.log(e.message);
-                io.to(socket.id).emit('error',{error:e.message});
+                io.to(socket.id).emit('error',{error:{type: e.message}});
             }
         });
 
@@ -66,15 +70,16 @@ module.exports = (server) => {
                 if(params.roomTitle.trim().toLowerCase() === 'common'|| params.roomTitle.trim().length <= 3){
                     throw new Error('invalid name')
                 }
-                if(!Array.isArray(params.participants) || params.participants.length<2){
+                const participants = Array.from(new Set(params.participants));
+                if(!Array.isArray(participants) || participants.length<2){
                     throw new Error('not enough participants')
                 }
-                const room = await Room.create({title:params.roomTitle, users:params.participants});
-                for (user of params.participants){
+                const room = await Room.create({title:params.roomTitle, users:participants});
+                for (user of participants){
                     io.to(user.socketId).emit('invitation',{roomId:room._id})
                 }
             }catch (e){
-                io.to(socket.id).emit('error',{error:e.message});
+                io.to(socket.id).emit('error',{error:{type: e.message}});
             }
         });
 
@@ -88,7 +93,7 @@ module.exports = (server) => {
                 }
                 throw new Error('Not allowed');
             }catch (e){
-                io.to(socket.id).emit('error',{error:e.message});
+                io.to(socket.id).emit('error',{error:{type: e.message}});
             }
         });
 
