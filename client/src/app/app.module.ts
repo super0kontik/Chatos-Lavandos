@@ -30,6 +30,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import { DialogAddingRoomComponent } from './dialog-adding-room/dialog-adding-room.component';
+import { DialogInvitationComponent } from './dialog-invitation/dialog-invitation.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -48,7 +49,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         AuthComponent,
         SetReferenceDirective,
         SignInComponent,
-        DialogAddingRoomComponent
+        DialogAddingRoomComponent,
+        DialogInvitationComponent
     ],
     imports: [
         BrowserModule,
@@ -68,7 +70,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatButtonModule
     ],
     entryComponents: [
-        DialogAddingRoomComponent
+        DialogAddingRoomComponent,
+        DialogInvitationComponent
     ],
     providers: [
         {

@@ -5,4 +5,5 @@ export interface Room {
     _id: string;
     title: string;
     users: User[];
+    creator: User;
 }

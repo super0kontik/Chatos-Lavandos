@@ -1,0 +1,20 @@
+<div class="dialog-wrapper" >
+    <div class="dialog-content-wrapper">
+        <h1 mat-dialog-title>You were invited to the {{data.title}}</h1>
+
+        <div mat-dialog-actions class="dialog-btns">
+            <button mat-button (click)="onAgree()" class="agree-btn">
+                <i class="material-icons">
+                    check_circle_outline
+                </i>
+            </button>
+            <button mat-button (click)="onDisagree()" class="disagree-btn">
+                <i class="material-icons">
+                    highlight_off
+                </i>
+            </button>
+        </div>
+</div>
+
+
+

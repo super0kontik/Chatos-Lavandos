@@ -18,20 +18,21 @@ module.exports = (server) => {
 
     io.on('connection', async socket => {
         const sockets = Object.keys(io.sockets.sockets);
-        socket.join('common');
+        // socket.join('common');
         try {
             let user = await User.findById(socket.decoded_token.id);
             await user.updateOne({socketId:socket.id,isOnline:true});
             user.isOnline = true;
             user.socketId = socket.id;
             const usersOnline = await User.find({isOnline: true});
-            const rooms = await Room.find({$where : `this.users.indexOf("${user._id}") != -1`}).populate('users');
+            const rooms = await Room.find({users:{$in:[user._id]}}).populate([{path:'users'},{path:'creator'}]);
             rooms.push({
                 _id: 'common',
                 title: 'Common',
                 users: usersOnline
             });
-            socket.join(rooms);
+            const roomIds = rooms.map(i=> i._id)
+            socket.join(roomIds);
             io.to(socket.id).emit('join',
                 {
                     message: `welcome, ${socket.decoded_token.name}`,
@@ -78,7 +79,7 @@ module.exports = (server) => {
                 let room = await Room.create({title:params.roomTitle, users:participants, creator:socket.decoded_token.id});
                 room = await room.populate('users').execPopulate();
                 for (let user of room.users){
-                    io.to(user.socketId).emit('invitation',room);
+                    io.to(user.socketId).emit('invitation', room);
                 }
             }catch (e){
                 console.log(e);
@@ -89,13 +90,16 @@ module.exports = (server) => {
 
         socket.on('joinRoom', async params=>{
             try {
-                const room = await Room.findById(params.roomId).populate('users');
-                if(room.users.indexOf(socket.decoded_token.id)!==-1) {
+                console.log('joimRoooooom',params);
+                let room = await Room.findById(params.roomId);
+                if(room && room.users.indexOf(socket.decoded_token.id)!==-1) {
+                    room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                     socket.join(params.roomId);
-                    return io.to(socket.id).emit('newRoom',{room:room})
+                    return io.to(socket.id).emit('newRoom', room);
                 }
                 throw new Error('Not allowed');
             }catch (e){
+                console.log(e)
                 io.to(socket.id).emit('error',{error:{type: e.message}});
             }
         });

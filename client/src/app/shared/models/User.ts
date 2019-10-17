@@ -1,5 +1,5 @@
 export interface User {
-    id: string;
+    _id: string;
     name: string;
     isOnline: boolean;
     isPremium: boolean;

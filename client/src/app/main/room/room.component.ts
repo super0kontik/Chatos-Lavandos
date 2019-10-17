@@ -54,7 +54,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.me = LocalStorageService.getUser()['id'];
 
         this.currentRoom.users.forEach(user => {
-            this.users[user.id] = {
+            this.users[user._id] = {
                 name: user.name,
                 online: user.isOnline,
                 premium: user.isPremium,
@@ -69,7 +69,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
         this.socketService.listen('userDisconnected').subscribe(userId => {
             if (this.currentRoom._id === 'common') {
-
                 const updatedUsers = {};
                 Object.assign(updatedUsers,this.users);
                 delete updatedUsers[userId];
@@ -85,7 +84,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             }
         }
         if (changes['newUser']) {
-            this.users[changes['newUser'].currentValue.id] = {
+            this.users[changes['newUser'].currentValue._id] = {
                 name: changes['newUser'].currentValue.name,
                 online: changes['newUser'].currentValue.isOnline,
                 premium: changes['newUser'].currentValue.isPremium

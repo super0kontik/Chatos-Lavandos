@@ -8,6 +8,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DialogAddingRoomComponent} from "../../dialog-adding-room/dialog-adding-room.component";
 import {AddRoomProps} from "../../shared/models/AddRoomProps";
+import {DialogInvitationComponent} from "../../dialog-invitation/dialog-invitation.component";
 
 
 
@@ -20,7 +21,6 @@ export class ChatComponent implements OnInit {
     public rooms: Room[];
     public newMessage: object = {};
     public newUser: User;
-    public addRoom: AddRoomProps;
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
@@ -38,10 +38,14 @@ export class ChatComponent implements OnInit {
                 this.newUser = user;
             });
             this.socketService.listen('newMessage').subscribe(data => {
+                console.log(data);
                 this.newMessage = data;
             });
             this.socketService.listen('invitation').subscribe(data => {
-                console.log(data);
+                this.openInvitation(data);
+            });
+            this.socketService.listen('newRoom').subscribe(data => {
+                this.rooms.unshift(data);
             });
         }
     }
@@ -59,6 +63,24 @@ export class ChatComponent implements OnInit {
                 this.socketService.emit('createRoom', result);
             } else {
                 console.log('Not added')
+            }
+        });
+    }
+
+    public openInvitation(data: any): void {
+        const invitationDialogRef = this.dialog.open(DialogInvitationComponent, {
+            width: '450px',
+            height: '200px',
+            hasBackdrop: true,
+            data
+        });
+        invitationDialogRef.afterClosed().subscribe(response => {
+            if (response.isAgree) {
+                this.socketService.emit('joinRoom', {
+                    roomId: response.roomId,
+                })
+            } else {
+                console.log(2)
             }
         });
     }

@@ -1,14 +1,14 @@
 <div class="room-wrapper">
     <perfect-scrollbar [config]="config" [scrollIndicators]="true">
         <mat-list class="mt-lst">
-            <mat-list-item [ngClass]="{'own': message.creator.id === me ,
-            'foreign' : message.creator.id !== me}" *ngFor="let message of messages">
+            <mat-list-item [ngClass]="{'own': message.creator._id === me ,
+            'foreign' : message.creator._id !== me}" *ngFor="let message of messages">
                 <span class="message-user">
-                    <span class="online" *ngIf="users[message.creator.id].online">Online</span>
-                    <span [ngClass]="{'premium': users[message.creator.id].premium}">
-                        <span *ngIf="users[message.creator.id].premium">👑</span>
-                        {{users[message.creator.id].name}}
-                        <span *ngIf="users[message.creator.id].premium">👑</span>
+                    <span class="online" *ngIf="users[message.creator._id].online">Online</span>
+                    <span [ngClass]="{'premium': users[message.creator._id].premium}">
+                        <span *ngIf="users[message.creator._id].premium">👑</span>
+                        {{users[message.creator._id].name}}
+                        <span *ngIf="users[message.creator._id].premium">👑</span>
                     </span>
                 </span>
                 <p class="message-text">

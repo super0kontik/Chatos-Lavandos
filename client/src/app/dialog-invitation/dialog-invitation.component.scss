@@ -1,0 +1,32 @@
+.dialog-wrapper {
+    color: white;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    .dialog-content-wrapper {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dialog-btns {
+        display: flex;
+        justify-content: space-between;
+        width: 70%;
+    }
+
+    h1 {
+        font-family: "Montserrat Alternates", sans-serif;
+        text-align: center;
+        font-size: 28px;
+    }
+
+    ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.11);
+    }
+
+}

@@ -14,7 +14,7 @@ passport.use(
             }
             const token = jwt.sign({id: user._id, name: user.name},SECRET_WORD);
             return done(null, {
-                id: user.id,
+                id: user._id,
                 name: user.name,
                 isPremium: user.isPremium,
                 token: token,
