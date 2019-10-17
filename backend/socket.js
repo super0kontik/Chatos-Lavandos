@@ -67,7 +67,6 @@ module.exports = (server) => {
         socket.on('createRoom', async params=>{
             console.log(params);
             try{
-                console.log('here')
                 if(params.roomTitle.trim().toLowerCase() === 'common'|| params.roomTitle.trim().length < 3){
                     throw new Error('invalid name')
                 }
@@ -76,12 +75,9 @@ module.exports = (server) => {
                 if(participants.length<2){
                     throw new Error('not enough participants')
                 }
-                console.log('here2')
                 let room = await Room.create({title:params.roomTitle, users:participants});
                 room = await room.populate('users').execPopulate();
-                console.log('initiator: ',socket.id)
                 for (let user of room.users){
-                    console.log(user.socketId)
                     io.to(user.socketId).emit('invitation',room);
                 }
             }catch (e){
@@ -91,7 +87,7 @@ module.exports = (server) => {
         });
 
 
-        socket.on('join', async params=>{
+        socket.on('joinRoom', async params=>{
             try {
                 const room = await Room.findById(params.roomId).populate('users');
                 if(room.users.indexOf(socket.decoded_token.id)!==-1) {

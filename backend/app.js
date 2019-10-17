@@ -15,10 +15,6 @@ app.use(cors());
 app.use(passport.initialize());
 app.disable('x-powered-by');
 
-app.get('/', (req,res)=>{
-    res.send('hello')
-});
-
 app.get(
     '/auth',
     passport.authenticate('google', {
