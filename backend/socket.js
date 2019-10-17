@@ -20,12 +20,12 @@ module.exports = (server) => {
         const sockets = Object.keys(io.sockets.sockets);
         socket.join('common');
         try {
-            let user = await User.findOne({id: socket.decoded_token.id});
+            let user = await User.findById(socket.decoded_token.id);
             await user.updateOne({socketId:socket.id,isOnline:true});
             user.isOnline = true;
             user.socketId = socket.id;
             const usersOnline = await User.find({isOnline: true});
-            const rooms = await Room.find({$where : `this.users.indexOf("${user.id}") != -1`}).populate('users');
+            const rooms = await Room.find({$where : `this.users.indexOf("${user._id}") != -1`}).populate('users');
             rooms.push({
                 _id: 'common',
                 title: 'Common',
@@ -48,7 +48,7 @@ module.exports = (server) => {
         socket.on('createMessage', async  params=>{
             try {
                 const createdAt = Date.now();
-                const creator = await User.findOne({id :socket.decoded_token.id});
+                const creator = await User.findById(socket.decoded_token.id);
                 if(params.message.trim().length<1){
                     throw new Error('invalid message')
                 }
@@ -75,7 +75,7 @@ module.exports = (server) => {
                 if(participants.length<2){
                     throw new Error('not enough participants')
                 }
-                let room = await Room.create({title:params.roomTitle, users:participants});
+                let room = await Room.create({title:params.roomTitle, users:participants, creator:socket.decoded_token.id});
                 room = await room.populate('users').execPopulate();
                 for (let user of room.users){
                     io.to(user.socketId).emit('invitation',room);
@@ -104,7 +104,7 @@ module.exports = (server) => {
         socket.on('disconnect', async () => {
             try {
                 const id = socket.decoded_token.id;
-                await User.updateOne({id:id},{isOnline:false});
+                await User.updateOne({_id:id},{isOnline:false});
                 io.emit('userDisconnected',id);
             } catch(e){
                 console.log(e);

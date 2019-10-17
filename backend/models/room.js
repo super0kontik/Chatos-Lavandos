@@ -6,6 +6,10 @@ const roomSchema = new Schema({
         type:String,
         required:true
     },
+    creator:{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    },
     users:[{
         type:Schema.Types.ObjectId,
         ref:'User'
