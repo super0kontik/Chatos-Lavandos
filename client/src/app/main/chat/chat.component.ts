@@ -40,20 +40,26 @@ export class ChatComponent implements OnInit {
             this.socketService.listen('newMessage').subscribe(data => {
                 this.newMessage = data;
             });
+            this.socketService.listen('invitation').subscribe(data => {
+                console.log(data);
+            });
         }
     }
 
     public openDialog(): void {
-        const dialogRef = this.dialog.open(DialogAddingRoomComponent, {width: '400px', height: '400px'});
+        const dialogRef = this.dialog.open(DialogAddingRoomComponent, {
+            width: '500px',
+            height: '650px',
+            hasBackdrop: true
+        });
 
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
             if (result) {
-                console.log(result);
+                this.socketService.emit('createRoom', result);
             } else {
                 console.log('Not added')
             }
-
         });
     }
 }

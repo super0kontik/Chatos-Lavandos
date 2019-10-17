@@ -15,14 +15,9 @@ import {Message} from "../../shared/models/Message";
 import {
     PerfectScrollbarComponent,
     PerfectScrollbarConfigInterface,
-    PerfectScrollbarDirective
 } from "ngx-perfect-scrollbar";
-import {log} from "util";
-import {FormControl} from "@angular/forms";
 import {SocketService} from "../../shared/services/socket.service";
-import {AuthService} from "../../shared/services/auth.service";
 import {LocalStorageService} from "../../shared/services/local-storage.service";
-import {User} from "../../shared/models/User";
 
 @Component({
     selector: 'app-room',
@@ -44,7 +39,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     public isSmiles = false;
     public smile: string = '';
     public config: PerfectScrollbarConfigInterface = {
-        wheelSpeed: 0.5,
+        wheelSpeed: 0.2,
         scrollingThreshold: 0,
     };
 

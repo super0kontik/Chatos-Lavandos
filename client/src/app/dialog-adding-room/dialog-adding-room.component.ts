@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 
 @Component({
     selector: 'app-dialog-adding-room',
@@ -9,6 +10,10 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class DialogAddingRoomComponent implements OnInit {
     public addRoomForm: FormGroup; // form group instance
+    public config: PerfectScrollbarConfigInterface = {
+        wheelSpeed: 0.2,
+        scrollingThreshold: 0,
+    };
 
     constructor(
         public dialogRef: MatDialogRef<DialogAddingRoomComponent>,
@@ -17,8 +22,16 @@ export class DialogAddingRoomComponent implements OnInit {
 
     public ngOnInit() {
         this.addRoomForm = this.fb.group({
-            title: ['', Validators.required],
-            participants: this.fb.array([this.fb.group({id: ''})])
+            title: ['', [
+                Validators.required,
+                Validators.minLength(3),
+                Validators.maxLength(20),
+            ]
+            ],
+            participants: this.fb.array([this.fb.group({id: ['',
+                    [Validators.required
+                        /*Validators.pattern('^[0-9]+$')*/]
+                ]})])
         });
     }
 
@@ -26,11 +39,13 @@ export class DialogAddingRoomComponent implements OnInit {
         return this.addRoomForm.get('participants') as FormArray;
     }
 
-    public addSellingPoint(): void {
-        this.participants.push(this.fb.group({id:''}));
+    public addParticipant(): void {
+        this.participants.push(this.fb.group({id:['',
+                [Validators.required/*, Validators.pattern('^[0-9]+$')*/]
+            ]}));
     }
 
-    public deleteSellingPoint(index): void {
+    public deleteParticipant(index): void {
         this.participants.removeAt(index);
     }
 
@@ -38,13 +53,13 @@ export class DialogAddingRoomComponent implements OnInit {
         this.dialogRef.close(false);
     }
 
-    public onAdd(): void {
+    public onCreate(): void {
         const participants = [];
         Object.values(this.addRoomForm.get('participants').value).forEach(participant => {
             participants.push(participant['id']);
         });
         this.dialogRef.close({
-            title: this.addRoomForm.get('title').value,
+            roomTitle: this.addRoomForm.get('title').value,
             participants,
         });
     }

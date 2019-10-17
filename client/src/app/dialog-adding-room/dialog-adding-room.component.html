@@ -1,28 +1,47 @@
-<h1 mat-dialog-title>Create new room</h1>
+<div class="dialog-wrapper" [perfectScrollbar]="config">
+    <div class="dialog-content-wrapper">
+        <h1 mat-dialog-title>Create new room</h1>
 
-<form [formGroup]="addRoomForm">
-    <mat-form-field>
-        <label>
-            <input matInput placeholder="Title" formControlName="title">
-        </label>
-    </mat-form-field>
-
-    <h2>Participants</h2>
-    <button type="button" mat-button (click)="addSellingPoint()">Add Selling Point</button>
-    <div formArrayName="participants">
-        <div *ngFor="let item of participants.controls; let pointIndex=index" [formGroupName]="pointIndex">
+        <form [formGroup]="addRoomForm">
             <mat-form-field>
                 <label>
-                    <input matInput [placeholder]="'Participant-' + (pointIndex + 1)" formControlName="id"/>
+                    <input matInput placeholder="Title" formControlName="title" required>
                 </label>
-
             </mat-form-field>
-            <button type="button" mat-button (click)="deleteSellingPoint(pointIndex)">Delete participant</button>
+
+            <div class="part-wrapper">
+                <h2 mat-dialog-title>Participants</h2>
+                <button type="button" mat-button (click)="addParticipant()">
+                    <i class="material-icons">
+                        add
+                    </i>
+                </button>
+            </div>
+
+            <div formArrayName="participants">
+                <div *ngFor="let item of participants.controls; let pointIndex=index" [formGroupName]="pointIndex">
+                    <mat-form-field class="part-input">
+                        <label>
+                            <input matInput [placeholder]="'Participant-' + (pointIndex + 1)" formControlName="id">
+                        </label>
+                    </mat-form-field>
+                    <button type="button" mat-button (click)="deleteParticipant(pointIndex)">
+                        <i class="material-icons">
+                            delete
+                        </i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div mat-dialog-actions>
+            <button mat-button (click)="onNoClick()" class="close-btn">
+                <i class="material-icons">
+                    clear
+                </i>
+            </button>
+            <button mat-button (click)="onCreate()" class="create-btn" [disabled]="!addRoomForm.valid || addRoomForm.untouched">Create room</button>
         </div>
     </div>
-</form>
-
-<div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button (click)="onAdd()">Add</button>
 </div>
+

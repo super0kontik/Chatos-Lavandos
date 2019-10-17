@@ -67,18 +67,25 @@ module.exports = (server) => {
         socket.on('createRoom', async params=>{
             console.log(params);
             try{
-                if(params.roomTitle.trim().toLowerCase() === 'common'|| params.roomTitle.trim().length <= 3){
+                console.log('here')
+                if(params.roomTitle.trim().toLowerCase() === 'common'|| params.roomTitle.trim().length < 3){
                     throw new Error('invalid name')
                 }
                 const participants = Array.from(new Set(params.participants));
-                if(!Array.isArray(participants) || participants.length<2){
+                console.log(participants);
+                if(participants.length<2){
                     throw new Error('not enough participants')
                 }
-                const room = await Room.create({title:params.roomTitle, users:participants});
-                for (user of participants){
-                    io.to(user.socketId).emit('invitation',{roomId:room._id})
+                console.log('here2')
+                let room = await Room.create({title:params.roomTitle, users:participants});
+                room = await room.populate('users').execPopulate();
+                console.log('initiator: ',socket.id)
+                for (let user of room.users){
+                    console.log(user.socketId)
+                    io.to(user.socketId).emit('invitation',room);
                 }
             }catch (e){
+                console.log(e);
                 io.to(socket.id).emit('error',{error:{type: e.message}});
             }
         });

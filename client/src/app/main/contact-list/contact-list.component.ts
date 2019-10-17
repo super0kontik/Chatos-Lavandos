@@ -17,7 +17,7 @@ export class ContactListComponent implements OnInit {
     public list: object[] = [];
     public roomId: string = '';
     public config: PerfectScrollbarConfigInterface = {
-        wheelSpeed: 0.5,
+        wheelSpeed: 0.2,
         scrollingThreshold: 0,
     };
 

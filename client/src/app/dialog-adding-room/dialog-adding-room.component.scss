@@ -1,0 +1,82 @@
+::ng-deep .mat-dialog-container {
+    background: rgba(0, 0, 0, 0.38);
+    padding: 0;
+}
+
+.dialog-wrapper {
+    position: relative;
+    color: white;
+    height: 100%;
+
+    .dialog-content-wrapper {
+        padding: 20px;
+    }
+
+    h1 {
+        font-family: "Montserrat Alternates", sans-serif;
+        text-align: center;
+        font-size: 28px;
+    }
+
+    .part-wrapper {
+        display: flex;
+        align-items: flex-start;
+
+        h2 {
+            margin-right: 20px;
+        }
+    }
+
+    .close-btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: transparent !important;
+
+        i {
+            font-size: 30px;
+        }
+    }
+
+    .part-input {
+        margin-right: 30px;
+    }
+
+    .create-btn {
+        font-size: 25px !important;
+        font-weight: 300;
+        padding: 5px 20px;
+    }
+
+    ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button{
+        padding: 0 10px;
+        min-width: 20px;
+        min-height: 0;
+        border-radius: 50px;
+    }
+
+    ::ng-deep .mat-form-field-infix {
+        width: 340px;
+    }
+
+    ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.11);
+    }
+
+    ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+        color: white;
+    }
+
+    ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+        color: #f44336;
+    }
+
+    ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+        background-color: white;
+    }
+
+    ::ng-deep mat-form-field.mat-focused .mat-form-field-ripple {
+        background-color: white;
+    }
+}
