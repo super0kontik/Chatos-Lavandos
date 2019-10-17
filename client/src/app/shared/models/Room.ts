@@ -6,4 +6,5 @@ export interface Room {
     title: string;
     users: User[];
     creator: User;
+    index?: number;
 }

@@ -3,7 +3,6 @@ import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {User} from "../../shared/models/User";
 import {SocketService} from "../../shared/services/socket.service";
 import {ChatService} from "../../shared/services/chat.service";
-import {log} from "util";
 import {AuthService} from "../../shared/services/auth.service";
 
 @Component({
@@ -32,6 +31,7 @@ export class ContactListComponent implements OnInit {
             this.chatService.currentRoomUsers.subscribe(users => {
                 this.list = users;
             });
+
 
             this.socketService.listen('userJoined').subscribe(user => {
                 this.list.push(user);

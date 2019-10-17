@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {ChatService} from "../../shared/services/chat.service";
 import {SocketService} from "../../shared/services/socket.service";
@@ -9,6 +9,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DialogAddingRoomComponent} from "../../dialog-adding-room/dialog-adding-room.component";
 import {AddRoomProps} from "../../shared/models/AddRoomProps";
 import {DialogInvitationComponent} from "../../dialog-invitation/dialog-invitation.component";
+import {log} from "util";
 
 
 
@@ -21,6 +22,7 @@ export class ChatComponent implements OnInit {
     public rooms: Room[];
     public newMessage: object = {};
     public newUser: User;
+    public currentTabIndex: number = 0;
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
@@ -33,6 +35,9 @@ export class ChatComponent implements OnInit {
         if (this.authService.isAuthenticated()) {
             this.socketService.listen('join').subscribe(data => {
                 this.rooms = data.rooms;
+                this.rooms = this.rooms.map((room, index) => {
+                    return {...room, index };
+                });
             });
             this.socketService.listen('userJoined').subscribe(user => {
                 this.newUser = user;
@@ -50,6 +55,10 @@ export class ChatComponent implements OnInit {
         }
     }
 
+    public onTabChange(event): void {
+        this.currentTabIndex = event;
+    }
+
     public openDialog(): void {
         const dialogRef = this.dialog.open(DialogAddingRoomComponent, {
             width: '500px',
@@ -58,11 +67,9 @@ export class ChatComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
             if (result) {
                 this.socketService.emit('createRoom', result);
             } else {
-                console.log('Not added')
             }
         });
     }
@@ -80,7 +87,7 @@ export class ChatComponent implements OnInit {
                     roomId: response.roomId,
                 })
             } else {
-                console.log(2)
+                console.log('dis')
             }
         });
     }

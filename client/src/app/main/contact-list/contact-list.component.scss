@@ -31,9 +31,21 @@
         overflow: hidden;
         text-overflow: ellipsis;
         color: white;
+        margin-left: 20px;
     }
 
     ::ng-deep .ps__thumb-y {
         background-color: rgba(0, 0, 0, 0.73);
+    }
+
+    .material-icons {
+        color: white;
+        font-size: 15px;
+    }
+
+
+    .creator  {
+        border-bottom: 2px solid white;
+        font-weight: 600;
     }
 }

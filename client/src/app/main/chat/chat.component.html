@@ -2,11 +2,12 @@
     <div class="add-btn" (click)="openDialog()">
         <img src="../../../assets/imgs/plus-icon-plus-math-icon-download-icons-9.png" alt="">
     </div>
-    <mat-tab-group>
-        <mat-tab *ngFor="let room of rooms" [label]="room.title">
+    <mat-tab-group (selectedIndexChange)="onTabChange($event)">
+        <mat-tab *ngFor="let room of rooms; let i=index" [label]="room.title" [id]="room._id">
             <app-room [currentRoom]="room"
                       [newMessage]="newMessage"
                       [newUser]="newUser"
+                      [tabIndex]="currentTabIndex"
             ></app-room>
         </mat-tab>
     </mat-tab-group>

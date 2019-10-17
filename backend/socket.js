@@ -77,7 +77,7 @@ module.exports = (server) => {
                     throw new Error('not enough participants')
                 }
                 let room = await Room.create({title:params.roomTitle, users:participants, creator:socket.decoded_token.id});
-                room = await room.populate('users').execPopulate();
+                room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                 for (let user of room.users){
                     io.to(user.socketId).emit('invitation', room);
                 }
