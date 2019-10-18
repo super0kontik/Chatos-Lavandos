@@ -31,11 +31,6 @@ export class ContactListComponent implements OnInit {
             this.chatService.currentRoomUsers.subscribe(users => {
                 this.list = users;
             });
-
-
-            this.socketService.listen('userJoined').subscribe(user => {
-                this.list.push(user);
-            })
         }
 
     }

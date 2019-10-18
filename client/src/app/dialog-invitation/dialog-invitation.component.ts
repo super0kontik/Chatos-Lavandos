@@ -25,7 +25,8 @@ export class DialogInvitationComponent implements OnInit {
 
     public onDisagree(): void {
         this.dialogRef.close({
-            isAgree: false
+            isAgree: false,
+            roomId: this.data._id
         });
     }
 

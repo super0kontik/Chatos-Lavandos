@@ -28,7 +28,6 @@ import {User} from "../../shared/models/User";
 export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges {
     @Input() currentRoom: Room;
     @Input() newMessage: object | boolean;
-    @Input() newUser: object;
     @Input() tabIndex: number;
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
@@ -49,12 +48,11 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService
-                ) {
+    ) {
     }
 
     public ngOnInit(): void {
         this.me = LocalStorageService.getUser()['id'];
-
         if (this.currentRoom._id !== 'common') {
             this.currentRoom.users.forEach(user => {
                 this.users[user._id] = {
@@ -73,62 +71,63 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                 };
             });
         }
-
-        if (this.currentRoom.index === this.tabIndex) {
-            this.chatService.currentRoomUsers.next(Object.values(this.users));
-        }
-
-        this.isInit = true;
-
+        this.coincidenceOfTabIndex();
         this.chatService.flipCard.subscribe((flag) => {
             if (this.isLoadedTemplate && flag) {
                 this.animateSmile();
             }
         });
-
+        this.chatService.getRoomContent(this.currentRoom._id).subscribe(messages => {
+            this.messages = messages;
+        });
+        this.socketService.listen('userConnected').subscribe(userId => {
+            this.changeUserStatusOnline(true, userId);
+        });
         this.socketService.listen('userDisconnected').subscribe(userId => {
-            if (this.currentRoom._id === 'common') {
-                delete this.users[userId];
-                this.chatService.currentRoomUsers.next(Object.values(this.users));
-            } else {
-                this.users.forEach(user => {
-                    if (userId === user['_id']) {
-                        user['online'] = false;
-                    }
-                });
-                console.log(this.users);
-                this.chatService.currentRoomUsers.next(Object.values(this.users));
+            this.changeUserStatusOnline(false, userId);
+        });
+        this.socketService.listen('userJoined').subscribe(data => {
+            if (this.currentRoom._id === data.roomId) {
+                if (this.currentRoom._id !== 'common') {
+                    this.users[data.user._id] = {
+                        name: data.user.name,
+                        online: data.user.isOnline,
+                        premium: data.user.isPremium,
+                        creator: this.currentRoom.creator._id === data.user._id
+                    };
+                } else {
+                    this.users[data.user._id] = {
+                        name: data.user.name,
+                        online: data.user.isOnline,
+                        premium: data.user.isPremium,
+                    };
+                }
+                this.coincidenceOfTabIndex();
             }
         });
+        this.socketService.listen('userLeft').subscribe(data => {
+            console.log(this.currentRoom._id);
+            console.log(data.roomId);
+            console.log(this.currentRoom._id === data.roomId);
+            if (this.currentRoom._id === data.roomId) {
+                delete this.users[data.userId];
+                this.coincidenceOfTabIndex();
+            }
+        });
+        this.isInit = true;
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
-        if(changes['newMessage'] && this.isInit) {
-            if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
-                this.messages.push(changes['newMessage'].currentValue.message);
+        if (this.isInit) {
+            if (changes['newMessage']) {
+                if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
+                    this.messages.push(changes['newMessage'].currentValue.message);
+                }
             }
         }
-        if (changes['newUser'] && this.isInit) {
-            if (this.currentRoom._id !== 'common') {
-                this.users[changes['newUser'].currentValue._id] = {
-                    name: changes['newUser'].currentValue.name,
-                    online: changes['newUser'].currentValue.isOnline,
-                    premium: changes['newUser'].currentValue.isPremium,
-                    creator: this.currentRoom.creator._id === changes['newUser'].currentValue._id
-                };
-            } else {
-                this.users[changes['newUser'].currentValue._id] = {
-                    name: changes['newUser'].currentValue.name,
-                    online: changes['newUser'].currentValue.isOnline,
-                    premium: changes['newUser'].currentValue.isPremium,
-                };
-            }
-            if (this.tabIndex === this.currentRoom.index) {
-                this.chatService.currentRoomUsers.next(Object.values(this.users));
-            }
-        }
-        if (changes['tabIndex'] && changes['tabIndex'].currentValue === this.currentRoom.index) {
-            this.chatService.currentRoomUsers.next(Object.values(this.users));
+
+        if (changes['tabIndex']) {
+            this.coincidenceOfTabIndex();
         }
     }
 
@@ -142,6 +141,19 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.isLoadedTemplate = true;
     }
 
+    public changeUserStatusOnline(connection: boolean, userId: string): void {
+        if (this.users[userId]) {
+            this.users[userId]['online'] = connection;
+        }
+    }
+
+
+    public coincidenceOfTabIndex(): void {
+        if (this.tabIndex === this.currentRoom.index) {
+            this.chatService.currentRoomUsers.next(Object.values(this.users));
+        }
+    }
+
     public scrollToBottom(): void {
         this.componentRef.directiveRef.scrollToBottom();
     }
@@ -151,7 +163,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     }
 
     public animateSmile(): void {
-        if(!this.isSmiles) {
+        if (!this.isSmiles) {
             this.smileImg.nativeElement.style.filter = 'invert(100%) drop-shadow(0px 5px 5px black)';
             this.isSmiles = true;
         } else {

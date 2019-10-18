@@ -38,6 +38,7 @@ app.get('/roomContent/:id',(req,res)=>{
         const messagesDecrypted = messages.map(i => i.content = JSON.parse(crypto.AES.decrypt(i.content, MESSAGE_KEY)).toString(crypto.enc.Utf8))
         res.send(messagesDecrypted)
     }catch(e){
+        console.log(e);
         res.status(500).send('error')
     }
 });

@@ -16,12 +16,8 @@ export class ChatService {
     constructor(private http: HttpClient) {
     }
 
-    public getRooms(): Observable<Room[]> {
-        return this.http.get<Room[]>(`${config.API_URL}/mock/rooms`);
-    }
-
     public getRoomContent(id: string): Observable<Message[]> {
-        return this.http.get<Message[]>(`${config.API_URL}/mock/roomContent/${id}`);
+        return this.http.get<Message[]>(`${config.API_URL}/roomContent/${id}`);
     }
 
 }

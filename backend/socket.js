@@ -39,8 +39,8 @@ module.exports = (server) => {
                     usersOnline,
                     rooms
                 });
-            io.to('common').emit('userJoined', user);
-            io.emit('userConnected',user);
+            io.to('common').emit('userJoined', {roomId: 'common', user});
+            io.emit('userConnected', user._id);
         }catch (e){
             console.log(e.message);
             io.to(socket.id).emit('error',{error:{type: e.message}});
@@ -72,14 +72,16 @@ module.exports = (server) => {
                 if(params.roomTitle.trim().toLowerCase() === 'common'|| params.roomTitle.trim().length < 3){
                     throw new Error('invalid name')
                 }
+                // TODO: prevent adding creator to participants
+                params.participants.push(socket.decoded_token.id)
                 let participants = Array.from(new Set(params.participants));
-                if(participants.length<1){
+                if(participants.length<2){
                     throw new Error('not enough participants')
                 }
-                participants.push(socket.decoded_token.id);
                 let room = await Room.create({title:params.roomTitle, users:participants, creator:socket.decoded_token.id});
                 room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
-                participants = room.users.filter(i=> i._id !== socket.decoded_token.id);
+                participants = room.users.filter(i=> String(i._id) !== socket.decoded_token.id);
+                socket.join(room._id)
                 for (let user of participants){
                     io.to(user.socketId).emit('invitation', room);
                 }
@@ -112,9 +114,10 @@ module.exports = (server) => {
                 const user = await User.findById(socket.decoded_token.id);
                 if(room && user) {
                     room.users.push(user);
+                    room = await room.save()
                     room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                     socket.join(params.roomId);
-                    io.to(params.roomId).emit('userJoined', user);
+                    io.to(params.roomId).emit('userJoined', {user, roomId: params.roomId});
                     return io.to(socket.id).emit('newRoom', room);
                 }
                 throw new Error('Not allowed');
@@ -125,13 +128,19 @@ module.exports = (server) => {
         });
 
         socket.on('leaveRoom', async params =>{
-            const id = socket.decoded_token.id;
-            let room = await Room.findById(params.roomId);
-            if(room && room.users.indexOf(id)!==-1){
-                room.users.pull(id);
-                io.to(params.roomId).emit('userLeft',id)
+            try {
+                const id = socket.decoded_token.id;
+                let room = await Room.findById(params.roomId);
+                if (room && room.users.indexOf(id) !== -1) {
+                    room.users.pull(id);
+                    room = await room.save()
+                    return io.to(params.roomId).emit('userLeft', {userId: id, roomId: params.roomId});
+                }
+                throw new Error('Not allowed');
+            }catch (e) {
+                console.log(e)
+                io.to(socket.id).emit('error',{error:{type: e.message}});
             }
-            throw new Error('Not allowed');
         });
 
 
@@ -140,7 +149,7 @@ module.exports = (server) => {
                 const id = socket.decoded_token.id;
                 await User.updateOne({_id:id},{isOnline:false});
                 io.emit('userDisconnected',id);
-                io.to('common').emit('userLeft',id)
+                io.to('common').emit('userLeft', {userId: id, roomId: 'common'});
             } catch(e){
                 console.log(e);
             }

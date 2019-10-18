@@ -6,7 +6,6 @@
         <mat-tab *ngFor="let room of rooms; let i=index" [label]="room.title" [id]="room._id">
             <app-room [currentRoom]="room"
                       [newMessage]="newMessage"
-                      [newUser]="newUser"
                       [tabIndex]="currentTabIndex"
             ></app-room>
         </mat-tab>

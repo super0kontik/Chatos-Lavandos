@@ -21,7 +21,7 @@ import {log} from "util";
 export class ChatComponent implements OnInit {
     public rooms: Room[];
     public newMessage: object = {};
-    public newUser: User;
+    public userLeft: string;
     public currentTabIndex: number = 0;
 
     constructor(private chatService: ChatService,
@@ -39,11 +39,7 @@ export class ChatComponent implements OnInit {
                     return {...room, index };
                 });
             });
-            this.socketService.listen('userJoined').subscribe(user => {
-                this.newUser = user;
-            });
             this.socketService.listen('newMessage').subscribe(data => {
-                console.log(data);
                 this.newMessage = data;
             });
             this.socketService.listen('invitation').subscribe(data => {
@@ -51,6 +47,9 @@ export class ChatComponent implements OnInit {
             });
             this.socketService.listen('newRoom').subscribe(data => {
                 this.rooms.unshift(data);
+                this.rooms = this.rooms.map((room, index) => {
+                    return {...room, index };
+                });
             });
         }
     }
@@ -69,7 +68,6 @@ export class ChatComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.socketService.emit('createRoom', result);
-            } else {
             }
         });
     }
@@ -83,11 +81,14 @@ export class ChatComponent implements OnInit {
         });
         invitationDialogRef.afterClosed().subscribe(response => {
             if (response.isAgree) {
-                this.socketService.emit('joinRoom', {
-                    roomId: response.roomId,
+                this.socketService.emit('acceptInvitation', {
+                    roomId: response.roomId
                 })
             } else {
-                console.log('dis')
+                console.log(1);
+                this.socketService.emit('leaveRoom', {
+                    roomId: response.roomId
+                })
             }
         });
     }
