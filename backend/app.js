@@ -6,8 +6,9 @@ const app = express();
 const passport = require('passport');
 const Message = require('./models/message');
 require('./passport/google-strat');
-const {API_URL,MESSAGE_KEY} = require('./config/config');
+const {API_URL,MESSAGE_KEY, SECRET_WORD} = require('./config/config');
 const crypto = require('crypto-js');
+const jwt = require('jsonwebtoken');
 
 app.use(bp.json());
 app.use(bp.urlencoded({extended:false}));
@@ -29,15 +30,32 @@ app.get(
     }
 );
 
+app.use((req,res, next)=>{
+    let token = req.headers['Authorization'];
+    if(!token){
+        return res.status(401).send('Unauthorized');
+    }
+    token = token.slice(7,token.length);
+    jwt.verify(token, SECRET_WORD, (err, decoded)=>{
+        if(err) {
+            return res.status(401).send(err);
+        }
+        req.decoded = decoded;
+        return next();
+    });
+});
+
 app.get('/roomContent/:id',async (req,res)=>{
-    //TODO: add validation by bearer
+
     try {
-        console.log(req.params.id)
         if(req.params.id.trim().length <2){
             throw new Error('invalid data')
         }
-        const messages = await Message.find({room: req.params.id}/*, {}, {sort: {createdAt: -1}}*/).populate('creator');
-        console.log(messages)
+        const roomUsers = await Room.findById({_id:req.params.id}).select('users');
+        if(!roomUsers || roomUsers.indexOf(req.decoded.id)=== -1){
+            throw new Error('Not Allowed')
+        }
+        const messages = await Message.find({room: req.params.id}).populate('creator');
         if(messages && messages.length > 0) {
             const messagesDecrypted = messages.map(i => {
                 const bytes = crypto.AES.decrypt(i.content.toString(), MESSAGE_KEY);
@@ -53,83 +71,5 @@ app.get('/roomContent/:id',async (req,res)=>{
         res.status(500).send('error')
     }
 });
-
-//app.get('/mock/user',(req,res)=>res.send({id:'111215483671211658136', name: 'Alex_Shavik', isOnline:true, isPremium:true}));
-
-// app.get('/mock/rooms',
-//     (req,res) => {
-//     return res.json([
-//         {
-//             id: 'roomId2',
-//             title: 'Xyeta',
-//             users: [
-//                 {id: '111215483671211658136', name: 'Alex_Shavik', isOnline: true, isPremium: true},
-//                 {id: 'ebala', name: 'Lexa_Lepexa', isOnline: false, isPremium: false},
-//                 {id: '131313', name: 'Pahan_Kontugan', isOnline: false, isPremium: false}
-//             ]
-//         },
-//         {
-//             id: 'common',
-//             title: 'Common',
-//             users: [
-//                 {id: '111215483671211658136', name: 'Alex_Shavik', isOnline: true, isPremium: true},
-//                 {id: '131313', name: 'Pahan_Kontugan', isOnline: false, isPremium: false}
-//             ]
-//         }]
-//     )
-// });
-
-// app.get('/mock/roomContent/:id',(req,res)=>{
-//     if(req.params.id === 'common'){
-//         return res.json([{
-//             createdAt:Date.now(),
-//             creator: '111215483671211658136',
-//             content: 'I love angular'
-//         }, {
-//             createdAt:Date.now(),
-//             creator: '131313',
-//             content: 'I love node js, python'
-//         }])
-//     }else if(req.params.id === 'roomId2'){
-//         return res.json([{
-//             createdAt:Date.now(),
-//             creator: '111215483671211658136',
-//             content: 'Lutche pozvonit chem u kogoto zanimat'
-//         },{
-//             createdAt:Date.now(),
-//             creator: '131313',
-//             content: 'I love node js, python'
-//         },{
-//             createdAt:Date.now(),
-//             creator: 'ebala',
-//             content: 'I`m Lexa lepexa'
-//         },{
-//             createdAt:Date.now(),
-//             creator: 'ebala',
-//             content: 'Hello, bitches!'
-//         },{
-//             createdAt:Date.now(),
-//             creator: '111215483671211658136',
-//             content: 'I love angular'
-//         },{
-//             createdAt:Date.now(),
-//             creator: 'ebala',
-//             content: 'Mne pohuy'
-//         },{
-//             createdAt:Date.now(),
-//             creator: '111215483671211658136',
-//             content: 'Are you ahuel ?'
-//         },{
-//             createdAt:Date.now(),
-//             creator: 'ebala',
-//             content: 'Ta sasi jopu'
-//         },{
-//             createdAt:Date.now(),
-//             creator: '131313',
-//             content: 'Asol!!)))'
-//         }
-//         ])
-//     }
-// });
 
 module.exports= app;

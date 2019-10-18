@@ -74,6 +74,11 @@ module.exports = (server) => {
                 }
                 params.participants.push(socket.decoded_token.id);
                 let participants = Array.from(new Set(params.participants));
+                participants = await User.findMany({
+                    _id:{
+                        $in:participants
+                    }
+                });
                 if(participants.length<2){
                     throw new Error('not enough participants')
                 }
@@ -113,7 +118,7 @@ module.exports = (server) => {
                 const user = await User.findById(socket.decoded_token.id);
                 if(room && user) {
                     room.users.push(user);
-                    room = await room.save()
+                    room = await room.save();
                     room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                     socket.join(params.roomId);
                     io.to(params.roomId).emit('userJoined', {user, roomId: params.roomId});
@@ -132,14 +137,20 @@ module.exports = (server) => {
                 let room = await Room.findById(params.roomId);
                 if (room && room.users.indexOf(id) !== -1) {
                     room.users.pull(id);
-                    room = await room.save()
+                    room = await room.save();
                     return io.to(params.roomId).emit('userLeft', {userId: id, roomId: params.roomId});
                 }
                 throw new Error('Not allowed');
             }catch (e) {
-                console.log(e)
+                console.log(e);
                 io.to(socket.id).emit('error',{error:{type: e.message}});
             }
+        });
+
+
+        socket.on('searchUsers', async params =>{
+           const users = await User.findMany({name:{$regex: '.*' + params.query + '.*' }}).select('name');
+            io.to(socket.id).emit('searchResult',users)
         });
 
 
