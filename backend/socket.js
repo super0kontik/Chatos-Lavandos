@@ -17,8 +17,6 @@ module.exports = (server) => {
 
 
     io.on('connection', async socket => {
-        const sockets = Object.keys(io.sockets.sockets);
-        // socket.join('common');
         try {
             let user = await User.findById(socket.decoded_token.id);
             await user.updateOne({socketId:socket.id,isOnline:true});
@@ -139,9 +137,13 @@ module.exports = (server) => {
                     room.users.pull(id);
                     room = await room.save();
                     io.to(params.roomId).emit('userLeft', {userId: id, roomId: params.roomId});
-                    return socket.leave(params.roomId);
-                }
-                throw new Error('Not allowed');
+                    socket.leave(params.roomId);
+                    if(room.users.length === 1){
+                        const lastUser = await room.populate('users').select('users');
+                        io.to(lastUser.users[0].socketId).emit('userLeft', {userId: lastUser.users[0]._id, roomId: params.roomId});
+                        await room.remove();
+                    }
+                }else throw new Error('Not allowed');
             }catch (e) {
                 console.log(e);
                 io.to(socket.id).emit('error',{error:{type: e.message}});
