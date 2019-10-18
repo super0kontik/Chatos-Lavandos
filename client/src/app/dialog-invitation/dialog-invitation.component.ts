@@ -6,14 +6,11 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
     templateUrl: './dialog-invitation.component.html',
     styleUrls: ['./dialog-invitation.component.scss']
 })
-export class DialogInvitationComponent implements OnInit {
+export class DialogInvitationComponent {
 
     constructor(public dialogRef: MatDialogRef<DialogInvitationComponent>,
                 @Inject(MAT_DIALOG_DATA) public data
     ) {
-    }
-
-    public ngOnInit(): void {
     }
 
     public onAgree(): void {

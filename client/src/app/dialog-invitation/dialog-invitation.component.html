@@ -1,6 +1,6 @@
 <div class="dialog-wrapper" >
     <div class="dialog-content-wrapper">
-        <h1 mat-dialog-title>You were invited to the {{data.title}}</h1>
+        <h1 mat-dialog-title>{{data.creator.name}} invites you to {{data.title}}</h1>
 
         <div mat-dialog-actions class="dialog-btns">
             <button mat-button (click)="onAgree()" class="agree-btn">

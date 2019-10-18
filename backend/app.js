@@ -29,12 +29,15 @@ app.get(
     }
 );
 
-app.get('/roomContent/:id',(req,res)=>{
+app.get('/roomContent/:id',async (req,res)=>{
+    //TODO: add validation by bearer
     try {
+        console.log(req.params.id)
         if(req.params.id.trim().length <2){
             throw new Error('invalid data')
         }
-        const messages = Message.find({room: req.params.id}, {}, {sort: {createdAt: -1}}).populate('creator');
+        const messages = await Message.find({room: req.params.id}/*, {}, {sort: {createdAt: -1}}*/).populate('creator');
+        console.log(messages)
         if(messages && messages.length > 0) {
             const messagesDecrypted = messages.map(i => {
                 const bytes = crypto.AES.decrypt(i.content.toString(), MESSAGE_KEY);

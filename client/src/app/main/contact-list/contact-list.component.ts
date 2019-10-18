@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
-import {User} from "../../shared/models/User";
 import {SocketService} from "../../shared/services/socket.service";
 import {ChatService} from "../../shared/services/chat.service";
 import {AuthService} from "../../shared/services/auth.service";
@@ -32,7 +31,5 @@ export class ContactListComponent implements OnInit {
                 this.list = users;
             });
         }
-
     }
-
 }

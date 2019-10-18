@@ -77,9 +77,12 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                 this.animateSmile();
             }
         });
-        this.chatService.getRoomContent(this.currentRoom._id).subscribe(messages => {
-            this.messages = messages;
-        });
+        if (this.currentRoom._id !== 'common') {
+            this.chatService.getRoomContent(this.currentRoom._id).subscribe(messages => {
+                this.messages = messages;
+            });
+        }
+
         this.socketService.listen('userConnected').subscribe(userId => {
             this.changeUserStatusOnline(true, userId);
         });
@@ -106,9 +109,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             }
         });
         this.socketService.listen('userLeft').subscribe(data => {
-            console.log(this.currentRoom._id);
-            console.log(data.roomId);
-            console.log(this.currentRoom._id === data.roomId);
             if (this.currentRoom._id === data.roomId) {
                 delete this.users[data.userId];
                 this.coincidenceOfTabIndex();

@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
-import {Room} from "../models/Room";
 import {config} from "../config";
 import {Message} from "../models/Message";
-import {User} from "../models/User";
 
 @Injectable({
     providedIn: 'root'

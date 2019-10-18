@@ -1,16 +1,11 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {ChatService} from "../../shared/services/chat.service";
 import {SocketService} from "../../shared/services/socket.service";
 import {AuthService} from "../../shared/services/auth.service";
-import {User} from "../../shared/models/User";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
 import {DialogAddingRoomComponent} from "../../dialog-adding-room/dialog-adding-room.component";
-import {AddRoomProps} from "../../shared/models/AddRoomProps";
 import {DialogInvitationComponent} from "../../dialog-invitation/dialog-invitation.component";
-import {log} from "util";
-
 
 
 @Component({
@@ -28,7 +23,7 @@ export class ChatComponent implements OnInit {
                 private socketService: SocketService,
                 private authService: AuthService,
                 public dialog: MatDialog
-                ) {
+    ) {
     }
 
     public ngOnInit(): void {
@@ -36,7 +31,7 @@ export class ChatComponent implements OnInit {
             this.socketService.listen('join').subscribe(data => {
                 this.rooms = data.rooms;
                 this.rooms = this.rooms.map((room, index) => {
-                    return {...room, index };
+                    return {...room, index};
                 });
             });
             this.socketService.listen('newMessage').subscribe(data => {
@@ -48,7 +43,7 @@ export class ChatComponent implements OnInit {
             this.socketService.listen('newRoom').subscribe(data => {
                 this.rooms.unshift(data);
                 this.rooms = this.rooms.map((room, index) => {
-                    return {...room, index };
+                    return {...room, index};
                 });
             });
         }
@@ -85,7 +80,6 @@ export class ChatComponent implements OnInit {
                     roomId: response.roomId
                 })
             } else {
-                console.log(1);
                 this.socketService.emit('leaveRoom', {
                     roomId: response.roomId
                 })

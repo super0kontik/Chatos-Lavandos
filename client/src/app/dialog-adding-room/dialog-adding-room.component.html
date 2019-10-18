@@ -22,7 +22,7 @@
                 <div *ngFor="let item of participants.controls; let pointIndex=index" [formGroupName]="pointIndex">
                     <mat-form-field class="part-input">
                         <label>
-                            <input matInput [placeholder]="'Participant-' + (pointIndex + 1)" formControlName="id">
+                            <input matInput [placeholder]="'Participant - ' + (pointIndex + 1)" formControlName="id">
                         </label>
                     </mat-form-field>
                     <button type="button" mat-button (click)="deleteParticipant(pointIndex)">

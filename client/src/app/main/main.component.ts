@@ -10,7 +10,6 @@ import {SocketService} from "../shared/services/socket.service";
 })
 export class MainComponent implements OnInit, AfterViewInit {
     @ViewChild('cardInner', {static: false}) card: ElementRef;
-
     public isFlipped: boolean = false;
     public isLoaded: boolean = false;
 
