@@ -35,8 +35,16 @@ app.get('/roomContent/:id',(req,res)=>{
             throw new Error('invalid data')
         }
         const messages = Message.find({room: req.params.id}, {}, {sort: {createdAt: -1}}).populate('creator');
-        const messagesDecrypted = messages.map(i => i.content = JSON.parse(crypto.AES.decrypt(i.content, MESSAGE_KEY)).toString(crypto.enc.Utf8))
-        res.send(messagesDecrypted)
+        if(messages && messages.length > 0) {
+            const messagesDecrypted = messages.map(i => {
+                const bytes = crypto.AES.decrypt(i.content.toString(), MESSAGE_KEY);
+                i.content = bytes.toString(crypto.enc.Utf8);
+                return i;
+            });
+            console.log(messagesDecrypted);
+            return res.send(messagesDecrypted)
+        }
+        throw new Error('Not Found')
     }catch(e){
         console.log(e);
         res.status(500).send('error')
