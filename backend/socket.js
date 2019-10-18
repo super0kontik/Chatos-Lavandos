@@ -39,8 +39,8 @@ module.exports = (server) => {
                     usersOnline,
                     rooms
                 });
+            io.to('common').emit('userJoined', user);
             io.emit('userConnected',user);
-            io.to('common').emit('userJoined', user)
         }catch (e){
             console.log(e.message);
             io.to(socket.id).emit('error',{error:{type: e.message}});
