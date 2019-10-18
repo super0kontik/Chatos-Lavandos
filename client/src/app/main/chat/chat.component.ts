@@ -53,6 +53,10 @@ export class ChatComponent implements OnInit {
         this.currentTabIndex = event;
     }
 
+    public leaveRoom(roomId): void {
+        this.rooms = this.rooms.filter(room => room._id !== roomId);
+    }
+
     public openDialog(): void {
         const dialogRef = this.dialog.open(DialogAddingRoomComponent, {
             width: '500px',

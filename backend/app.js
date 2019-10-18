@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const passport = require('passport');
 const Message = require('./models/message');
+const Room = require('./models/room');
 require('./passport/google-strat');
 const {API_URL,MESSAGE_KEY, SECRET_WORD} = require('./config/config');
 const crypto = require('crypto-js');
@@ -31,13 +32,14 @@ app.get(
 );
 
 app.use((req,res, next)=>{
-    let token = req.headers['Authorization'];
+    let token = req.header('Authorization');
     if(!token){
         return res.status(401).send('Unauthorized');
     }
     token = token.slice(7,token.length);
     jwt.verify(token, SECRET_WORD, (err, decoded)=>{
         if(err) {
+            console.log(err);
             return res.status(401).send(err);
         }
         req.decoded = decoded;
@@ -46,13 +48,12 @@ app.use((req,res, next)=>{
 });
 
 app.get('/roomContent/:id',async (req,res)=>{
-
     try {
         if(req.params.id.trim().length <2){
             throw new Error('invalid data')
         }
         const roomUsers = await Room.findById({_id:req.params.id}).select('users');
-        if(!roomUsers || roomUsers.indexOf(req.decoded.id)=== -1){
+        if(!roomUsers || roomUsers.users.indexOf(req.decoded.id)=== -1){
             throw new Error('Not Allowed')
         }
         const messages = await Message.find({room: req.params.id}).populate('creator');
@@ -62,7 +63,6 @@ app.get('/roomContent/:id',async (req,res)=>{
                 i.content = bytes.toString(crypto.enc.Utf8);
                 return i;
             });
-            console.log(messagesDecrypted);
             return res.send(messagesDecrypted)
         }
         throw new Error('Not Found')

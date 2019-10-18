@@ -100,7 +100,7 @@ module.exports = (server) => {
         socket.on('acceptInvitation', async params=>{
             try {
                 let room = await Room.findById(params.roomId);
-                if(room && room.users.indexOf(socket.decoded_token.id)!==-1) {
+                if(room) {
                     room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                     socket.join(params.roomId);
                     return io.to(socket.id).emit('newRoom', room);
@@ -138,7 +138,8 @@ module.exports = (server) => {
                 if (room && room.users.indexOf(id) !== -1) {
                     room.users.pull(id);
                     room = await room.save();
-                    return io.to(params.roomId).emit('userLeft', {userId: id, roomId: params.roomId});
+                    io.to(params.roomId).emit('userLeft', {userId: id, roomId: params.roomId});
+                    return socket.leave(params.roomId);
                 }
                 throw new Error('Not allowed');
             }catch (e) {

@@ -2,10 +2,10 @@ import {
     AfterViewInit,
     Component,
     DoCheck,
-    ElementRef,
+    ElementRef, EventEmitter,
     Input,
     OnChanges,
-    OnInit,
+    OnInit, Output,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
@@ -29,6 +29,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     @Input() currentRoom: Room;
     @Input() newMessage: object | boolean;
     @Input() tabIndex: number;
+    @Output() leaveFromChat: EventEmitter<any> = new EventEmitter<any>();
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
@@ -139,6 +140,11 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
     public ngAfterViewInit(): void {
         this.isLoadedTemplate = true;
+    }
+
+    public leaveRoom(): void {
+        //this.socketService.emit('leaveRoom', {roomId: this.currentRoom._id});
+        this.leaveFromChat.emit(this.currentRoom._id);
     }
 
     public changeUserStatusOnline(connection: boolean, userId: string): void {

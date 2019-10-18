@@ -14,6 +14,26 @@
         position: relative;
     }
 
+    .chat-menu {
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent);
+        .menu-items {
+            flex-direction: row;
+            justify-content: flex-start;
+
+            mat-list-item {
+                cursor: pointer;
+                transition: 0.3s;
+                width: 200px;
+                color: white;
+
+                &:hover {
+                    transition: 0.3s;
+                    filter: drop-shadow(0 3px 10px white);
+                }
+            }
+        }
+    }
+
     .message-text {
         word-break: break-all;
     }

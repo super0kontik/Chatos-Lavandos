@@ -1,5 +1,16 @@
 <div class="room-wrapper">
-    <perfect-scrollbar [config]="config" [scrollIndicators]="true">
+    <div class="chat-menu" *ngIf="currentRoom._id !== 'common'">
+        <mat-list class="menu-items">
+            <mat-list-item matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'">
+                Invite a friend
+                <mat-icon>face</mat-icon>
+            </mat-list-item>
+            <mat-list-item matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="leaveRoom()">Leave from chat
+                <mat-icon>play_for_work</mat-icon>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <perfect-scrollbar [config]="config">
         <mat-list class="mt-lst">
             <mat-list-item [ngClass]="{'own': message.creator._id === me ,
             'foreign' : message.creator._id !== me}" *ngFor="let message of messages">
@@ -33,8 +44,7 @@
         </div>
         <div class="wrap-btn">
             <div class="send-btn" (click)="sendMessage()">
-                <img style="width: 50px; height: 50px" class="send-img" src="../../../assets/imgs/373675-200.png"
-                     alt="">
+                <img style="width: 50px; height: 50px" class="send-img" src="../../../assets/imgs/373675-200.png" alt="">
             </div>
         </div>
         <div class="wrap-btn" (click)="openSmiles()">
