@@ -151,11 +151,46 @@ module.exports = (server) => {
         });
 
 
+        socket.on('inviteUser', async params=>{
+            try{
+                const room = await Room.findById(params.roomId);
+                if(!room){
+                    throw new Error('Room not found');
+                }
+                let participants = Array.from(new Set(params.participants));
+                participants = await User.find({
+                    _id:{
+                        $in:participants
+                    }
+                });
+                for (user of participants){
+                    room.users.push(user._id);
+                    io.to(user.socketId).emit('invitation', room)
+                }
+                await room.save()
+            }catch (e){
+                console.log(e);
+                io.to(socket.id).emit('error', {type: e.message })
+            }
+        });
+
+
         socket.on('searchUsers', async params =>{
             try {
-                const users = await User.find({name: {$regex: '.*' + params + '.*'}}) //.select('name');
+                const users = await User.find({name: {$regex: '.*' + params + '.*', $options : 'i'}}); //.select('name');
                 console.log(users);
                 io.to(socket.id).emit('searchResult', users)
+            }catch (e){
+                console.log(e)
+            }
+        });
+
+
+        socket.on('searchRooms', async params =>{
+            try {
+                const rooms = await Room.find({title: {$regex: '.*' + params + '.*', $options : 'i'}}); //.select('name');
+                console.log(rooms);
+                io.to(socket.id).emit('searchRoomsResult', rooms)
             }catch (e){
                 console.log(e)
             }
