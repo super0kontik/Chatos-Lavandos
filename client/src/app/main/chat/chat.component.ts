@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {ChatService} from "../../shared/services/chat.service";
 import {SocketService} from "../../shared/services/socket.service";
@@ -6,6 +6,7 @@ import {AuthService} from "../../shared/services/auth.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogAddingRoomComponent} from "../../dialog-adding-room/dialog-adding-room.component";
 import {DialogInvitationComponent} from "../../dialog-invitation/dialog-invitation.component";
+import {LocalStorageService} from "../../shared/services/local-storage.service";
 
 
 @Component({
@@ -18,6 +19,9 @@ export class ChatComponent implements OnInit {
     public newMessage: object = {};
     public userLeft: string;
     public currentTabIndex: number = 0;
+    public isRoomList: boolean = false;
+    public selectedTab: number;
+    public me: string;
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
@@ -27,7 +31,10 @@ export class ChatComponent implements OnInit {
     }
 
     public ngOnInit(): void {
+
         if (this.authService.isAuthenticated()) {
+            this.me = LocalStorageService.getUser()['id'];
+
             this.socketService.listen('join').subscribe(data => {
                 this.rooms = data.rooms;
                 this.rooms = this.rooms.map((room, index) => {
@@ -46,6 +53,13 @@ export class ChatComponent implements OnInit {
                     return {...room, index};
                 });
             });
+            this.socketService.listen('userLeft').subscribe(data  => {
+                if (data.userId === this.me) {
+                    this.leaveRoom(data.roomId);
+                    this.selectedTab = this.currentTabIndex = 0;
+                }
+
+            })
         }
     }
 
@@ -55,6 +69,9 @@ export class ChatComponent implements OnInit {
 
     public leaveRoom(roomId): void {
         this.rooms = this.rooms.filter(room => room._id !== roomId);
+        this.rooms = this.rooms.map((room, index) => {
+            return {...room, index};
+        });
     }
 
     public openDialog(): void {
@@ -82,13 +99,22 @@ export class ChatComponent implements OnInit {
             if (response.isAgree) {
                 this.socketService.emit('acceptInvitation', {
                     roomId: response.roomId
-                })
+                });
             } else {
                 this.socketService.emit('leaveRoom', {
                     roomId: response.roomId
                 })
             }
         });
+    }
+
+    public toggleOnList(): void {
+        this.isRoomList = !this.isRoomList;
+    }
+
+    public toggleRoom(index): void {
+        this.isRoomList = false;
+        this.selectedTab = index;
     }
 }
 

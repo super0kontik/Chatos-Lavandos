@@ -6,20 +6,48 @@
     background: linear-gradient(90deg, #003b3f, rgb(51, 51, 70));
 
     .add-btn {
+        border-top: 1px solid black;
+        cursor: pointer;
         background: rgba(0, 0, 0, 0.18);
         position: absolute;
-        transition: 0.3s;
         width: 50px;
         height: 47px;
 
         img {
+            transition: 0.3s;
             border-radius: 50px;
             width: 100%;
             height: 100%;
             filter: invert(100%);
             &:hover {
                 transition: 0.3s;
-                background: rgba(255, 255, 255, 0.44);
+                filter: invert(100%) drop-shadow(0 3px 10px white);
+            }
+        }
+    }
+
+    .room-list {
+        border-top: 1px solid black;
+        cursor: pointer;
+        position: absolute;
+        left: 50px;
+        background: rgba(0, 0, 0, 0.18);
+        width: 50px;
+        height: 47px;
+
+        mat-icon {
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50px;
+            font-size: 40px;
+            width: 100%;
+            height: 100%;
+            filter: invert(100%);
+            &:hover {
+                transition: 0.3s;
+                filter: invert(100%) drop-shadow(0 3px 10px white);
             }
         }
     }
@@ -34,7 +62,7 @@
 }
 
 ::ng-deep .mat-tab-header {
-    margin-left: 50px;
+    margin-left: 100px;
 }
 
 ::ng-deep .mat-tab-group {

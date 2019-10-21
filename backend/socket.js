@@ -65,7 +65,6 @@ module.exports = (server) => {
 
 
         socket.on('createRoom', async params=>{
-            console.log(params);
             try{
                 if(params.roomTitle.trim().toLowerCase() === 'common'|| params.roomTitle.trim().length < 3){
                     throw new Error('invalid name')
@@ -101,7 +100,8 @@ module.exports = (server) => {
                 if(room) {
                     room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                     socket.join(params.roomId);
-                    return io.to(socket.id).emit('newRoom', room);
+                    io.to(socket.id).emit('newRoom', room);
+                    return io.to(params.roomId).emit('userJoined', {user, roomId: params.roomId});
                 }
                 throw new Error('Not allowed');
             }catch (e){
@@ -139,7 +139,7 @@ module.exports = (server) => {
                     io.to(params.roomId).emit('userLeft', {userId: id, roomId: params.roomId});
                     socket.leave(params.roomId);
                     if(room.users.length === 1){
-                        const lastUser = await room.populate('users').select('users');
+                        const lastUser = await room.populate('users').execPopulate();
                         io.to(lastUser.users[0].socketId).emit('userLeft', {userId: lastUser.users[0]._id, roomId: params.roomId});
                         await room.remove();
                     }
@@ -151,7 +151,7 @@ module.exports = (server) => {
         });
 
 
-        socket.on('inviteUser', async params=>{
+        socket.on('inviteUsers', async params=>{
             try{
                 const room = await Room.findById(params.roomId);
                 if(!room){
@@ -163,6 +163,7 @@ module.exports = (server) => {
                         $in:participants
                     }
                 });
+                console.log(participants)
                 for (user of participants){
                     room.users.push(user._id);
                     io.to(user.socketId).emit('invitation', room)
@@ -178,7 +179,6 @@ module.exports = (server) => {
         socket.on('searchUsers', async params =>{
             try {
                 const users = await User.find({name: {$regex: '.*' + params + '.*', $options : 'i'}}); //.select('name');
-                console.log(users);
                 io.to(socket.id).emit('searchResult', users)
             }catch (e){
                 console.log(e)
@@ -189,7 +189,7 @@ module.exports = (server) => {
         socket.on('searchRooms', async params =>{
             try {
                 const rooms = await Room.find({title: {$regex: '.*' + params + '.*', $options : 'i'}}); //.select('name');
-                console.log(rooms);
+                //console.log(rooms);
                 io.to(socket.id).emit('searchRoomsResult', rooms)
             }catch (e){
                 console.log(e)

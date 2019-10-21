@@ -1,14 +1,24 @@
 <div class="chat-wrapper">
-    <div class="add-btn" (click)="openDialog()">
+    <div class="add-btn" (click)="openDialog()" matRipple>
         <img src="../../../assets/imgs/plus-icon-plus-math-icon-download-icons-9.png" alt="">
     </div>
-    <mat-tab-group (selectedIndexChange)="onTabChange($event)">
-        <mat-tab *ngFor="let room of rooms; let i=index" [label]="room.title" [id]="room._id">
-            <app-room [currentRoom]="room"
-                      [newMessage]="newMessage"
-                      [tabIndex]="currentTabIndex"
-                      (leaveFromChat)="leaveRoom($event)"
-            ></app-room>
-        </mat-tab>
+    <div class="room-list" matRipple (click)="toggleOnList()">
+        <mat-icon>list</mat-icon>
+    </div>
+    <mat-tab-group (selectedIndexChange)="onTabChange($event)" [(selectedIndex)]="selectedTab">
+        <ng-container *ngIf="!isRoomList">
+            <mat-tab *ngFor="let room of rooms; let i=index" [label]="room.title" [id]="room._id">
+                <app-room [currentRoom]="room"
+                          [newMessage]="newMessage"
+                          [tabIndex]="currentTabIndex"
+                          (leaveFromChat)="leaveRoom($event)"
+                ></app-room>
+            </mat-tab>
+        </ng-container>
+        <ng-container *ngIf="isRoomList">
+            <mat-tab [label]="'Rooms'">
+                <app-room-list [rooms]="rooms" (onSelectedRoom)="toggleRoom($event)"></app-room-list>
+            </mat-tab>
+        </ng-container>
     </mat-tab-group>
 </div>

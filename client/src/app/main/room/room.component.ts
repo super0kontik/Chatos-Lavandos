@@ -19,6 +19,8 @@ import {
 import {SocketService} from "../../shared/services/socket.service";
 import {LocalStorageService} from "../../shared/services/local-storage.service";
 import {User} from "../../shared/models/User";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogInvitingRoomComponent} from "../../dialog-inviting-room/dialog-inviting-room.component";
 
 @Component({
     selector: 'app-room',
@@ -48,7 +50,8 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     };
 
     constructor(private chatService: ChatService,
-                private socketService: SocketService
+                private socketService: SocketService,
+                public dialog: MatDialog
     ) {
     }
 
@@ -91,6 +94,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             this.changeUserStatusOnline(false, userId);
         });
         this.socketService.listen('userJoined').subscribe(data => {
+            console.log(data.roomId);
             if (this.currentRoom._id === data.roomId) {
                 if (this.currentRoom._id !== 'common') {
                     this.users[data.user._id] = {
@@ -106,6 +110,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                         premium: data.user.isPremium,
                     };
                 }
+                console.log(this.users, this.currentRoom.title);
                 this.coincidenceOfTabIndex();
             }
         });
@@ -128,6 +133,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         }
 
         if (changes['tabIndex']) {
+            console.log(1);
             this.coincidenceOfTabIndex();
         }
     }
@@ -135,6 +141,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     public ngDoCheck(): void {
         if (this.isLoadedTemplate) {
             this.scrollToBottom();
+            this.coincidenceOfTabIndex();
         }
     }
 
@@ -142,8 +149,25 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.isLoadedTemplate = true;
     }
 
+    public inviteUsers(): void {
+        const dialogRef = this.dialog.open(DialogInvitingRoomComponent, {
+            width: '500px',
+            height: '550px',
+            hasBackdrop: true,
+            data: this.currentRoom
+        });
+
+        dialogRef.afterClosed().subscribe(data => {
+            console.log(data);
+            this.socketService.emit('inviteUsers', {
+                roomId: data.roomId,
+                participants: data.participants,
+            })
+        });
+    }
+
     public leaveRoom(): void {
-        //this.socketService.emit('leaveRoom', {roomId: this.currentRoom._id});
+        this.socketService.emit('leaveRoom', {roomId: this.currentRoom._id});
         this.leaveFromChat.emit(this.currentRoom._id);
     }
 
