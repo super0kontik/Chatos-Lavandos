@@ -34,6 +34,7 @@ import { DialogInvitationComponent } from './dialog-invitation/dialog-invitation
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
 import {MatRippleModule} from "@angular/material/core";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -73,7 +74,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatButtonModule,
         MatChipsModule,
         MatIconModule,
-        MatRippleModule
+        MatRippleModule,
+        MatAutocompleteModule
     ],
     entryComponents: [
         DialogAddingRoomComponent,

@@ -72,7 +72,7 @@ module.exports = (server) => {
                 }
                 params.participants.push(socket.decoded_token.id);
                 let participants = Array.from(new Set(params.participants));
-                participants = await User.findMany({
+                participants = await User.find({
                     _id:{
                         $in:participants
                     }
@@ -146,14 +146,14 @@ module.exports = (server) => {
                 }else throw new Error('Not allowed');
             }catch (e) {
                 console.log(e);
-                io.to(socket.id).emit('error',{error:{type: e.message}});
+                io.to(socket.id).emit('error',{error: {type: e.message}});
             }
         });
 
 
         socket.on('searchUsers', async params =>{
             try {
-                const users = await User.findMany({name: {$regex: '.*' + params.query + '.*'}}).select('name');
+                const users = await User.find({name: {$regex: '.*' + params + '.*'}}) //.select('name');
                 console.log(users);
                 io.to(socket.id).emit('searchResult', users)
             }catch (e){

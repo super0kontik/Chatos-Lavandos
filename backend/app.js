@@ -57,7 +57,7 @@ app.get('/roomContent/:id',async (req,res)=>{
             throw new Error('Not Allowed')
         }
         const messages = await Message.find({room: req.params.id}).populate('creator');
-        if(messages && messages.length > 0) {
+        if(messages) {
             const messagesDecrypted = messages.map(i => {
                 const bytes = crypto.AES.decrypt(i.content.toString(), MESSAGE_KEY);
                 i.content = bytes.toString(crypto.enc.Utf8);

@@ -20,11 +20,26 @@
 
             <div formArrayName="participants">
                 <div *ngFor="let item of participants.controls; let pointIndex=index" [formGroupName]="pointIndex">
+
                     <mat-form-field class="part-input">
                         <label>
-                            <input matInput [placeholder]="'Participant - ' + (pointIndex + 1)" formControlName="id">
+                            <input matInput [placeholder]="'Participant - ' + (pointIndex + 1)"
+                                   formControlName="name"
+                                   (keydown)="selectedInput = pointIndex"
+                                   [matAutocomplete]="auto"
+                            >
                         </label>
+
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let state of searchedUsers"
+                                        [value]="state.name"
+                                        (click)="pushId(state._id)"
+                            >
+                                <span >{{state.name}}</span>
+                            </mat-option>
+                        </mat-autocomplete>
                     </mat-form-field>
+                    <mat-icon *ngIf="userIds[pointIndex]" class="done">done</mat-icon>
                     <button type="button" mat-button (click)="deleteParticipant(pointIndex)">
                         <i class="material-icons">
                             delete
@@ -40,7 +55,11 @@
                     clear
                 </i>
             </button>
-            <button mat-button (click)="onCreate()" class="create-btn" [disabled]="!addRoomForm.valid || addRoomForm.untouched">Create room</button>
+            <button mat-button (click)="onCreate()" class="create-btn" [disabled]="!addRoomForm.valid
+                || addRoomForm.untouched
+                || !validateInputs()
+                || participants.length < 1
+            ">Create room</button>
         </div>
     </div>
 </div>

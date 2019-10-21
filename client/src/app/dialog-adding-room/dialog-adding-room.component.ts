@@ -2,6 +2,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
+import {SocketService} from "../shared/services/socket.service";
+import {User} from "../shared/models/User";
 
 @Component({
     selector: 'app-dialog-adding-room',
@@ -10,6 +12,9 @@ import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 })
 export class DialogAddingRoomComponent implements OnInit {
     public addRoomForm: FormGroup; // form group instance
+    public selectedInput: number = null;
+    public searchedUsers: any;
+    public userIds = [false];
     public config: PerfectScrollbarConfigInterface = {
         wheelSpeed: 0.2,
         scrollingThreshold: 0,
@@ -17,7 +22,8 @@ export class DialogAddingRoomComponent implements OnInit {
 
     constructor(
         public dialogRef: MatDialogRef<DialogAddingRoomComponent>,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private socketService: SocketService
     ) {}
 
     public ngOnInit() {
@@ -28,10 +34,20 @@ export class DialogAddingRoomComponent implements OnInit {
                 Validators.maxLength(20),
             ]
             ],
-            participants: this.fb.array([this.fb.group({id: ['',
+            participants: this.fb.array([this.fb.group({name: ['',
                     [Validators.required
                         /*Validators.pattern('^[0-9]+$')*/]
                 ]})])
+        });
+        this.onSearch();
+
+        this.socketService.listen('searchResult').subscribe(users => {
+            if (users.length === 1 && this.addRoomForm.get('participants').value[this.selectedInput].name === users[0].name) {
+                this.userIds[this.selectedInput] = users[0]._id;
+            } else {
+                this.searchedUsers = users;
+                this.userIds[this.selectedInput] = false;
+            }
         });
     }
 
@@ -40,13 +56,16 @@ export class DialogAddingRoomComponent implements OnInit {
     }
 
     public addParticipant(): void {
-        this.participants.push(this.fb.group({id:['',
+        this.participants.push(this.fb.group({name:['',
                 [Validators.required/*, Validators.pattern('^[0-9]+$')*/]
             ]}));
+        this.userIds.push(false);
     }
 
     public deleteParticipant(index): void {
+        this.selectedInput = null;
         this.participants.removeAt(index);
+        this.userIds.splice(index, 1);
     }
 
     public onNoClick(): void {
@@ -54,14 +73,28 @@ export class DialogAddingRoomComponent implements OnInit {
     }
 
     public onCreate(): void {
-        const participants = [];
-        Object.values(this.addRoomForm.get('participants').value).forEach(participant => {
-            participants.push(participant['id']);
-        });
         this.dialogRef.close({
             roomTitle: this.addRoomForm.get('title').value,
-            participants,
+            participants: this.userIds,
         });
+    }
+
+    public onSearch(): void {
+        this.addRoomForm.valueChanges.subscribe(changes => {
+            if(this.selectedInput !== null) {
+                if (changes.participants[this.selectedInput].name.length > 2) {
+                    this.socketService.emit('searchUsers', changes.participants[this.selectedInput].name);
+                }
+            }
+        });
+    }
+
+    public pushId(userId): void {
+        this.userIds[this.selectedInput] = userId;
+    }
+
+    public validateInputs(): boolean {
+        return this.userIds.every(item => !!item);
     }
 
 }
