@@ -152,8 +152,13 @@ module.exports = (server) => {
 
 
         socket.on('searchUsers', async params =>{
-           const users = await User.findMany({name:{$regex: '.*' + params.query + '.*' }}).select('name');
-            io.to(socket.id).emit('searchResult',users)
+            try {
+                const users = await User.findMany({name: {$regex: '.*' + params.query + '.*'}}).select('name');
+                console.log(users);
+                io.to(socket.id).emit('searchResult', users)
+            }catch (e){
+                console.log(e)
+            }
         });
 
 
