@@ -15,7 +15,7 @@ export class DialogInvitingRoomComponent implements OnInit {
     public addUsersForm: FormGroup; // form group instance
     public selectedInput: number = null;
     public searchedUsers: any;
-    public userIds = [false];
+    public userIds: any = [false];
     public config: PerfectScrollbarConfigInterface = {
         wheelSpeed: 0.2,
         scrollingThreshold: 0,

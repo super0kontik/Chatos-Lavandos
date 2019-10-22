@@ -7,9 +7,9 @@ const userSchema = new Schema({
         type:String,
         required:true
     },
-    socketId:{
+    socketIds:[{
         type:String,
-    },
+    }],
     isPremium:{
         type:Boolean,
         default: false

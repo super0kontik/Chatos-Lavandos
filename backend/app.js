@@ -10,10 +10,17 @@ require('./passport/google-strat');
 const {API_URL,MESSAGE_KEY, SECRET_WORD} = require('./config/config');
 const crypto = require('crypto-js');
 const jwt = require('jsonwebtoken');
+const fingerprint = require('express-fingerprint');
 
 app.use(bp.json());
 app.use(bp.urlencoded({extended:false}));
 app.use(cors());
+app.use(fingerprint({
+    parameters:[
+        fingerprint.useragent,
+        fingerprint.acceptHeaders,
+        fingerprint.geoip]}));
+
 app.use(passport.initialize());
 app.disable('x-powered-by');
 

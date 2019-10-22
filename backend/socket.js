@@ -7,6 +7,10 @@ const {SECRET_WORD, MESSAGE_KEY} = require('./config/config');
 const crypto = require('crypto-js');
 const validator = require('validator');
 
+function getUserSocketsRoom(user) {
+    return `${String(user._id).split('').reverse().join('')}-${user.id}`
+}
+
 module.exports = (server) => {
     const io = socketIO(server);
 
@@ -19,9 +23,11 @@ module.exports = (server) => {
     io.on('connection', async socket => {
         try {
             let user = await User.findById(socket.decoded_token.id);
-            await user.updateOne({socketId:socket.id,isOnline:true});
+            await user.updateOne({isOnline:true});
             user.isOnline = true;
-            user.socketId = socket.id;
+            user.socketIds.push(socket.id);
+            user = await user.save();
+            socket.join(getUserSocketsRoom(user));
             const usersOnline = await User.find({isOnline: true});
             const rooms = await Room.find({users:{$in:[user._id]}}).populate([{path:'users'},{path:'creator'}]);
             rooms.push({
@@ -40,7 +46,7 @@ module.exports = (server) => {
             io.emit('userJoined', {roomId: 'common', user});
             io.emit('userConnected', user._id);
         }catch (e){
-            console.log(e.message);
+            console.log(e);
             io.to(socket.id).emit('error',{error:{type: e.message}});
         }
 
@@ -58,7 +64,7 @@ module.exports = (server) => {
                 }
                 io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, creator}, room: params.room })
             }catch(e){
-                console.log(e.message);
+                console.log(e);
                 io.to(socket.id).emit('error',{error:{type: e.message}});
             }
         });
@@ -84,7 +90,7 @@ module.exports = (server) => {
                 participants = room.users.filter(i=> String(i._id) !== socket.decoded_token.id);
                 socket.join(room._id);
                 for (let user of participants){
-                    io.to(user.socketId).emit('invitation', room);
+                    io.to(getUserSocketsRoom(user)).emit('invitation', room);
                 }
                 io.to(socket.id).emit('newRoom', room)
             }catch (e){
@@ -97,7 +103,8 @@ module.exports = (server) => {
         socket.on('acceptInvitation', async params=>{
             try {
                 let room = await Room.findById(params.roomId);
-                if(room) {
+                const user = await User.findById(socket.decoded_token.id);
+                if(room && user) {
                     room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                     socket.join(params.roomId);
                     io.to(socket.id).emit('newRoom', room);
@@ -118,6 +125,7 @@ module.exports = (server) => {
                     room.users.push(user);
                     room = await room.save();
                     room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
+                    // wont work for many users in one account. maybe change room content http endpoint to socket endpoint
                     socket.join(params.roomId);
                     io.to(params.roomId).emit('userJoined', {user, roomId: params.roomId});
                     return io.to(socket.id).emit('newRoom', room);
@@ -140,7 +148,7 @@ module.exports = (server) => {
                     socket.leave(params.roomId);
                     if(room.users.length === 1){
                         const lastUser = await room.populate('users').execPopulate();
-                        io.to(lastUser.users[0].socketId).emit('userLeft', {userId: lastUser.users[0]._id, roomId: params.roomId});
+                        io.to(getUserSocketsRoom(lastUser.users[0])).emit('userLeft', {userId: lastUser.users[0]._id, roomId: params.roomId});
                         await room.remove();
                     }
                 }else throw new Error('Not allowed');
@@ -163,15 +171,15 @@ module.exports = (server) => {
                         $in:participants
                     }
                 });
-                console.log(participants)
+                console.log(participants);
                 for (user of participants){
                     room.users.push(user._id);
-                    io.to(user.socketId).emit('invitation', room)
+                    io.to(getUserSocketsRoom(user)).emit('invitation', room)
                 }
                 await room.save()
             }catch (e){
                 console.log(e);
-                io.to(socket.id).emit('error', {type: e.message })
+                io.to(socket.id).emit('error', {type: e })
             }
         });
 
@@ -189,7 +197,6 @@ module.exports = (server) => {
         socket.on('searchRooms', async params =>{
             try {
                 const rooms = await Room.find({title: {$regex: '.*' + params + '.*', $options : 'i'}}); //.select('name');
-                //console.log(rooms);
                 io.to(socket.id).emit('searchRoomsResult', rooms)
             }catch (e){
                 console.log(e)
@@ -200,9 +207,14 @@ module.exports = (server) => {
         socket.on('disconnect', async () => {
             try {
                 const id = socket.decoded_token.id;
-                await User.updateOne({_id:id},{isOnline:false});
-                io.emit('userDisconnected',id);
-                io.emit('userLeft', {userId: id, roomId: 'common'});
+                const user = await User.findById(id);
+                user.socketIds.pull(socket.id);
+                if(user.socketIds.length === 0) {
+                    user.isOnline = false;
+                    io.emit('userDisconnected', id);
+                    io.emit('userLeft', {userId: id, roomId: 'common'});
+                }
+                await user.save()
             } catch(e){
                 console.log(e);
             }
