@@ -29,7 +29,7 @@ module.exports = (server) => {
             user = await user.save();
             socket.join(getUserSocketsRoom(user));
             const usersOnline = await User.find({isOnline: true});
-            const rooms = await Room.find({users:{$in:[user._id]}}).populate([{path:'users'},{path:'creator'}]);
+            const rooms = await Room.find({users:{$in:[user._id]}}).populate([{path:'users'},{path:'creator'}]).sort('lastAction');
             rooms.push({
                 _id: 'common',
                 title: 'Common',
@@ -61,7 +61,8 @@ module.exports = (server) => {
                 }
                 if (params.room !== 'common') {
                     const content = crypto.AES.encrypt(validator.escape(params.message), MESSAGE_KEY).toString();
-                    const message = await Message.create({createdAt, creator, room: params.room, content})
+                    await Message.create({createdAt, creator, room: params.room, content});
+                    Room.update({_id: params.roomId},{lastAction:Date.now()})
                 }
                 io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, creator}, room: params.room })
             }catch(e){
@@ -86,7 +87,8 @@ module.exports = (server) => {
                 if(participants.length<2){
                     throw new Error('not enough participants')
                 }
-                let room = await Room.create({title:params.roomTitle, users:participants, creator:socket.decoded_token.id});
+                let room = await Room.create({title: params.roomTitle, users: participants,
+                    creator: socket.decoded_token.id, lastAction: Date.now()});
                 room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                 participants = room.users.filter(i=> String(i._id) !== socket.decoded_token.id);
                 socket.join(room._id);
@@ -124,6 +126,7 @@ module.exports = (server) => {
                 const user = await User.findById(socket.decoded_token.id);
                 if(room && user) {
                     room.users.push(user);
+                    room.lastAction = Date.now();
                     room = await room.save();
                     room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                     user.socketIds.forEach(i=>{
@@ -149,6 +152,7 @@ module.exports = (server) => {
                 let room = await Room.findById(params.roomId);
                 if (room && room.users.indexOf(id) !== -1) {
                     room.users.pull(id);
+                    room.lastAction = Date.now();
                     room = await room.save();
                     io.to(params.roomId).emit('userLeft', {userId: id, roomId: params.roomId});
                     user.socketIds.forEach(i=>{
@@ -194,6 +198,7 @@ module.exports = (server) => {
                     room.users.push(user._id);
                     io.to(getUserSocketsRoom(user)).emit('invitation', room)
                 }
+                room.lastAction = Date.now();
                 await room.save()
             }catch (e){
                 console.log(e);

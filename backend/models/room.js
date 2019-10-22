@@ -13,6 +13,10 @@ const roomSchema = new Schema({
     users:[{
         type:Schema.Types.ObjectId,
         ref:'User'
-    }]
+    }],
+    lastAction:{
+        type:Date,
+        required:true
+    }
 });
 module.exports = mongoose.model('Room',roomSchema);
