@@ -57,6 +57,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
     public ngOnInit(): void {
         this.me = LocalStorageService.getUser()['id'];
+
         if (this.currentRoom._id !== 'common') {
             this.currentRoom.users.forEach(user => {
                 this.users[user._id] = {
@@ -76,11 +77,13 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             });
         }
         this.coincidenceOfTabIndex();
+
         this.chatService.flipCard.subscribe((flag) => {
             if (this.isLoadedTemplate && flag) {
                 this.animateSmile();
             }
         });
+
         if (this.currentRoom._id !== 'common') {
             this.chatService.getRoomContent(this.currentRoom._id).subscribe(messages => {
                 this.messages = messages;
@@ -90,11 +93,12 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.socketService.listen('userConnected').subscribe(userId => {
             this.changeUserStatusOnline(true, userId);
         });
+
         this.socketService.listen('userDisconnected').subscribe(userId => {
             this.changeUserStatusOnline(false, userId);
         });
+
         this.socketService.listen('userJoined').subscribe(data => {
-            console.log(data.roomId);
             if (this.currentRoom._id === data.roomId) {
                 if (this.currentRoom._id !== 'common') {
                     this.users[data.user._id] = {
@@ -110,16 +114,17 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                         premium: data.user.isPremium,
                     };
                 }
-                console.log(this.users, this.currentRoom.title);
                 this.coincidenceOfTabIndex();
             }
         });
+
         this.socketService.listen('userLeft').subscribe(data => {
             if (this.currentRoom._id === data.roomId) {
                 delete this.users[data.userId];
                 this.coincidenceOfTabIndex();
             }
         });
+
         this.isInit = true;
     }
 
@@ -133,7 +138,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         }
 
         if (changes['tabIndex']) {
-            console.log(1);
             this.coincidenceOfTabIndex();
         }
     }
@@ -158,7 +162,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         });
 
         dialogRef.afterClosed().subscribe(data => {
-            console.log(data);
             this.socketService.emit('inviteUsers', {
                 roomId: data.roomId,
                 participants: data.participants,
@@ -207,6 +210,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             message: this.input.nativeElement.innerText,
             room: this.currentRoom._id,
         });
+
         this.input.nativeElement.innerText = '';
     }
 }

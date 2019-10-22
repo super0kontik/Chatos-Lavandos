@@ -76,6 +76,7 @@ export class DialogAddingRoomComponent implements OnInit {
 
     public onCreate(): void {
         this.userIds = this.userIds.filter(userId => userId !== this.me);
+        this.userIds = Array.from(new Set(this.userIds));
         this.dialogRef.close({
             roomTitle: this.addRoomForm.get('title').value,
             participants: this.userIds,

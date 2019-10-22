@@ -194,7 +194,7 @@ module.exports = (server) => {
                 });
                 participants = participants.filter(i=> room.users.indexOf(i) < 0);
                 console.log(participants);
-                for (user of participants){
+                for (let user of participants){
                     room.users.push(user._id);
                     io.to(getUserSocketsRoom(user)).emit('invitation', room)
                 }
@@ -232,6 +232,8 @@ module.exports = (server) => {
             try {
                 const id = socket.decoded_token.id;
                 const user = await User.findById(id);
+                socket.leave(getUserSocketsRoom(user));
+                //TODO: debug
                 user.socketIds.pull(socket.id);
                 if(user.socketIds.length === 0) {
                     user.isOnline = false;

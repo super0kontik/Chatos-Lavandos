@@ -15,12 +15,20 @@
             <mat-list-item [ngClass]="{'own': message.creator._id === me ,
             'foreign' : message.creator._id !== me}" *ngFor="let message of messages">
                 <span class="message-user">
-                    <span class="online" *ngIf="users[message.creator._id].online">Online</span>
-                    <span [ngClass]="{'premium': users[message.creator._id].premium}">
-                        <span *ngIf="users[message.creator._id].premium">👑</span>
-                        {{users[message.creator._id].name}}
-                        <span *ngIf="users[message.creator._id].premium">👑</span>
-                    </span>
+                    <ng-container *ngIf="users[message.creator._id] === undefined">
+                        <span class="online">Deleted</span>
+                        <span>
+                            {{message.creator.name}}
+                        </span>
+                    </ng-container>
+                    <ng-container *ngIf="users[message.creator._id] !== undefined">
+                        <span class="online" *ngIf="users[message.creator._id].online">Online</span>
+                        <span [ngClass]="{'premium': users[message.creator._id].premium}">
+                            <span *ngIf="users[message.creator._id].premium">👑</span>
+                            {{users[message.creator._id].name}}
+                            <span *ngIf="users[message.creator._id].premium">👑</span>
+                        </span>
+                    </ng-container>
                 </span>
                 <p class="message-text">
                     {{message.content}}

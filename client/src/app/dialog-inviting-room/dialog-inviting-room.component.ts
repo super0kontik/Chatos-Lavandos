@@ -6,15 +6,15 @@ import {SocketService} from "../shared/services/socket.service";
 import {LocalStorageService} from "../shared/services/local-storage.service";
 
 @Component({
-  selector: 'app-dialog-inviting-room',
-  templateUrl: './dialog-inviting-room.component.html',
-  styleUrls: ['./dialog-inviting-room.component.scss']
+    selector: 'app-dialog-inviting-room',
+    templateUrl: './dialog-inviting-room.component.html',
+    styleUrls: ['./dialog-inviting-room.component.scss']
 })
 export class DialogInvitingRoomComponent implements OnInit {
     private me = LocalStorageService.getUser()['id'];
     public addUsersForm: FormGroup; // form group instance
-    public selectedInput: number = null;
-    public searchedUsers: any;
+    public selectedInput: number = 0;
+    public searchedUsers: any[] = [];
     public userIds: any = [false];
     public config: PerfectScrollbarConfigInterface = {
         wheelSpeed: 0.2,
@@ -26,26 +26,52 @@ export class DialogInvitingRoomComponent implements OnInit {
         private fb: FormBuilder,
         private socketService: SocketService,
         @Inject(MAT_DIALOG_DATA) public data
-    ) {}
+    ) {
+    }
 
     public ngOnInit(): void {
         console.log(this.data);
         this.addUsersForm = this.fb.group({
-            participants: this.fb.array([this.fb.group({name: ['',
+            participants: this.fb.array([this.fb.group({
+                name: ['',
                     [Validators.required]
-                ]})])
+                ]
+            })])
         });
 
         this.onSearch();
 
         this.socketService.listen('searchResult').subscribe(users => {
             if (users.length === 1 && this.addUsersForm.get('participants').value[this.selectedInput].name === users[0].name) {
-                this.userIds[this.selectedInput] = users[0]._id;
+                let flag = false;
+                for (let roomUser of this.data.users) {
+                    if (users[0]._id !== roomUser._id) {
+                        flag = true;
+                    } else {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    this.userIds[this.selectedInput] = users[0]._id;
+                } else {
+                    console.log(1)
+                    this.userIds[this.selectedInput] = false;
+                }
             } else {
-                this.data.users.forEach(roomUser => {
-                    this.searchedUsers.push(users.filter(user => user._id !== roomUser._id));
+                this.searchedUsers = users.filter(user => {
+                    let flag = false;
+                    for (let roomUser of this.data.users) {
+                        if (user._id !== roomUser._id) {
+                            flag = true;
+                        } else {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    return flag;
                 });
-
+                console.log(2)
                 this.userIds[this.selectedInput] = false;
             }
         });
@@ -56,9 +82,11 @@ export class DialogInvitingRoomComponent implements OnInit {
     }
 
     public addParticipant(): void {
-        this.participants.push(this.fb.group({name:['',
+        this.participants.push(this.fb.group({
+            name: ['',
                 [Validators.required]
-            ]}));
+            ]
+        }));
         this.userIds.push(false);
     }
 
@@ -73,20 +101,31 @@ export class DialogInvitingRoomComponent implements OnInit {
     }
 
     public onCreate(): void {
-        this.data.users.forEach(roomUser => {
-            this.userIds.push(this.userIds.filter(userId => userId !== roomUser._id));
+        this.userIds = this.userIds.filter(userId => {
+            let flag = false;
+            for (let roomUser of this.data.users) {
+                if (userId !== roomUser._id) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    break;
+                }
+            }
+            if (!userId) {
+                flag = false;
+            }
+            return flag;
         });
-        console.log()
-        //this.userIds = this.userIds.filter(userId => userId !== this.me);
-        // this.dialogRef.close({
-        //     roomId: this.data._id,
-        //     participants: this.userIds,
-        // });
+        this.userIds = Array.from(new Set(this.userIds));
+        this.dialogRef.close({
+            roomId: this.data._id,
+            participants: this.userIds,
+        });
     }
 
     public onSearch(): void {
         this.addUsersForm.valueChanges.subscribe(changes => {
-            if(this.selectedInput !== null) {
+            if (this.selectedInput !== null) {
                 if (changes.participants[this.selectedInput].name.length > 2) {
                     this.socketService.emit('searchUsers', changes.participants[this.selectedInput].name);
                 }
@@ -95,11 +134,26 @@ export class DialogInvitingRoomComponent implements OnInit {
     }
 
     public pushId(userId): void {
+        console.log(userId);
+        console.log(this.selectedInput);
         this.userIds[this.selectedInput] = userId;
+
+        console.log(this.userIds);
     }
 
     public validateInputs(): boolean {
-        this.userIds = this.userIds.filter(userId => userId !== this.me);
+        this.userIds = this.userIds.filter(userId => {
+            let flag = false;
+            for (let roomUser of this.data.users) {
+                if (userId !== roomUser._id) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    break;
+                }
+            }
+            return flag;
+        });
         return this.userIds.every(item => !!item);
     }
 }

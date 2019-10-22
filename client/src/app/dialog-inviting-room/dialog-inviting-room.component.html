@@ -19,7 +19,7 @@
                         <label>
                             <input matInput [placeholder]="'Participant - ' + (pointIndex + 1)"
                                    formControlName="name"
-                                   (keydown)="selectedInput = pointIndex"
+                                   (click)="selectedInput = pointIndex"
                                    [matAutocomplete]="auto"
                             >
                         </label>

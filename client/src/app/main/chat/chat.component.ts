@@ -31,7 +31,6 @@ export class ChatComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-
         if (this.authService.isAuthenticated()) {
             this.me = LocalStorageService.getUser()['id'];
 
@@ -41,25 +40,28 @@ export class ChatComponent implements OnInit {
                     return {...room, index};
                 });
             });
+
             this.socketService.listen('newMessage').subscribe(data => {
                 this.newMessage = data;
             });
+
             this.socketService.listen('invitation').subscribe(data => {
                 this.openInvitation(data);
             });
+
             this.socketService.listen('newRoom').subscribe(data => {
                 this.rooms.unshift(data);
                 this.rooms = this.rooms.map((room, index) => {
                     return {...room, index};
                 });
             });
+
             this.socketService.listen('userLeft').subscribe(data  => {
                 if (data.userId === this.me) {
                     this.leaveRoom(data.roomId);
                     this.selectedTab = this.currentTabIndex = 0;
                 }
-
-            })
+            });
         }
     }
 
@@ -95,6 +97,7 @@ export class ChatComponent implements OnInit {
             hasBackdrop: true,
             data
         });
+
         invitationDialogRef.afterClosed().subscribe(response => {
             if (response.isAgree) {
                 this.socketService.emit('acceptInvitation', {
