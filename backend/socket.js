@@ -192,8 +192,19 @@ module.exports = (server) => {
                         $in:participants
                     }
                 });
-                participants = participants.filter(i=> room.users.indexOf(i) < 0);
-                console.log(participants);
+                participants = participants.filter(user => {
+                    let flag = false;
+                    for (let roomUser of room.users) {
+                        console.log(String(user._id), String(roomUser), String(user._id) !== String(roomUser));
+                        if (String(user._id) !== String(roomUser)) {
+                            flag = true;
+                        } else {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    return flag;
+                });
                 for (let user of participants){
                     room.users.push(user._id);
                     io.to(getUserSocketsRoom(user)).emit('invitation', room)
