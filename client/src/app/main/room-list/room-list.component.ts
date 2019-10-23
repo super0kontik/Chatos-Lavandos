@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {SocketService} from "../../shared/services/socket.service";
+import {log} from "util";
 
 @Component({
     selector: 'app-room-list',
@@ -28,18 +29,19 @@ export class RoomListComponent implements OnInit {
         });
     }
 
-    public goToRoom(room: Room): void {
-        if (!this.rooms.indexOf(room)) {
-            console.log('find');
-            //this.onSelectedRoom.emit(room.index);
+    public goToRoom(searchedRoom: Room | number): void {
+        if (typeof searchedRoom === 'number') {
+           this.onSelectedRoom.emit(searchedRoom);
         } else {
-
+            searchedRoom = searchedRoom as Room;
+            for (let room of this.rooms) {
+                if (room._id === searchedRoom._id) {
+                    this.onSelectedRoom.emit(searchedRoom.index);
+                    return;
+                }
+            }
+            //ШО СЮДА НУЖНО !!!! ???'
         }
-
-    }
-
-    public joinRoom(): void {
-
     }
 
     public searchRooms(): void {
