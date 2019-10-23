@@ -6,7 +6,7 @@
     background: linear-gradient(90deg, #003b3f, rgb(51, 51, 70));
 
     .add-btn {
-        border-top: 1px solid black;
+        border: 0 !important;
         cursor: pointer;
         background: rgba(0, 0, 0, 0.18);
         position: absolute;
@@ -27,7 +27,7 @@
     }
 
     .room-list {
-        border-top: 1px solid black;
+        border: 0 !important;
         cursor: pointer;
         position: absolute;
         left: 50px;
@@ -61,10 +61,6 @@
     font-weight: 500;
 }
 
-::ng-deep .mat-tab-header {
-    margin-left: 100px;
-}
-
 ::ng-deep .mat-tab-group {
     width: 100%;
 }
@@ -74,12 +70,10 @@
 }
 
 ::ng-deep .mat-tab-header {
-    height: 45px;
+    margin-left: 100px;
+    border: 0 !important;
+    height: 47px;
     background: rgba(0, 0, 0, 0.18);
-}
-
-::ng-deep .mat-tab-header, .mat-tab-nav-bar {
-    border-top: 1px solid black;
 }
 
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {

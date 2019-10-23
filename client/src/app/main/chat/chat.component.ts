@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {ChatService} from "../../shared/services/chat.service";
 import {SocketService} from "../../shared/services/socket.service";
@@ -15,11 +15,13 @@ import {LocalStorageService} from "../../shared/services/local-storage.service";
     styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
+    @ViewChild('search', {static: false}) search: ElementRef;
     public rooms: Room[];
     public newMessage: object = {};
     public userLeft: string;
     public currentTabIndex: number = 0;
     public isRoomList: boolean = false;
+
     public selectedTab: number;
     public me: string;
 
@@ -56,7 +58,7 @@ export class ChatComponent implements OnInit {
                 });
             });
 
-            this.socketService.listen('userLeft').subscribe(data  => {
+            this.socketService.listen('userLeft').subscribe(data => {
                 if (data.userId === this.me) {
                     this.leaveRoom(data.roomId);
                     this.selectedTab = this.currentTabIndex = 0;
@@ -112,7 +114,14 @@ export class ChatComponent implements OnInit {
     }
 
     public toggleOnList(): void {
+        if (!this.isRoomList) {
+            this.search.nativeElement.style.filter = 'invert(100%) drop-shadow(0px 3px 10px white)';
+        } else {
+            this.search.nativeElement.style.filter = '';
+        }
         this.isRoomList = !this.isRoomList;
+
+
     }
 
     public toggleRoom(index): void {

@@ -2,12 +2,12 @@
     <div class="add-btn" (click)="openDialog()" matRipple>
         <img src="../../../assets/imgs/plus-icon-plus-math-icon-download-icons-9.png" alt="">
     </div>
-    <div class="room-list" matRipple (click)="toggleOnList()">
-        <mat-icon>list</mat-icon>
+    <div class="room-list" matRipple (click)="toggleOnList()" #search>
+        <mat-icon>search</mat-icon>
     </div>
     <mat-tab-group (selectedIndexChange)="onTabChange($event)" [(selectedIndex)]="selectedTab">
         <ng-container *ngIf="!isRoomList">
-            <mat-tab *ngFor="let room of rooms; let i=index" [label]="room.title" [id]="room._id">
+            <mat-tab *ngFor="let room of rooms" [label]="room.title" [id]="room._id">
                 <app-room [currentRoom]="room"
                           [newMessage]="newMessage"
                           [tabIndex]="currentTabIndex"

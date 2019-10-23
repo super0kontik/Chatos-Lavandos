@@ -1,9 +1,26 @@
 <div class="room-list-wrapper">
+    <div class="search-rooms">
+        <label *ngIf="!isSearchRoomList">
+            <input matInput placeholder="Search room..." [(ngModel)]="searchText" >
+        </label>
+        <label *ngIf="isSearchRoomList">
+            <input matInput placeholder="Search room..." [(ngModel)]="searchText" (input)="searchRooms()">
+        </label>
+        <mat-slide-toggle class="searchToggle"
+                          (change)="toggleSearch()"
+        >{{isSearchRoomList ? 'Global search' : 'Local search'}}</mat-slide-toggle>
+    </div>
     <perfect-scrollbar [config]="config">
-        <mat-list>
-            <mat-list-item *ngFor="let room of rooms; let i=index">
-                <p class="room-title" (click)="goToRoom(i)">{{room.title}}</p>
+        <mat-list *ngIf="!isSearchRoomList">
+            <mat-list-item *ngFor="let room of rooms | search: searchText">
                 <mat-divider></mat-divider>
+                <p class="room-title" (click)="goToRoom(room.index)">{{room.title}}</p>
+            </mat-list-item>
+        </mat-list>
+        <mat-list *ngIf="isSearchRoomList">
+            <mat-list-item *ngFor="let room of searchedRooms">
+                <mat-divider></mat-divider>
+                <p class="room-title" (click)="goToRoom(room)">{{room.title}}</p>
             </mat-list-item>
         </mat-list>
     </perfect-scrollbar>

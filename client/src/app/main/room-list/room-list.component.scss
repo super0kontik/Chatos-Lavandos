@@ -1,6 +1,61 @@
 .room-list-wrapper {
     padding: 0px 25px;
 
+    .search-rooms {
+        display: flex;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        width: 61.5%;
+
+        input {
+            transition: 0.3s;
+            height: 30px;
+            width: 100%;
+            border: 0;
+            box-shadow: 0 0 0;
+            border-radius: 50px;
+            outline:none;
+            padding: 5px 20px;
+            font-size: 24px;
+            background: rgba(255, 255, 255, 0.45);
+
+            &:hover, &:focus {
+                transition: 0.3s;
+                background: rgba(255, 255, 255, 0.8);
+                box-shadow: 0 0 10px white;
+            }
+        }
+
+
+    }
+    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+        background-color: #b3ade3;
+    }
+
+    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+        background-color: #666688;
+    }
+
+    .searchToggle {
+        position: relative;
+        left: 60px;
+        cursor: pointer;
+        transition: 0.3s;
+        height: 30px;
+        width: 250px;
+        box-shadow: 0 0 0;
+        border-radius: 50px;
+        padding: 5px 20px;
+        font-size: 24px;
+        background: rgba(255, 255, 255, 0.45);
+
+        &:hover, &:focus {
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px white;
+        }
+    }
+
     .room-title {
         transition: 0.3s;
         cursor: pointer;
@@ -16,5 +71,6 @@
     }
     ::ng-deep .mat-divider {
         background-color: rgba(255, 255, 255, 0.47);
+        width: 65%;
     }
 }

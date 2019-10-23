@@ -23,8 +23,12 @@
             mat-list-item {
                 cursor: pointer;
                 transition: 0.3s;
-                width: 200px;
+                width: 190px;
                 color: white;
+
+                mat-icon {
+                    margin-left: 15px;
+                }
 
                 &:hover {
                     transition: 0.3s;

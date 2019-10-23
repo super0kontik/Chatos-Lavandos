@@ -55,7 +55,6 @@ export class DialogInvitingRoomComponent implements OnInit {
                 if (flag) {
                     this.userIds[this.selectedInput] = users[0]._id;
                 } else {
-                    console.log(1)
                     this.userIds[this.selectedInput] = false;
                 }
             } else {
@@ -71,7 +70,6 @@ export class DialogInvitingRoomComponent implements OnInit {
                     }
                     return flag;
                 });
-                console.log(2)
                 this.userIds[this.selectedInput] = false;
             }
         });

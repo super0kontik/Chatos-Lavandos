@@ -37,6 +37,8 @@ import {MatRippleModule} from "@angular/material/core";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { RoomListComponent } from './main/room-list/room-list.component';
 import { DialogInvitingRoomComponent } from './dialog-inviting-room/dialog-inviting-room.component';
+import { SearchPipe } from './shared/pipes/search.pipe';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -58,7 +60,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DialogAddingRoomComponent,
         DialogInvitationComponent,
         RoomListComponent,
-        DialogInvitingRoomComponent
+        DialogInvitingRoomComponent,
+        SearchPipe,
     ],
     imports: [
         BrowserModule,
@@ -79,7 +82,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatChipsModule,
         MatIconModule,
         MatRippleModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatSlideToggleModule
     ],
     entryComponents: [
         DialogAddingRoomComponent,
