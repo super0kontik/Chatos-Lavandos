@@ -65,9 +65,9 @@ app.get('/roomContent/:id',async (req,res)=>{
         if(!roomUsers || roomUsers.users.indexOf(req.decoded.id)=== -1){
             throw new Error('Not Allowed')
         }
-        const messages = await Message.find({room: req.params.id}).skip(+req.query.offset).limit(50).sort('createdAt').populate('creator');
+        const messages = await Message.find({room: req.params.id}).skip(+req.query.offset).limit(50).sort('-createdAt').populate('creator');
         if(messages) {
-            const messagesDecrypted = messages.map(i => {
+            const messagesDecrypted = messages.reverse().map(i => {
                 const bytes = crypto.AES.decrypt(i.content.toString(), MESSAGE_KEY);
                 i.content = bytes.toString(crypto.enc.Utf8);
                 return i;

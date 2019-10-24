@@ -29,7 +29,7 @@ module.exports = (server) => {
             user = await user.save();
             socket.join(getUserSocketsRoom(user));
             const usersOnline = await User.find({isOnline: true});
-            const rooms = await Room.find({users:{$in:[user._id]}}).populate([{path:'users'},{path:'creator'}]).sort('lastAction');
+            const rooms = await Room.find({users:user._id}).populate([{path:'users'},{path:'creator'}]).sort('-lastAction');
             rooms.push({
                 _id: 'common',
                 title: 'Common',
@@ -56,13 +56,18 @@ module.exports = (server) => {
             try {
                 const createdAt = Date.now();
                 const creator = await User.findById(socket.decoded_token.id);
-                if(params.message.trim().length<1){
+                if(params.message.trim().length<1 || !creator){
                     throw new Error('invalid message')
                 }
                 if (params.room !== 'common') {
-                    const content = crypto.AES.encrypt(validator.escape(params.message), MESSAGE_KEY).toString();
-                    await Message.create({createdAt, creator, room: params.room, content});
-                    Room.update({_id: params.roomId},{lastAction:Date.now()})
+                    const room = await Room.findOne({_id:params.room, users:socket.decoded_token.id});
+                    if(room) {
+                        const content = crypto.AES.encrypt(validator.escape(params.message), MESSAGE_KEY).toString();
+                        await Message.create({createdAt, creator, room: params.room, content});
+                        await room.updateOne({lastAction:Date.now()});
+                    }else{
+                        throw new Error('Forbidden')
+                    }
                 }
                 io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, creator}, room: params.room })
             }catch(e){
