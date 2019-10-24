@@ -120,12 +120,10 @@ export class ChatComponent implements OnInit {
             this.search.nativeElement.style.filter = '';
         }
         this.isRoomList = !this.isRoomList;
-
-
     }
 
     public toggleRoom(index): void {
-        this.isRoomList = false;
+        this.toggleOnList();
         this.selectedTab = index;
     }
 }

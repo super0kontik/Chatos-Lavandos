@@ -40,7 +40,8 @@ export class RoomListComponent implements OnInit {
                     return;
                 }
             }
-            //ШО СЮДА НУЖНО !!!! ???'
+            this.socketService.emit('joinRoom', {roomId: searchedRoom._id});
+            this.onSelectedRoom.emit(searchedRoom.index);
         }
     }
 
@@ -50,6 +51,7 @@ export class RoomListComponent implements OnInit {
 
     public toggleSearch(): void {
         this.isSearchRoomList = !this.isSearchRoomList;
+        this.searchRooms();
     }
 
 }
