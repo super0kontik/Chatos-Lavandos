@@ -56,14 +56,16 @@ app.use((req,res, next)=>{
 
 app.get('/roomContent/:id',async (req,res)=>{
     try {
-        if(req.params.id.trim().length <2){
+        console.log(+req.query.offset)
+        if(req.params.id.trim().length <2 || req.query.offset === undefined || +req.query.offset < 0){
             throw new Error('invalid data')
         }
+        //TODO: change validaton of presence user in room to mongoose query
         const roomUsers = await Room.findById({_id:req.params.id}).select('users');
         if(!roomUsers || roomUsers.users.indexOf(req.decoded.id)=== -1){
             throw new Error('Not Allowed')
         }
-        const messages = await Message.find({room: req.params.id}).populate('creator');
+        const messages = await Message.find({room: req.params.id}).skip(+req.query.offset).limit(50).sort('createdAt').populate('creator');
         if(messages) {
             const messagesDecrypted = messages.map(i => {
                 const bytes = crypto.AES.decrypt(i.content.toString(), MESSAGE_KEY);

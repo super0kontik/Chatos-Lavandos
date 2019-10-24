@@ -41,6 +41,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     public users: object[] = [];
     public isLoadedTemplate = false;
     public isSmiles = false;
+    public isFirstInit = true;
     public smile: string = '';
     public creator: User;
     public isInit: boolean = false;
@@ -84,11 +85,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             }
         });
 
-        if (this.currentRoom._id !== 'common') {
-            this.chatService.getRoomContent(this.currentRoom._id).subscribe(messages => {
-                this.messages = messages;
-            });
-        }
+        this.messageRequest();
 
         this.socketService.listen('userConnected').subscribe(userId => {
             this.changeUserStatusOnline(true, userId);
@@ -133,6 +130,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             if (changes['newMessage']) {
                 if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
                     this.messages.push(changes['newMessage'].currentValue.message);
+                    this.scrollToBottom();
                 }
             }
         }
@@ -144,13 +142,23 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
     public ngDoCheck(): void {
         if (this.isLoadedTemplate) {
-            this.scrollToBottom();
+            if (this.isFirstInit) {
+                this.scrollToBottom();
+            }
             this.coincidenceOfTabIndex();
         }
     }
 
     public ngAfterViewInit(): void {
         this.isLoadedTemplate = true;
+    }
+
+    public messageRequest(): void {
+        if (this.currentRoom._id !== 'common') {
+            this.chatService.getRoomContent(this.currentRoom._id, this.messages.length).subscribe(messages => {
+                this.messages = [...messages, ...this.messages];
+            });
+        }
     }
 
     public inviteUsers(): void {
@@ -205,12 +213,23 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         }
     }
 
-    public sendMessage(): void {
-        this.socketService.emit('createMessage', {
-            message: this.input.nativeElement.innerText,
-            room: this.currentRoom._id,
-        });
+    public sendMessage(e): void {
+        if (this.input.nativeElement.innerText.trim().length > 0) {
+            if (e.code === 'Enter') {
+                e.preventDefault();
+            }
+            this.socketService.emit('createMessage', {
+                message: this.input.nativeElement.innerText,
+                room: this.currentRoom._id,
+            });
+            this.input.nativeElement.innerText = '';
+            setTimeout(() => {
+                this.scrollToBottom();
+            }, 250);
+        }
+    }
 
-        this.input.nativeElement.innerText = '';
+    public onScrollReachStart(): void {
+        this.messageRequest();
     }
 }

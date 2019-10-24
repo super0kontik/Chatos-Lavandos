@@ -1,14 +1,15 @@
 <div class="dialog-wrapper" [perfectScrollbar]="config">
     <div class="dialog-content-wrapper">
         <h1 mat-dialog-title>Create new room</h1>
-
+        <mat-slide-toggle (change)="switchPrivate()">
+            {{!isPublic ? 'Private' : 'Public'}}
+        </mat-slide-toggle>
         <form [formGroup]="addRoomForm">
             <mat-form-field>
                 <label>
                     <input matInput placeholder="Title" formControlName="title" required>
                 </label>
             </mat-form-field>
-
             <div class="part-wrapper">
                 <h2 mat-dialog-title>Participants</h2>
                 <button type="button" mat-button (click)="addParticipant()">
@@ -17,10 +18,8 @@
                     </i>
                 </button>
             </div>
-
             <div formArrayName="participants">
                 <div *ngFor="let item of participants.controls; let pointIndex=index" [formGroupName]="pointIndex">
-
                     <mat-form-field class="part-input">
                         <label>
                             <input matInput [placeholder]="'Participant - ' + (pointIndex + 1)"
@@ -29,7 +28,6 @@
                                    [matAutocomplete]="auto"
                             >
                         </label>
-
                         <mat-autocomplete #auto="matAutocomplete">
                             <mat-option *ngFor="let state of searchedUsers"
                                         [value]="state.name"
@@ -48,7 +46,6 @@
                 </div>
             </div>
         </form>
-
         <div mat-dialog-actions>
             <button mat-button (click)="onNoClick()" class="close-btn">
                 <i class="material-icons">

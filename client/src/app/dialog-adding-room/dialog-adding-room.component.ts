@@ -1,9 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MatDialogRef} from "@angular/material/dialog";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {SocketService} from "../shared/services/socket.service";
-import {User} from "../shared/models/User";
 import {LocalStorageService} from "../shared/services/local-storage.service";
 
 @Component({
@@ -16,7 +15,8 @@ export class DialogAddingRoomComponent implements OnInit {
     public addRoomForm: FormGroup; // form group instance
     public selectedInput: number = null;
     public searchedUsers: any;
-    public userIds = [false];
+    public userIds: any[] = [false];
+    public isPublic = true;
     public config: PerfectScrollbarConfigInterface = {
         wheelSpeed: 0.2,
         scrollingThreshold: 0,
@@ -33,7 +33,7 @@ export class DialogAddingRoomComponent implements OnInit {
             title: ['', [
                 Validators.required,
                 Validators.minLength(3),
-                Validators.maxLength(20),
+                Validators.maxLength(15),
             ]
             ],
             participants: this.fb.array([this.fb.group({name: ['',
@@ -80,6 +80,7 @@ export class DialogAddingRoomComponent implements OnInit {
         this.dialogRef.close({
             roomTitle: this.addRoomForm.get('title').value,
             participants: this.userIds,
+            isPublic: this.isPublic
         });
     }
 
@@ -100,6 +101,10 @@ export class DialogAddingRoomComponent implements OnInit {
     public validateInputs(): boolean {
         this.userIds = this.userIds.filter(userId => userId !== this.me);
         return this.userIds.every(item => !!item) && this.userIds.length > 0;
+    }
+
+    public switchPrivate(): void {
+        this.isPublic = !this.isPublic;
     }
 
 }

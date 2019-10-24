@@ -16,6 +16,7 @@ import {LocalStorageService} from "../../shared/services/local-storage.service";
 })
 export class ChatComponent implements OnInit {
     @ViewChild('search', {static: false}) search: ElementRef;
+
     public rooms: Room[];
     public newMessage: object = {};
     public userLeft: string;
@@ -78,7 +79,7 @@ export class ChatComponent implements OnInit {
         });
     }
 
-    public openDialog(): void {
+    public createRoom(): void {
         const dialogRef = this.dialog.open(DialogAddingRoomComponent, {
             width: '500px',
             height: '650px',

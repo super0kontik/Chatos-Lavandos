@@ -11,7 +11,7 @@
             </mat-list-item>
         </mat-list>
     </div>
-    <perfect-scrollbar [config]="config">
+    <perfect-scrollbar [config]="config" (psYReachStart)="onScrollReachStart()">
         <mat-list class="mt-lst">
             <mat-list-item [ngClass]="{'own': message.creator._id === me ,
             'foreign' : message.creator._id !== me}" *ngFor="let message of messages">
@@ -47,12 +47,13 @@
                      #inputText
                      [id]="currentRoom.title"
                      [appSetReference]="smile"
+                     (keydown.enter)="sendMessage($event)"
                 >
                 </div>
             </perfect-scrollbar>
         </div>
         <div class="wrap-btn">
-            <div class="send-btn" (click)="sendMessage()">
+            <div class="send-btn" (click)="sendMessage($event)">
                 <img style="width: 50px; height: 50px" class="send-img" src="../../../assets/imgs/373675-200.png" alt="">
             </div>
         </div>
