@@ -85,7 +85,14 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             }
         });
 
-        this.messageRequest();
+        if (this.currentRoom._id !== 'common' && this.currentRoom.index === this.tabIndex) {
+            console.log()
+            this.messageRequest()
+                .then(messages => {
+                    this.messages = [...messages, ...this.messages];
+                    this.scrollToBottom();
+                });
+        }
 
         this.socketService.listen('userConnected').subscribe(userId => {
             this.changeUserStatusOnline(true, userId);
@@ -130,12 +137,14 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             if (changes['newMessage']) {
                 if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
                     this.messages.push(changes['newMessage'].currentValue.message);
-                    this.scrollToBottom();
                 }
             }
         }
 
         if (changes['tabIndex']) {
+            if (this.isLoadedTemplate) {
+                this.scrollToBottom();
+            }
             this.coincidenceOfTabIndex();
         }
     }
@@ -153,12 +162,9 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.isLoadedTemplate = true;
     }
 
-    public messageRequest(): void {
-        if (this.currentRoom._id !== 'common') {
-            this.chatService.getRoomContent(this.currentRoom._id, this.messages.length).subscribe(messages => {
-                this.messages = [...messages, ...this.messages];
-            });
-        }
+    public messageRequest(): Promise<any> {
+        console.log('req sent')
+        return this.chatService.getRoomContent(this.currentRoom._id, this.messages.length).toPromise();
     }
 
     public inviteUsers(): void {
@@ -197,6 +203,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
     public scrollToBottom(): void {
         this.componentRef.directiveRef.scrollToBottom();
+        console.log('scrolled to botom')
     }
 
     public openSmiles(): void {
@@ -230,6 +237,10 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     }
 
     public onScrollReachStart(): void {
-        this.messageRequest();
+        console.log('reached start')
+        this.messageRequest()
+            .then(messages => {
+                this.messages = [...messages, ...this.messages];
+            });
     }
 }
