@@ -17,6 +17,10 @@ const roomSchema = new Schema({
     lastAction:{
         type:Date,
         required:true
+    },
+    isPublic:{
+        type:Boolean,
+        default:true
     }
 });
 module.exports = mongoose.model('Room',roomSchema);

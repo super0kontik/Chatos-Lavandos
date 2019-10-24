@@ -88,7 +88,7 @@ module.exports = (server) => {
                     throw new Error('not enough participants')
                 }
                 let room = await Room.create({title: params.roomTitle, users: participants,
-                    creator: socket.decoded_token.id, lastAction: Date.now()});
+                    creator: socket.decoded_token.id, lastAction: Date.now(), isPublic: params.isPublic});
                 room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                 participants = room.users.filter(i=> String(i._id) !== socket.decoded_token.id);
                 socket.join(room._id);
@@ -122,7 +122,7 @@ module.exports = (server) => {
 
         socket.on('joinRoom', async params =>{
             try {
-                let room = await Room.findOne({_id: params.roomId, users:{$ne:socket.decoded_token.id}});
+                let room = await Room.findOne({_id: params.roomId, users:{$ne:socket.decoded_token.id}, isPublic:true});
                 const user = await User.findById(socket.decoded_token.id);
                 if(room && user) {
                     room.users.push(user);
@@ -231,7 +231,7 @@ module.exports = (server) => {
 
         socket.on('searchRooms', async params =>{
             try {
-                const rooms = await Room.find({title: {$regex: '.*' + params + '.*', $options : 'i'}}); //.select('name');
+                const rooms = await Room.find({title: {$regex: '.*' + params + '.*', $options : 'i'}, isPublic:true}); //.select('name');
                 io.to(socket.id).emit('searchRoomsResult', rooms)
             }catch (e){
                 console.log(e)
@@ -244,7 +244,6 @@ module.exports = (server) => {
                 const id = socket.decoded_token.id;
                 const user = await User.findById(id);
                 socket.leave(getUserSocketsRoom(user));
-                //TODO: debug
                 user.socketIds.pull(socket.id);
                 if(user.socketIds.length === 0) {
                     user.isOnline = false;
