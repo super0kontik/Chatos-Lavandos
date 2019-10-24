@@ -74,7 +74,7 @@ module.exports = (server) => {
 
         socket.on('createRoom', async params=>{
             try{
-                if(params.roomTitle.trim().toLowerCase() === 'common'|| params.roomTitle.trim().length < 3){
+                if(params.roomTitle.trim().toLowerCase() === 'common'|| params.roomTitle.trim().length < 3 || params.roomTitle.trim().length > 20){
                     throw new Error('invalid name')
                 }
                 params.participants.push(socket.decoded_token.id);
