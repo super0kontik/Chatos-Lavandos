@@ -86,11 +86,16 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         });
 
         if (this.currentRoom._id !== 'common' && this.currentRoom.index === this.tabIndex) {
-            console.log()
             this.messageRequest()
                 .then(messages => {
                     this.messages = [...messages, ...this.messages];
-                    this.scrollToBottom();
+                })
+                .then(() => {
+                    const to = setTimeout(() => {
+                        this.scrollToBottom();
+                        this.isFirstInit = false;
+                        clearTimeout(to);
+                    }, 400);
                 });
         }
 
@@ -151,9 +156,9 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
     public ngDoCheck(): void {
         if (this.isLoadedTemplate) {
-            if (this.isFirstInit) {
-                this.scrollToBottom();
-            }
+            // if (this.isFirstInit) {
+            //     this.scrollToBottom();
+            // }
             this.coincidenceOfTabIndex();
         }
     }
@@ -163,8 +168,8 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     }
 
     public messageRequest(): Promise<any> {
-        console.log('req sent')
-        return this.chatService.getRoomContent(this.currentRoom._id, this.messages.length).toPromise();
+        return this.chatService.getRoomContent(this.currentRoom._id,
+            this.messages.length < 50 ? 50 : 20).toPromise();
     }
 
     public inviteUsers(): void {
@@ -203,7 +208,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
     public scrollToBottom(): void {
         this.componentRef.directiveRef.scrollToBottom();
-        console.log('scrolled to botom')
     }
 
     public openSmiles(): void {
@@ -230,17 +234,20 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                 room: this.currentRoom._id,
             });
             this.input.nativeElement.innerText = '';
-            setTimeout(() => {
+            const to = setTimeout(() => {
                 this.scrollToBottom();
+                clearTimeout(to);
             }, 250);
         }
     }
 
     public onScrollReachStart(): void {
-        console.log('reached start')
-        this.messageRequest()
-            .then(messages => {
-                this.messages = [...messages, ...this.messages];
-            });
+        if (!this.isFirstInit) {
+            this.messageRequest()
+                .then(messages => {
+                    this.messages = [...messages, ...this.messages];
+                });
+        }
+
     }
 }
