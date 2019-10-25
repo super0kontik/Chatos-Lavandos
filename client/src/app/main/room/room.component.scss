@@ -1,3 +1,12 @@
+.spinner {
+    display: flex;
+    justify-content: center;
+
+    ::ng-deep .mat-progress-spinner circle, .mat-spinner circle{
+        stroke: #b3ade3;
+    }
+}
+
 .room-wrapper {
     display: flex;
     flex-direction: column;
@@ -139,6 +148,7 @@
 .mt-lst {
 
     .sys-message {
+        cursor: pointer;
         margin: 4px 10px 3px 10px;
         background-color: rgba(251, 255, 253, 0.3);
         border-radius: 20px;

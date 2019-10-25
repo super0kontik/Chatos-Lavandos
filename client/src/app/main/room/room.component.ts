@@ -36,12 +36,25 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
 
+    public loadMessage: Message = {
+        room: '',
+        creator: {
+            _id: '0',
+            name: 'me',
+            isOnline: true,
+            isPremium: true,
+            socketId: '1'
+        },
+        createdAt: new Date(),
+        content: 'Load previous messages',
+        _id: '0',
+        isSystemMessage: true
+    };
     public messages: Message[] = [];
     public me: string = '';
     public users: object[] = [];
     public isLoadedTemplate = false;
     public isSmiles = false;
-    public isFirstInit = true;
     public smile: string = '';
     public creator: User;
     public isInit: boolean = false;
@@ -84,18 +97,12 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             }
         });
 
-        if (this.currentRoom._id !== 'common' && this.currentRoom.index === this.tabIndex) {
-            this.messageRequest()
-                .then(messages => {
-                    this.messages = messages;
-        })
-                .then(() => {
-                    const to = setTimeout(() => {
-                        this.scrollToBottom();
-                        this.isFirstInit = false;
-                        clearTimeout(to);
-                    }, 400);
-                });
+        if (this.currentRoom._id !== 'common') {
+            this.messageRequest();
+            const to = setTimeout(() => {
+                this.scrollToBottom();
+                clearTimeout(to);
+            }, 100);
         }
 
         this.socketService.listen('userConnected').subscribe(userId => {
@@ -144,11 +151,11 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                 }
             }
         }
-
         if (changes['tabIndex']) {
-            if (this.isLoadedTemplate) {
+            const to = setTimeout(() => {
                 this.scrollToBottom();
-            }
+                clearTimeout(to);
+            }, 100);
             this.coincidenceOfTabIndex();
         }
     }
@@ -163,53 +170,17 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.isLoadedTemplate = true;
     }
 
-    public messageRequest(): Promise<any> {
+    public messageRequest(scroll?: boolean): void {
         const mesOff = this.messages.length;
         const mesLim = this.messages.length < 50 ? 50 : 20;
-        return this.chatService.getRoomContent(this.currentRoom._id,
-            mesOff , mesLim).toPromise();
-    }
-
-    public inviteUsers(): void {
-        const dialogRef = this.dialog.open(DialogInvitingRoomComponent, {
-            width: '500px',
-            height: '550px',
-            hasBackdrop: true,
-            data: this.currentRoom
+        this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(messages => {
+            this.messages = this.messages.filter(message => message.room !== '');
+            this.messages = [...messages, ...this.messages];
+            this.messages.unshift(this.loadMessage);
         });
-
-        dialogRef.afterClosed().subscribe(data => {
-            this.socketService.emit('inviteUsers', {
-                roomId: data.roomId,
-                participants: data.participants,
-            })
-        });
-    }
-
-    public leaveRoom(): void {
-        this.socketService.emit('leaveRoom', {roomId: this.currentRoom._id});
-        this.leaveFromChat.emit(this.currentRoom._id);
-    }
-
-    public changeUserStatusOnline(connection: boolean, userId: string): void {
-        if (this.users[userId]) {
-            this.users[userId]['online'] = connection;
+        if (scroll) {
+            this.componentRef.directiveRef.scrollToY(600);
         }
-    }
-
-
-    public coincidenceOfTabIndex(): void {
-        if (this.tabIndex === this.currentRoom.index) {
-            this.chatService.currentRoomUsers.next(Object.values(this.users));
-        }
-    }
-
-    public scrollToBottom(): void {
-        this.componentRef.directiveRef.scrollToBottom(0, 0.3);
-    }
-
-    public openSmiles(): void {
-        this.chatService.flipCard.next(true);
     }
 
     public animateSmile(): void {
@@ -239,16 +210,44 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         }
     }
 
-    public onScrollReachStart(): void {
-        if (!this.isFirstInit) {
-            this.messageRequest()
-                .then(messages => {
-                    console.log(this.messages);
-                    this.messages = [...messages, ...this.messages];
-                    this.componentRef.directiveRef.scrollToY(800);
-                    console.log(this.messages);
-                });
+    public coincidenceOfTabIndex(): void {
+        if (this.tabIndex === this.currentRoom.index) {
+            this.chatService.currentRoomUsers.next(Object.values(this.users));
         }
+    }
 
+    public scrollToBottom(): void {
+        this.componentRef.directiveRef.scrollToBottom(0, 0.3);
+    }
+
+    public openSmiles(): void {
+        this.chatService.flipCard.next(true);
+    }
+
+    public inviteUsers(): void {
+        const dialogRef = this.dialog.open(DialogInvitingRoomComponent, {
+            width: '500px',
+            height: '550px',
+            hasBackdrop: true,
+            data: this.currentRoom
+        });
+
+        dialogRef.afterClosed().subscribe(data => {
+            this.socketService.emit('inviteUsers', {
+                roomId: data.roomId,
+                participants: data.participants,
+            })
+        });
+    }
+
+    public leaveRoom(): void {
+        this.socketService.emit('leaveRoom', {roomId: this.currentRoom._id});
+        this.leaveFromChat.emit(this.currentRoom._id);
+    }
+
+    public changeUserStatusOnline(connection: boolean, userId: string): void {
+        if (this.users[userId]) {
+            this.users[userId]['online'] = connection;
+        }
     }
 }
