@@ -13,9 +13,15 @@
     </div>
     <perfect-scrollbar [config]="config" (psYReachStart)="onScrollReachStart()">
         <mat-list class="mt-lst">
-            <mat-list-item [ngClass]="{'own': message.creator._id === me ,
-            'foreign' : message.creator._id !== me}" *ngFor="let message of messages">
-                <span class="message-user">
+            <mat-list-item *ngFor="let message of messages" [ngClass]="{
+                'own': message.creator._id === me && !message.isSystemMessage,
+                'foreign' : message.creator._id !== me && !message.isSystemMessage,
+                'system' : message.isSystemMessage}">
+                <ng-container *ngIf="message.isSystemMessage">
+                    <span class="sys-message"><i>{{message.content}}</i></span>
+                </ng-container>
+                <ng-container *ngIf="!message.isSystemMessage">
+                    <span class="message-user">
                     <ng-container *ngIf="users[message.creator._id] === undefined">
                         <span class="online">Deleted</span>
                         <span>
@@ -31,10 +37,13 @@
                         </span>
                     </ng-container>
                 </span>
-                <p class="message-text">
-                    {{message.content}}
-                </p>
-                <small class="message-date">{{message.createdAt | date: 'HH:MM:ss | dd.MM'}}</small>
+                    <p class="message-text">
+                        {{message.content}}
+                    </p>
+                    <small class="message-date">{{message.createdAt | date: 'HH:mm:ss | dd.MM' : ''}}</small>
+                </ng-container>
+
+
             </mat-list-item>
         </mat-list>
     </perfect-scrollbar>

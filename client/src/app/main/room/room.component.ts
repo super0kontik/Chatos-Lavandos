@@ -46,7 +46,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     public creator: User;
     public isInit: boolean = false;
     public config: PerfectScrollbarConfigInterface = {
-        wheelSpeed: 0.2,
         scrollingThreshold: 0,
     };
 
@@ -88,8 +87,8 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         if (this.currentRoom._id !== 'common' && this.currentRoom.index === this.tabIndex) {
             this.messageRequest()
                 .then(messages => {
-                    this.messages = [...messages, ...this.messages];
-                })
+                    this.messages = messages;
+        })
                 .then(() => {
                     const to = setTimeout(() => {
                         this.scrollToBottom();
@@ -156,9 +155,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
     public ngDoCheck(): void {
         if (this.isLoadedTemplate) {
-            // if (this.isFirstInit) {
-            //     this.scrollToBottom();
-            // }
             this.coincidenceOfTabIndex();
         }
     }
@@ -168,8 +164,10 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     }
 
     public messageRequest(): Promise<any> {
+        const mesOff = this.messages.length;
+        const mesLim = this.messages.length < 50 ? 50 : 20;
         return this.chatService.getRoomContent(this.currentRoom._id,
-            this.messages.length < 50 ? 50 : 20).toPromise();
+            mesOff , mesLim).toPromise();
     }
 
     public inviteUsers(): void {
@@ -207,7 +205,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     }
 
     public scrollToBottom(): void {
-        this.componentRef.directiveRef.scrollToBottom();
+        this.componentRef.directiveRef.scrollToBottom(0, 0.3);
     }
 
     public openSmiles(): void {
@@ -245,7 +243,10 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         if (!this.isFirstInit) {
             this.messageRequest()
                 .then(messages => {
+                    console.log(this.messages);
                     this.messages = [...messages, ...this.messages];
+                    this.componentRef.directiveRef.scrollToY(800);
+                    console.log(this.messages);
                 });
         }
 

@@ -142,10 +142,10 @@ module.exports = (server) => {
                     });
                     const content = `${user.name} joined the room!`;
                     const contentEncrypted = crypto.AES.encrypt(validator.escape(content), MESSAGE_KEY).toString();
-                    await Message.create({createdAt: Date.now(), room: params.roomId, content: contentEncrypted});
+                    await Message.create({createdAt: Date.now(), room: params.roomId, content: contentEncrypted, isSystemMessage:true,creator: user});
                     io.to(getUserSocketsRoom(user)).emit('newRoom', room);
                     io.to(params.roomId).emit('userJoined', {user, roomId: params.roomId});
-                    return io.to(params.roomId).emit('newMessage', {message:{content, createdAt:Date.now(), isSystemMessage:true}, room: params.roomId })
+                    return io.to(params.roomId).emit('newMessage', {message:{content, createdAt:Date.now(), isSystemMessage:true,creator: user}, room: params.roomId })
                 }
                 throw new Error('Not allowed');
             }catch (e){
@@ -172,8 +172,8 @@ module.exports = (server) => {
                     });
                     const content = `${user.name} left the room(`;
                     const contentEncrypted = crypto.AES.encrypt(validator.escape(content), MESSAGE_KEY).toString();
-                    await Message.create({createdAt: Date.now(), room: params.roomId, content: contentEncrypted});
-                    io.to(params.roomId).emit('newMessage', {message:{content, createdAt:Date.now(), isSystemMessage:true}, room: params.roomId });
+                    await Message.create({createdAt: Date.now(), room: params.roomId, content: contentEncrypted, isSystemMessage:true,creator: user});
+                    io.to(params.roomId).emit('newMessage', {message:{content, createdAt:Date.now(), isSystemMessage:true,creator:user}, room: params.roomId });
 
                     if(room.users.length === 1){
                         const lastUser = await room.populate('users').execPopulate();
@@ -227,8 +227,8 @@ module.exports = (server) => {
                 const newParticipantsNames = participants.map(i=>i.name);
                 const content = `${invitator.name} invited ${newParticipantsNames.join(', ')}`;
                 const contentEncrypted = crypto.AES.encrypt(validator.escape(content), MESSAGE_KEY).toString();
-                await Message.create({createdAt: Date.now(), room: params.roomId, isSystemMessage:true, content: contentEncrypted});
-                io.to(params.roomId).emit('newMessage', {message:{content, createdAt, isSystemMessage:true}, room: params.roomId });
+                await Message.create({createdAt: Date.now(), room: params.roomId, isSystemMessage:true,creator: invitator, content: contentEncrypted});
+                io.to(params.roomId).emit('newMessage', {message:{content, createdAt, isSystemMessage:true,creator: invitator}, room: params.roomId });
                 room.lastAction = Date.now();
                 await room.save()
             }catch (e){

@@ -14,8 +14,8 @@ export class ChatService {
     constructor(private http: HttpClient) {
     }
 
-    public getRoomContent(id: string, offset?: number): Observable<Message[]> {
-        return this.http.get<Message[]>(`${config.API_URL}/roomContent/${id}?offset=${offset}`);
+    public getRoomContent(id: string, offset?: number, limit?: number): Observable<Message[]> {
+        return this.http.get<Message[]>(`${config.API_URL}/roomContent/${id}?offset=${offset}&limit=${limit}`);
     }
 
 }
