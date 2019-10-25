@@ -14,6 +14,10 @@ const messageSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'Room'
     },
-    content:String
+    content:String,
+    isSystemMessage:{
+        type: Boolean,
+        default: false
+    }
 });
 module.exports = mongoose.model('Message',messageSchema);
