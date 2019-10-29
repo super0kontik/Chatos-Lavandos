@@ -92,7 +92,7 @@ module.exports = (server) => {
                 if(participants.length<2){
                     throw new Error('not enough participants')
                 }
-                let room = await Room.create({title: params.roomTitle, users: participants,
+                let room = await Room.create({title: validator.escape(params.roomTitle), users: participants,
                     creator: socket.decoded_token.id, lastAction: Date.now(), isPublic: params.isPublic});
                 room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
                 participants = room.users.filter(i=> String(i._id) !== socket.decoded_token.id);
@@ -233,7 +233,75 @@ module.exports = (server) => {
                 await room.save()
             }catch (e){
                 console.log(e);
-                io.to(socket.id).emit('error', {type: e })
+                io.to(socket.id).emit('error', {type: e.message})
+            }
+        });
+
+        
+        socket.on('renameRoom', async params =>{
+            try {
+                const roomId = params.roomId;
+                const roomTitle = validator.escape(String(params.roomTitle).trim());
+                if(!roomId || roomTitle.length < 3 || roomTitle.length > 20){
+                    throw new Error('Invalid data')
+                }
+                await Room.findOne({id: roomId, creator: req.decoded.id});
+                if (!room) {
+                    throw new Error("Room not found or you don't have permission")
+                }
+                await room.update({title: roomTitle});
+                const content = `Room renamed to ${roomTitle}`;
+                const contentEncrypted = crypto.AES.encrypt(validator.escape(content), MESSAGE_KEY).toString();
+                await Message.create({createdAt: Date.now(), room: params.roomId, isSystemMessage:true, content: contentEncrypted,
+                    creator: socket.decoded_token.id});
+                const user = await User.findById(socket.decoded_token.id);
+                io.to(params.roomId).emit('roomRename',{id:roomId,title:roomTitle});
+                return io.to(params.roomId).emit('newMessage', {message:{content, createdAt:Date.now(), isSystemMessage:true,creator: user},
+                    room: params.roomId })
+            }catch(e) {
+                console.log(e);
+                io.to(socket.id).emit('error', {type: e.message})
+            }
+        });
+
+
+        socket.on('privacyChange', async params =>{
+            try {
+                const roomId = params.roomId;
+                const roomPublicity = Boolean(params.roomPublicity);
+                if(!roomId || roomPublicity === undefined){
+                    throw new Error('Invalid data')
+                }
+                await Room.findOne({id: roomId, creator: socket.decoded_token.id});
+                if (!room) {
+                    throw new Error("Room not found or you don't have permission")
+                }
+                await room.update({isPublic: roomPublicity});
+                const content = `Room is now ${roomPublicity? 'public': 'private'}`;
+                const contentEncrypted = crypto.AES.encrypt(validator.escape(content), MESSAGE_KEY).toString();
+                await Message.create({createdAt: Date.now(), room: params.roomId, isSystemMessage:true,
+                    content: contentEncrypted, creator: socket.decoded_token.id});
+                const user = await User.findById(socket.decoded_token.id);
+                io.to(params.roomId).emit('privacyChanged',{id:roomId, isPublic: roomPublicity});
+                return io.to(params.roomId).emit('newMessage', {message:{content, createdAt:Date.now(), isSystemMessage:true,creator: user},
+                    room: params.roomId })
+            }catch(e){
+                console.log(e);
+                io.to(socket.id).emit('error', {type: e.message})
+            }
+        });
+
+
+        socket.on('roomDelete', async params =>{
+            try {
+                const res = await Room.deleteOne({id: params.roomId, creator: socket.decoded_token.id});
+                if (res.ok !== 1 || res.n < 1) {
+                    throw new Error("Room not found or you don't have permission")
+                }
+                io.to(params.roomId).emit('roomDeleted',{id:roomId});
+            }catch(e){
+                console.log(e);
+                io.to(socket.id).emit('error', {type: e.message})
             }
         });
 
