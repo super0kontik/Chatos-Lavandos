@@ -24,7 +24,6 @@ export class SmilesComponent implements OnInit {
 
     public sendToInput(event): void {
         document.querySelector('div.composer_rich_textarea')['innerText'] += event.target.innerText;
-        //this.chatService.sendSmile.next(event.target.innerText);
     }
 
 }

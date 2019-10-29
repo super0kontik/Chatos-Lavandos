@@ -25,7 +25,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     public ngOnInit(): void {
         this.chatService.flipCard.subscribe(() => {
             if (this.isLoaded) {
-                this.flipCardToggler();
+                this.flipCardToggle();
             }
         });
     }
@@ -34,7 +34,7 @@ export class MainComponent implements OnInit, AfterViewInit {
         this.isLoaded = true;
     }
 
-    public flipCardToggler() {
+    public flipCardToggle() {
         if (!this.isFlipped) {
             this.card.nativeElement.style.transform = 'rotateY(180deg)';
             this.isFlipped = true;

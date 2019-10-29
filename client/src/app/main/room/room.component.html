@@ -9,16 +9,28 @@
             <mat-list-item matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="leaveRoom()">Leave from chat
                 <mat-icon>play_for_work</mat-icon>
             </mat-list-item>
+            <mat-divider vertical *ngIf="currentRoom.creator._id === me"></mat-divider>
+            <mat-list-item matRipple
+                           [matRippleColor]="'rgba(51, 51, 70, 0.2)'"
+                           (click)="roomSettings()"
+                           *ngIf="currentRoom.creator._id === me"
+            >Settings
+                <mat-icon>settings</mat-icon>
+            </mat-list-item>
         </mat-list>
     </div>
-    <perfect-scrollbar [config]="config" >
+    <perfect-scrollbar [config]="config">
         <mat-list class="mt-lst">
             <mat-list-item *ngFor="let message of messages" [ngClass]="{
                 'own': message.creator._id === me && !message.isSystemMessage,
                 'foreign' : message.creator._id !== me && !message.isSystemMessage,
                 'system' : message.isSystemMessage}">
                 <ng-container *ngIf="message.isSystemMessage">
-                    <span class="sys-message" (click)="message.room === '' ? messageRequest(true) : false"><i>{{message.content}}</i></span>
+                    <span class="sys-message"
+                          (click)="message.room === '' ? messageRequest(true) : false"
+                    >
+                        <i>{{message.content}}</i>
+                    </span>
                 </ng-container>
                 <ng-container *ngIf="!message.isSystemMessage">
                     <span class="message-user">
@@ -30,20 +42,20 @@
                     </ng-container>
                     <ng-container *ngIf="users[message.creator._id] !== undefined">
                         <span class="online" *ngIf="users[message.creator._id].online">Online</span>
-                        <span [ngClass]="{'premium': users[message.creator._id].premium}">
-                            <span *ngIf="users[message.creator._id].premium">👑</span>
-                            {{users[message.creator._id].name}}
-                            <span *ngIf="users[message.creator._id].premium">👑</span>
-                        </span>
-                    </ng-container>
-                </span>
+                            <span [ngClass]="{'premium': users[message.creator._id].premium}">
+                                <span *ngIf="users[message.creator._id].premium">👑</span>
+                                {{users[message.creator._id].name}}
+                                <span *ngIf="users[message.creator._id].premium">👑</span>
+                            </span>
+                        </ng-container>
+                    </span>
                     <p class="message-text">
                         {{message.content}}
                     </p>
-                    <small class="message-date">{{message.createdAt | date: 'HH:mm:ss | dd.MM' : ''}}</small>
+                    <small class="message-date">
+                        {{message.createdAt | date: 'HH:mm:ss | dd.MM' : ''}}
+                    </small>
                 </ng-container>
-
-
             </mat-list-item>
         </mat-list>
 
@@ -64,7 +76,8 @@
         </div>
         <div class="wrap-btn">
             <div class="send-btn" (click)="sendMessage($event)">
-                <img style="width: 50px; height: 50px" class="send-img" src="../../../assets/imgs/373675-200.png" alt="">
+                <img style="width: 50px; height: 50px" class="send-img" src="../../../assets/imgs/373675-200.png"
+                     alt="">
             </div>
         </div>
         <div class="wrap-btn" (click)="openSmiles()">

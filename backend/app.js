@@ -57,7 +57,6 @@ app.use((req,res, next)=>{
 app.get('/roomContent/:id',async (req,res)=>{
     try {
         const limit = +req.query.limit || 50;
-        console.log(+req.query.offset, +req.query.limit);
         if(req.params.id.trim().length <2 || req.query.offset === undefined || +req.query.offset < 0 || limit === undefined || limit < 0){
             throw new Error('invalid data')
         }

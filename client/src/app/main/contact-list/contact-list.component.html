@@ -3,7 +3,7 @@
         <p>Participants</p>
     </div>
     <ng-container *ngIf="!isDisplayed">
-        <perfect-scrollbar [scrollIndicators]="true" [config]="config">
+        <perfect-scrollbar [config]="config">
             <mat-list>
                 <mat-list-item *ngFor="let item of list; let i=index">
                     <i class="material-icons" *ngIf="item.online">brightness_1</i>

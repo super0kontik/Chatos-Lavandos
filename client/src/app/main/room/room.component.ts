@@ -21,6 +21,8 @@ import {LocalStorageService} from "../../shared/services/local-storage.service";
 import {User} from "../../shared/models/User";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogInvitingRoomComponent} from "../../dialog-inviting-room/dialog-inviting-room.component";
+import {EmojifyPipe} from "angular-emojify";
+import {DialogRoomSettingsComponent} from "../../dialog-room-settings/dialog-room-settings.component";
 
 @Component({
     selector: 'app-room',
@@ -35,6 +37,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
+    private emoji: EmojifyPipe = new EmojifyPipe();
 
     public loadMessage: Message = {
         room: '',
@@ -102,7 +105,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             const to = setTimeout(() => {
                 this.scrollToBottom();
                 clearTimeout(to);
-            }, 100);
+            }, 200);
         }
 
         this.socketService.listen('userConnected').subscribe(userId => {
@@ -179,7 +182,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             this.messages.unshift(this.loadMessage);
         });
         if (scroll) {
-            this.componentRef.directiveRef.scrollToY(600);
+            this.componentRef.directiveRef.scrollToY(1600);
         }
     }
 
@@ -198,8 +201,9 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             if (e.code === 'Enter') {
                 e.preventDefault();
             }
+            const transformedMessage = this.emoji.transform(this.input.nativeElement.innerText);
             this.socketService.emit('createMessage', {
-                message: this.input.nativeElement.innerText,
+                message: transformedMessage,
                 room: this.currentRoom._id,
             });
             this.input.nativeElement.innerText = '';
@@ -233,10 +237,12 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         });
 
         dialogRef.afterClosed().subscribe(data => {
-            this.socketService.emit('inviteUsers', {
-                roomId: data.roomId,
-                participants: data.participants,
-            })
+            if (data) {
+                this.socketService.emit('inviteUsers', {
+                    roomId: data.roomId,
+                    participants: data.participants,
+                });
+            }
         });
     }
 
@@ -245,7 +251,41 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.leaveFromChat.emit(this.currentRoom._id);
     }
 
-    public changeUserStatusOnline(connection: boolean, userId: string): void {
+    public roomSettings(): void {
+        const curRoom = Object.assign({}, this.currentRoom);
+        const dialogRef = this.dialog.open(DialogRoomSettingsComponent, {
+            width: '500px',
+            height: '550px',
+            hasBackdrop: true,
+            data: curRoom
+        });
+
+        dialogRef.afterClosed().subscribe(data => {
+            if (data && this.currentRoom.index === this.tabIndex) {
+                if (data.delete === undefined) {
+                    if (data.title !== this.currentRoom.title) {
+                        this.socketService.emit('renameRoom', {
+                            roomId: data._id,
+                            roomTitle: data.title
+                        })
+                    }
+                    if (data.isPublic !== this.currentRoom.isPublic) {
+                        this.socketService.emit('privacyChange', {
+                            roomId: data._id,
+                            roomPublicity: data.isPublic,
+                        })
+                    }
+                } else {
+                    this.socketService.emit('roomDelete', {
+                        roomId: data.roomId
+                    })
+                }
+
+            }
+        })
+    }
+
+    private changeUserStatusOnline(connection: boolean, userId: string): void {
         if (this.users[userId]) {
             this.users[userId]['online'] = connection;
         }

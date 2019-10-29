@@ -245,8 +245,8 @@ module.exports = (server) => {
                 if(!roomId || roomTitle.length < 3 || roomTitle.length > 20){
                     throw new Error('Invalid data')
                 }
-                await Room.findOne({id: roomId, creator: req.decoded.id});
-                if (!room) {
+                const room = await Room.findById(roomId);
+                if (!room || String(room.creator) !== socket.decoded_token.id) {
                     throw new Error("Room not found or you don't have permission")
                 }
                 await room.update({title: roomTitle});
@@ -272,8 +272,8 @@ module.exports = (server) => {
                 if(!roomId || roomPublicity === undefined){
                     throw new Error('Invalid data')
                 }
-                await Room.findOne({id: roomId, creator: socket.decoded_token.id});
-                if (!room) {
+                const room = await Room.findById(roomId);
+                if (!room || String(room.creator) !== socket.decoded_token.id) {
                     throw new Error("Room not found or you don't have permission")
                 }
                 await room.update({isPublic: roomPublicity});
@@ -294,11 +294,12 @@ module.exports = (server) => {
 
         socket.on('roomDelete', async params =>{
             try {
-                const res = await Room.deleteOne({id: params.roomId, creator: socket.decoded_token.id});
-                if (res.ok !== 1 || res.n < 1) {
-                    throw new Error("Room not found or you don't have permission")
+                const room = await Room.findById(params.roomId);
+                if(!room || String(room.creator) !== socket.decoded_token.id){
+                    throw new Error ("Room not found or you don't have permission")
                 }
-                io.to(params.roomId).emit('roomDeleted',{id:roomId});
+                room.remove();
+                io.to(params.roomId).emit('roomDeleted',{id:params.roomId});
             }catch(e){
                 console.log(e);
                 io.to(socket.id).emit('error', {type: e.message})

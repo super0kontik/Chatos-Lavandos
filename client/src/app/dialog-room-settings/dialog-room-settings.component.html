@@ -1,0 +1,53 @@
+<div class="dialog-wrapper" [perfectScrollbar]="config">
+    <div class="dialog-content-wrapper">
+
+        <h1 mat-dialog-title >
+            <span contenteditable="true" #title>{{room.title}}</span>
+            <mat-icon matRipple>edit</mat-icon>
+        </h1>
+            <mat-slide-toggle [checked]="!room.isPublic" (change)="switchPrivate()">
+                {{!room.isPublic ? 'Private' : 'Public'}}
+            </mat-slide-toggle>
+        <mat-divider></mat-divider>
+        <div class="part-wrapper">
+            <h2 mat-dialog-title>Participants</h2>
+        </div>
+        <div class="part-list" *ngFor="let user of room.users">
+            <span>{{user.name}}</span>
+            <button type="button" mat-button (click)="deleteParticipant(user._id)">
+                <i class="material-icons">
+                    delete
+                </i>
+            </button>
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button (click)="onNoClick()" class="close-btn">
+                <i class="material-icons">
+                    clear
+                </i>
+            </button>
+            <button mat-button (click)="onUpdate()" class="create-btn">Update</button>
+            <button mat-button (click)="deleteConfirm()" class="create-btn">Delete</button>
+            <div class="deleting-area" *ngIf="delete">
+                <mat-form-field>
+                    <input matInput type="text" [placeholder]="'Enter title of room to confirm'" #input>
+                </mat-form-field>
+                <button type="button" mat-button [disabled]="input.value !== room.title" (click)="onDelete()">
+                    <i class="material-icons">
+                        check
+                    </i>
+                </button>
+                <button type="button" mat-button (click)="deleteConfirm()">
+                    <i class="material-icons">
+                        close
+                    </i>
+                </button>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+

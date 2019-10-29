@@ -2,7 +2,7 @@
     <div class="title">
         <p>👑SMILES👑</p>
     </div>
-    <perfect-scrollbar [scrollIndicators]="true" [config]="config">
+    <perfect-scrollbar [config]="config">
         <div class="smiles-list">
             <div class="smile-item" *ngFor="let smile of smiles" (click)="sendToInput($event)">
                 {{smile}}

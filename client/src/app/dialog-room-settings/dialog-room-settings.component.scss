@@ -26,9 +26,20 @@
     }
 
     h1 {
+
         font-family: "Montserrat Alternates", sans-serif;
         text-align: center;
         font-size: 28px;
+
+        span {
+            outline: none;
+            text-decoration: none;
+            margin-right: 25px;
+        }
+
+        mat-icon {
+            cursor: pointer;
+        }
     }
 
     .part-wrapper {
@@ -37,6 +48,17 @@
 
         h2 {
             margin-right: 20px;
+        }
+    }
+
+    .part-list {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        align-items: center;
+
+        span {
+            margin-left: 15px;
         }
     }
 
@@ -65,10 +87,17 @@
         right: 10px;
     }
 
+    .deleting-area {
+        mat-form-field {
+            margin-right: 15px;
+        }
+    }
+
     .create-btn {
         font-size: 25px !important;
         font-weight: 300;
         padding: 5px 20px;
+        margin-bottom: 20px;
     }
 
     ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button{

@@ -14,32 +14,35 @@ import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {PERFECT_SCROLLBAR_CONFIG} from 'ngx-perfect-scrollbar';
 import {PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
 
-import {LoaderComponent} from "./shared/components/loader/loader.component";
 import {MainComponent} from './main/main.component';
 import {HeaderComponent} from './header/header.component';
 import {ChatComponent} from './main/chat/chat.component';
 import {ContactListComponent} from './main/contact-list/contact-list.component';
 import {RoomComponent} from './main/room/room.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import { SmilesComponent } from './main/smiles/smiles.component';
+import {SmilesComponent} from './main/smiles/smiles.component';
 import {MatCardModule} from "@angular/material/card";
-import { AuthComponent } from './auth/auth.component';
+import {AuthComponent} from './auth/auth.component';
 import {TokenInterceptor} from "./shared/classes/token.interceptor";
-import { SetReferenceDirective } from './shared/directives/set-reference.directive';
-import { SignInComponent } from './sign-in/sign-in.component';
+import {SetReferenceDirective} from './shared/directives/set-reference.directive';
+import {SignInComponent} from './sign-in/sign-in.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
-import { DialogAddingRoomComponent } from './dialog-adding-room/dialog-adding-room.component';
-import { DialogInvitationComponent } from './dialog-invitation/dialog-invitation.component';
+import {DialogAddingRoomComponent} from './dialog-adding-room/dialog-adding-room.component';
+import {DialogInvitationComponent} from './dialog-invitation/dialog-invitation.component';
 import {MatChipsModule} from "@angular/material/chips";
 import {MatIconModule} from "@angular/material/icon";
+import {EmojifyModule} from "angular-emojify";
 import {MatRippleModule} from "@angular/material/core";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import { RoomListComponent } from './main/room-list/room-list.component';
-import { DialogInvitingRoomComponent } from './dialog-inviting-room/dialog-inviting-room.component';
-import { SearchPipe } from './shared/pipes/search.pipe';
+import {RoomListComponent} from './main/room-list/room-list.component';
+import {DialogInvitingRoomComponent} from './dialog-inviting-room/dialog-inviting-room.component';
+import {SearchPipe} from './shared/pipes/search.pipe';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { DialogRoomSettingsComponent } from './dialog-room-settings/dialog-room-settings.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -48,7 +51,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 @NgModule({
     declarations: [
         AppComponent,
-        LoaderComponent,
         MainComponent,
         HeaderComponent,
         ChatComponent,
@@ -63,6 +65,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         RoomListComponent,
         DialogInvitingRoomComponent,
         SearchPipe,
+        DialogRoomSettingsComponent,
     ],
     imports: [
         BrowserModule,
@@ -85,12 +88,16 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatRippleModule,
         MatAutocompleteModule,
         MatSlideToggleModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        EmojifyModule,
+        MatCheckboxModule,
+        MatButtonToggleModule
     ],
     entryComponents: [
         DialogAddingRoomComponent,
         DialogInvitationComponent,
-        DialogInvitingRoomComponent
+        DialogInvitingRoomComponent,
+        DialogRoomSettingsComponent,
     ],
     providers: [
         {
