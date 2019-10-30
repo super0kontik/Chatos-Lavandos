@@ -1,14 +1,25 @@
 <div class="main-wrapper">
-    <app-chat></app-chat>
-    <div class="flip-card">
-        <div class="flip-card-inner" #cardInner>
-            <div class="flip-card-front">
-                <app-contact-list [isDisplayed]="isFlipped" ></app-contact-list>
-            </div>
-            <div class="flip-card-back">
-                <app-smiles></app-smiles>
+    <div id="contextmenu-control">
+        <div id="contextmenutarget">
+            <app-chat></app-chat>
+            <div class="flip-card">
+                <div class="flip-card-inner" #cardInner>
+                    <div class="flip-card-front">
+                        <app-contact-list [isDisplayed]="isFlipped"></app-contact-list>
+                    </div>
+                    <div class="flip-card-back">
+                        <app-smiles></app-smiles>
+                    </div>
+                </div>
             </div>
         </div>
+        <ejs-contextmenu #contextmenu
+                         target='#contextmenutarget'
+                         [items]='menuItems'
+                         (select)="onSelect($event)"
+                         (beforeItemRender)="addDisabled($event)"
+                         (created)='onCreated()'>
+        </ejs-contextmenu>
     </div>
 </div>
 

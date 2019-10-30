@@ -69,7 +69,7 @@ export class ChatComponent implements OnInit {
             this.socketService.listen('roomDeleted').subscribe(data => {
                 this.rooms = this.rooms.filter(room => room._id !== data.id);
             });
-            console.log(1)
+
             this.socketService.listen('roomRename').subscribe(data => {
                 this.rooms = this.rooms.map(room => {
                     if (room._id === data.id) {

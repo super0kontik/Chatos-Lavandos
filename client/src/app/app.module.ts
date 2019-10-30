@@ -40,9 +40,12 @@ import {DialogInvitingRoomComponent} from './dialog-inviting-room/dialog-invitin
 import {SearchPipe} from './shared/pipes/search.pipe';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import { DialogRoomSettingsComponent } from './dialog-room-settings/dialog-room-settings.component';
+import {DialogRoomSettingsComponent} from './dialog-room-settings/dialog-room-settings.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {ContextMenuComponent} from './context-menu/context-menu.component';
+import {MenuDirective} from './shared/directives/menu.directive';
+import {ContextMenuModule} from "@syncfusion/ej2-angular-navigations";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -66,6 +69,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DialogInvitingRoomComponent,
         SearchPipe,
         DialogRoomSettingsComponent,
+        ContextMenuComponent,
+        MenuDirective,
     ],
     imports: [
         BrowserModule,
@@ -91,7 +96,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatProgressSpinnerModule,
         EmojifyModule,
         MatCheckboxModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        ContextMenuModule
     ],
     entryComponents: [
         DialogAddingRoomComponent,
