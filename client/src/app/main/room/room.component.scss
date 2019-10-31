@@ -3,7 +3,7 @@
     justify-content: center;
 
     ::ng-deep .mat-progress-spinner circle, .mat-spinner circle{
-        stroke: #b3ade3;
+        stroke: #be7911;
     }
 }
 
@@ -41,6 +41,7 @@
 
                 mat-icon {
                     margin-left: 15px;
+                    color: #f3a311;
                 }
 
                 &:hover {
@@ -155,13 +156,14 @@
     .sys-message {
         cursor: pointer;
         margin: 4px 10px 3px 10px;
-        background-color: rgba(251, 255, 253, 0.3);
+        background-color: rgba(251, 255, 253, 0.12);
         border-radius: 20px;
         max-width: 40% !important;
         height: auto !important;
         padding: 5px 15px 5px 10px;
         text-align: center;
-        color: #b3ade3;
+        font-weight: 300;
+        color: white;
     }
 
     ::ng-deep .mat-list-item {
@@ -208,7 +210,7 @@
     .online {
         user-select: none;
         filter: drop-shadow(0 0px 5px #000000);
-        color: #becfff;
+        color: #ff6162;
         border-radius: 50px;
         padding: 0px 5px 0px 5px;
     }

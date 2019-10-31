@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~8.2.0",
     "@angular/platform-browser-dynamic": "~8.2.0",
     "@angular/router": "~8.2.0",
+    "@fortawesome/angular-fontawesome": "^0.5.0",
     "@ng-bootstrap/ng-bootstrap": "^5.1.1",
     "@syncfusion/ej2": "^17.3.21",
     "@syncfusion/ej2-angular-navigations": "^17.3.21",

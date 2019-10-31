@@ -45,6 +45,19 @@ export class ChatComponent implements OnInit {
             });
 
             this.socketService.listen('newMessage').subscribe(data => {
+                let currTab = '';
+                for (let i = 0; i < this.rooms.length; i++) {
+                    if (this.currentTabIndex === this.rooms[i].index) {
+                        currTab = this.rooms[i]._id;
+                    }
+                }
+                const firstRoomId = data.room;
+                let tempRooms = this.rooms.map(i => i._id);
+                tempRooms = Array.from(new Set([firstRoomId, ...tempRooms]));
+                this.rooms = tempRooms.map((item, index) => {
+                    return {...this.rooms.find(i => i._id === item), index}
+                });
+                this.selectedTab = this.rooms.filter(room => room._id === currTab)[0].index;
                 this.newMessage = data;
             });
 
@@ -81,7 +94,7 @@ export class ChatComponent implements OnInit {
             });
 
             this.socketService.listen('privacyChanged').subscribe(data => {
-                this.rooms =  this.rooms.map(room => {
+                this.rooms = this.rooms.map(room => {
                     if (room._id === data.id) {
                         room.isPublic = data.isPublic;
                     }

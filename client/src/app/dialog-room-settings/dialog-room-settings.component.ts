@@ -15,6 +15,7 @@ export class DialogRoomSettingsComponent implements OnInit {
     @ViewChild('title', {static: false}) title: ElementRef;
 
     private me = LocalStorageService.getUser()['id'];
+    public removedUserIds: string[] = [];
     public isPublic = true;
     public delete: boolean = false;
     public config: PerfectScrollbarConfigInterface = {
@@ -28,11 +29,12 @@ export class DialogRoomSettingsComponent implements OnInit {
     ) {}
 
     public ngOnInit() {
+        this.room.users = this.room.users.filter(user => user._id !== this.me);
     }
 
     public onUpdate(): void {
         this.room.title = this.title.nativeElement.innerText;
-        this.dialogRef.close(this.room);
+        this.dialogRef.close({...this.room, deletedUsers: this.removedUserIds});
     }
 
     public onDelete(): void {
@@ -43,6 +45,7 @@ export class DialogRoomSettingsComponent implements OnInit {
     }
 
     public deleteParticipant(id: string): void {
+        this.removedUserIds.push(id);
         this.room.users = this.room.users.filter(user => user._id !== id);
     }
 

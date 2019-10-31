@@ -37,8 +37,8 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
-    private emoji: EmojifyPipe = new EmojifyPipe();
 
+    private emoji: EmojifyPipe = new EmojifyPipe();
     public loadMessage: Message = {
         room: '',
         creator: {
@@ -81,6 +81,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                     online: user.isOnline,
                     premium: user.isPremium,
                     creator: this.currentRoom.creator._id === user._id,
+                    userId: user._id
                 };
             });
         } else {
@@ -89,6 +90,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                     name: user.name,
                     online: user.isOnline,
                     premium: user.isPremium,
+                    userId: user._id
                 };
             });
         }
@@ -179,7 +181,9 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(messages => {
             this.messages = this.messages.filter(message => message.room !== '');
             this.messages = [...messages, ...this.messages];
-            this.messages.unshift(this.loadMessage);
+            if (this.messages.length > 50) {
+                this.messages.unshift(this.loadMessage);
+            }
         });
         if (scroll) {
             this.componentRef.directiveRef.scrollToY(1600);
@@ -274,6 +278,14 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                             roomId: data._id,
                             roomPublicity: data.isPublic,
                         })
+                    }
+                    if (data.deletedUsers.length > 0) {
+                        data.deletedUsers.forEach(userId => {
+                            this.socketService.emit('deleteParticipant', {
+                                roomId: data._id,
+                                deletedUserId: userId,
+                            });
+                        });
                     }
                 } else {
                     this.socketService.emit('roomDelete', {

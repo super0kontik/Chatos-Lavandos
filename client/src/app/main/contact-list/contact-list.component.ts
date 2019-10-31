@@ -1,20 +1,16 @@
 import {
-    AfterViewInit,
     Component,
-    ComponentFactoryResolver,
     Input,
     OnInit,
     ViewChild,
-    ViewContainerRef
 } from '@angular/core';
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {SocketService} from "../../shared/services/socket.service";
 import {ChatService} from "../../shared/services/chat.service";
 import {AuthService} from "../../shared/services/auth.service";
-//import {ContextMenuComponent} from "../../context-menu/context-menu.component";
-import {MenuDirective} from "../../shared/directives/menu.directive";
+import {MenuEventArgs, MenuItemModel} from "@syncfusion/ej2-navigations";
 import {Browser} from "@syncfusion/ej2-base";
-import {ContextMenuComponent, MenuEventArgs, MenuItemModel} from '@syncfusion/ej2-angular-navigations';
+import {ContextMenuComponent} from "@syncfusion/ej2-angular-navigations";
 
 
 @Component({
@@ -22,12 +18,11 @@ import {ContextMenuComponent, MenuEventArgs, MenuItemModel} from '@syncfusion/ej
     templateUrl: './contact-list.component.html',
     styleUrls: ['./contact-list.component.scss']
 })
-export class ContactListComponent implements OnInit, AfterViewInit {
+export class ContactListComponent implements OnInit {
     @Input() isDisplayed: boolean;
-    @ViewChild(MenuDirective, {static: false}) menu: MenuDirective;
-
-    public componentFactory: any;
-    public menuComponent: any;
+    @ViewChild('contextmenu', {static: false}) public contextmenu: ContextMenuComponent;
+    public content: string = '';
+    public lastSelectedContactId: number;
     public list: object[] = [];
     public roomId: string = '';
     public config: PerfectScrollbarConfigInterface = {
@@ -38,7 +33,6 @@ export class ContactListComponent implements OnInit, AfterViewInit {
     constructor(private socketService: SocketService,
                 private chatService: ChatService,
                 private authService: AuthService,
-                private comFacRes: ComponentFactoryResolver,
     ) {
     }
 
@@ -48,20 +42,48 @@ export class ContactListComponent implements OnInit, AfterViewInit {
                 this.list = users;
             });
         }
-        //this.componentFactory = this.comFacRes.resolveComponentFactory(ContextMenuComponent);
-
     }
 
-    public ngAfterViewInit(): void {
-        //this.menuComponent = this.menu.viewContainerRef;
+    public addDisabled(args: MenuEventArgs) {
+        if (args.item.text === 'Link') {
+            args.element.classList.add('e-disabled');
+        }
     }
 
-    // public onContextMenu(e): void {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     this.menuComponent.clear();
-    //     const contextM = this.menuComponent.createComponent(this.componentFactory);
-    //     browser.context.menu
-    //     contextM.instance.setPosition(e.offsetX + 30, e.offsetY + 90);
-    // }
+    public menuItems: MenuItemModel[] = [
+        {
+            id: 'invite',
+            text: 'Invite to the chat',
+            iconCss: 'e-cm-icons e-add'
+        },
+        {
+            separator: true
+        },
+        {
+            id: 'ban',
+            text: 'Add to blacklist',
+            iconCss: 'e-cm-icons e-ban'
+        }];
+
+    public onCreated(): void {
+        if (Browser.isDevice) {
+            this.content = 'Touch hold to open the ContextMenu';
+            this.contextmenu.animationSettings.effect = 'ZoomIn';
+        } else {
+            this.content = 'Right click / Touch hold to open the ContextMenu';
+            this.contextmenu.animationSettings.effect = 'SlideDown';
+        }
+    }
+
+    public onSelect(e): void {
+        if (e.item.properties.id === 'invite') {
+            console.log(`User with id: ${this.lastSelectedContactId} was invited`);
+        } else if (e.item.properties.id === 'ban') {
+            console.log(`User with id: ${this.lastSelectedContactId} was banned`);
+        }
+    }
+
+    public onContactRightClick(user: object): void {
+        this.lastSelectedContactId = user['userId'];
+    }
 }

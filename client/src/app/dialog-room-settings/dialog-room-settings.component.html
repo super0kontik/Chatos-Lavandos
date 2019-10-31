@@ -1,13 +1,13 @@
 <div class="dialog-wrapper" [perfectScrollbar]="config">
     <div class="dialog-content-wrapper">
 
-        <h1 mat-dialog-title >
+        <h1 mat-dialog-title>
             <span contenteditable="true" #title>{{room.title}}</span>
             <mat-icon matRipple>edit</mat-icon>
         </h1>
-            <mat-slide-toggle [checked]="!room.isPublic" (change)="switchPrivate()">
-                {{!room.isPublic ? 'Private' : 'Public'}}
-            </mat-slide-toggle>
+        <mat-slide-toggle [checked]="!room.isPublic" (change)="switchPrivate()">
+            {{!room.isPublic ? 'Private' : 'Public'}}
+        </mat-slide-toggle>
         <mat-divider></mat-divider>
         <div class="part-wrapper">
             <h2 mat-dialog-title>Participants</h2>
@@ -43,7 +43,6 @@
                     </i>
                 </button>
             </div>
-
 
 
         </div>

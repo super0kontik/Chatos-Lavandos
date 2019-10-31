@@ -1,9 +1,7 @@
 .main-wrapper {
-
     display: flex;
     height: 88.4%;
-    background: rgb(51, 51, 70);
-    box-shadow: 0 0 15px black;
+    background: #273038;
 }
 
 app-chat {
@@ -20,7 +18,7 @@ app-smiles {
 
 .flip-card {
     width: 20%;
-    background-color: rgb(51, 51, 70);
+    background-color: #273038;
     perspective: 1000px; /* Remove this if you don't want the 3D effect */
 }
 
@@ -32,6 +30,7 @@ app-smiles {
     text-align: center;
     transition: transform 0.8s;
     transform-style: preserve-3d;
+    box-shadow:  0 0 30px black;
 }
 
 /* Do an horizontal flip when you move the mouse over the flip box container */
@@ -59,145 +58,3 @@ app-smiles {
     transform: rotateY(180deg);
 }
 
-
-.e-cm-icons {
-    font-family: 'e-context-menu';
-    font-style: normal;
-    font-variant: normal;
-    font-weight: normal;
-    line-height: 1;
-    text-transform: none;
-}
-
-#contextmenutarget {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    display: flex;
-}
-
-#contextmenu-control {
-    width: 100%;
-    height: 100%;
-}
-
-@media only screen and (max-width: 500px) {
-    #contextmenu-control {
-        margin: 5% 10%;
-        width: auto;
-    }
-
-    #contextmenutarget {
-        line-height: 19;
-        font-size: 12px;
-    }
-}
-/* custom code end*/
-.e-menu-item .e-cut::before {
-    content: '\e264';
-}
-
-.e-menu-item .e-paste::before {
-    content: '\e959';
-}
-
-.e-menu-item .e-font::before {
-    content: '\e262';
-}
-
-.e-menu-item .e-copy::before {
-    content: '\e263';
-}
-
-.e-menu-item .e-link::before {
-    content: '\e265';
-}
-
-.e-menu-item .e-comment::before {
-    content: '\e267';
-}
-
-.e-menu-item .e-pastetext::before {
-    content: '\e261';
-}
-
-.e-menu-item .e-pastespecial::before {
-    content: '\e260';
-}
-
-.fabric .e-menu-item .e-cut::before {
-    content: '\e251';
-}
-
-.fabric .e-menu-item .e-paste::before {
-    content: '\e940';
-}
-
-.fabric .e-menu-item .e-font::before {
-    content: '\e252';
-}
-
-.fabric .e-menu-item .e-copy::before {
-    content: '\e255';
-}
-
-.fabric .e-menu-item .e-link::before {
-    content: '\e254';
-}
-
-.fabric .e-menu-item .e-comment::before {
-    content: '\e253';
-}
-
-.fabric .e-menu-item .e-pastetext::before {
-    content: '\e258';
-}
-
-.fabric .e-menu-item .e-pastespecial::before {
-    content: '\e256';
-}
-
-.bootstrap .e-menu-item .e-cut::before {
-    content: '\e248';
-}
-
-.bootstrap .e-menu-item .e-paste::before {
-    content: '\e95a';
-}
-
-.bootstrap .e-menu-item .e-font::before {
-    content: '\e247';
-}
-
-.bootstrap .e-menu-item .e-copy::before {
-    content: '\e249';
-}
-
-.bootstrap .e-menu-item .e-link::before {
-    content: '\e245';
-}
-
-.bootstrap .e-menu-item .e-comment::before {
-    content: '\e246';
-}
-
-.bootstrap .e-menu-item .e-pastetext::before {
-    content: '\e257';
-}
-
-.bootstrap .e-menu-item .e-pastespecial::before {
-    content: '\e259';
-}
-
-.e-contextmenu-wrapper {
-    height: 0;
-    width: 0;
-}
-
-.e-contextmenu-wrapper ul.e-contextmenu {
-    width: 176px;
-}
-
-.e-bigger .e-contextmenu-wrapper ul.e-contextmenu {
-    width: 186px;
-}

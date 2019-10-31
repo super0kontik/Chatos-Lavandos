@@ -2,10 +2,13 @@
     <div class="list-title">
         <p>Participants</p>
     </div>
-            <ng-container *ngIf="!isDisplayed">
-                <perfect-scrollbar [config]="config">
+    <ng-container *ngIf="!isDisplayed">
+        <perfect-scrollbar [config]="config">
+            <div id="contextmenu-control">
+                <div id="contextmenutarget">
                     <mat-list>
-                        <mat-list-item *ngFor="let item of list; let i=index">
+                        <mat-list-item *ngFor="let item of list; let i=index"
+                                       (contextmenu)="onContactRightClick(item)">
                             <i class="material-icons" *ngIf="item.online">brightness_1</i>
                             <i class="material-icons" *ngIf="item['creator']">
                                 person
@@ -14,9 +17,18 @@
                             <mat-divider></mat-divider>
 
                         </mat-list-item>
+                        <ejs-contextmenu #contextmenu
+                                         target='#contextmenutarget'
+                                         [items]='menuItems'
+                                         (select)="onSelect($event)"
+                                         (beforeItemRender)="addDisabled($event)"
+                                         (created)='onCreated()'>
+                        </ejs-contextmenu>
                     </mat-list>
-                </perfect-scrollbar>
-            </ng-container>
+                </div>
+            </div>
+        </perfect-scrollbar>
+    </ng-container>
 
 </div>
 

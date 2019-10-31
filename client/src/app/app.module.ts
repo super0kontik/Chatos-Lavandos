@@ -46,6 +46,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {ContextMenuComponent} from './context-menu/context-menu.component';
 import {MenuDirective} from './shared/directives/menu.directive';
 import {ContextMenuModule} from "@syncfusion/ej2-angular-navigations";
+import {MatBadgeModule} from "@angular/material/badge";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -97,7 +98,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         EmojifyModule,
         MatCheckboxModule,
         MatButtonToggleModule,
-        ContextMenuModule
+        ContextMenuModule,
+        MatBadgeModule
     ],
     entryComponents: [
         DialogAddingRoomComponent,
