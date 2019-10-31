@@ -178,8 +178,8 @@ module.exports = (server) => {
                     if(room.users.length === 1){
                         const lastUser = await room.populate('users').execPopulate();
                         io.to(getUserSocketsRoom(lastUser.users[0])).emit('userLeft', {userId: lastUser.users[0]._id, roomId: params.roomId});
-                        lastUser.users[0].socketIds.forEach(i=>{
-                            const socket = io.sockets.connected[i];
+                        lastUser.users[0].socketIds.forEach(socketId=>{
+                            const socket = io.sockets.connected[socketId];
                             if(socket){
                                 socket.leave(params.roomId)
                             }
@@ -294,18 +294,58 @@ module.exports = (server) => {
 
         socket.on('roomDelete', async params =>{
             try {
-                const room = await Room.findById(params.roomId);
+                const room = await Room.findById(params.roomId).populate('users');
                 if(!room || String(room.creator) !== socket.decoded_token.id){
                     throw new Error ("Room not found or you don't have permission")
                 }
-                room.remove();
+
                 io.to(params.roomId).emit('roomDeleted',{id:params.roomId});
+                room.users.forEach(user=>{
+                    user.socketIds.forEach(socketId =>{
+                        const socket = io.sockets.connected[socketId];
+                        if(socket){
+                            socket.leave(params.roomId)
+                        }
+                    });
+                });
+                await room.remove();
             }catch(e){
                 console.log(e);
                 io.to(socket.id).emit('error', {type: e.message})
             }
         });
 
+        socket.on('deleteParticipant', async params =>{
+            try{
+                const room = await Room.findById(params.roomId).populate('creator');
+                if(!room || String(room.creator._id) !== socket.decoded_token.id){
+                    throw new Error ("Room not found or you don't have permission")
+                }
+                const deletedUserId = room.users.find(i=> String(i) === params.deletedUserId);
+                if(!deletedUserId){
+                    throw new Error('User is not in the room')
+                }
+                room.users.pull(deletedUserId);
+                await room.save();
+                const deletedUser = await User.findById(deletedUserId);
+                const content = `${room.creator.name} deleted ${deletedUser.name} from the room`;
+                const contentEncrypted = crypto.AES.encrypt(validator.escape(content), MESSAGE_KEY).toString();
+                await Message.create({createdAt: Date.now(), room: params.roomId, isSystemMessage:true,
+                    content: contentEncrypted, creator: socket.decoded_token.id});
+                io.to(params.roomId).emit('userLeft', {userId: deletedUser._id, roomId: params.roomId});
+                deletedUser.socketIds.forEach(socketId =>{
+                    const socket = io.sockets.connected[socketId];
+                    if(socket){
+                        socket.leave(params.roomId)
+                    }
+                });
+                return io.to(params.roomId).emit('newMessage', {message:{content, createdAt:Date.now(), isSystemMessage:true,creator: room.creator},
+                    room: params.roomId })
+            }catch(e){
+                console.log(e);
+                io.to(socket.id).emit('error', {type: e.message})
+            }
+        });
 
         socket.on('searchUsers', async params =>{
             try {
