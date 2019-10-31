@@ -18,6 +18,7 @@ passport.use(
                 name: user.name,
                 isPremium: user.isPremium,
                 token: token,
+                blacklist: user.blacklist
             });
         }catch (e){
             throw new Error(e.message)

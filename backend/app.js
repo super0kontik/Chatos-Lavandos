@@ -34,7 +34,7 @@ app.get(
 app.get(
     '/auth/callback',
     passport.authenticate('google', { failureRedirect: '/' }),(req, res) => {
-        res.redirect(`${API_URL}/auth?token=${req.user.token}&id=${req.user.id}&name=${req.user.name}&isPremium=true`)
+        res.redirect(`${API_URL}/auth?token=${req.user.token}&id=${req.user.id}&name=${req.user.name}&blacklist=${JSON.stringify(req.user.blacklist)}&isPremium=true`)
     }
 );
 
@@ -54,7 +54,7 @@ app.use((req,res, next)=>{
     });
 });
 
-app.get('/roomContent/:id',async (req,res)=>{
+app.get('/roomContent/:id', async (req,res)=>{
     try {
         const limit = +req.query.limit || 50;
         if(req.params.id.trim().length <2 || req.query.offset === undefined || +req.query.offset < 0 || limit === undefined || limit < 0){
@@ -77,6 +77,48 @@ app.get('/roomContent/:id',async (req,res)=>{
     }catch(e){
         console.log(e);
         res.status(500).send('error')
+    }
+});
+
+app.post('/blacklist', async (req,res)=>{
+    try {
+        let blacklistOwner = await User.findById(req.decoded.id);
+        if(!blacklistOwner){
+            throw new Error('Your account not found')
+        }
+        const blacklistedUser = await User.findById(req.body.blacklistedId);
+        if(!blacklistedUser){
+            throw new Error('User not found')
+        }
+        const isInBlacklist = !!blacklistOwner.blacklist.find(i=> String(i) === req.body.blacklistedId);
+        if(isInBlacklist){
+            throw new Error('User is already in blacklist')
+        }
+        blacklistOwner.blacklist.push(req.body.blacklistedId);
+        blacklistOwner = await blacklistOwner.save();
+        res.send(blacklistOwner.blacklist);
+    }catch (e){
+        console.log(e);
+        res.status(500).send(e.message)
+    }
+});
+
+app.delete('/blacklist', async (req,res)=>{
+    try {
+        let blacklistOwner = await User.findById(req.decoded.id);
+        if(!blacklistOwner){
+            throw new Error('Your account not found')
+        }
+        const isInBlacklist = !!blacklistOwner.blacklist.find(i=> String(i) === req.body.blacklistedId);
+        if(!isInBlacklist){
+            throw new Error('User is not in blacklist')
+        }
+        blacklistOwner.blacklist.pull(req.body.blacklistedId);
+        blacklistOwner = await blacklistOwner.save();
+        res.send(blacklistOwner.blacklist);
+    }catch (e){
+        console.log(e);
+        res.status(500).send(e.message)
     }
 });
 

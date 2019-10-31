@@ -18,6 +18,9 @@ const userSchema = new Schema({
         type:Boolean,
         default: false
     },
-
+    blacklist:[{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    }]
 });
 module.exports = mongoose.model('User',userSchema);

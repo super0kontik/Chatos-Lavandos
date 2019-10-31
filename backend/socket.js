@@ -87,7 +87,8 @@ module.exports = (server) => {
                 participants = await User.find({
                     _id:{
                         $in:participants
-                    }
+                    },
+                    blacklist:{$ne:socket.decoded_token.id}
                 });
                 if(participants.length<2){
                     throw new Error('not enough participants')
@@ -204,7 +205,8 @@ module.exports = (server) => {
                 participants = await User.find({
                     _id:{
                         $in:participants
-                    }
+                    },
+                    blacklist:{$ne:socket.decoded_token.id}
                 });
                 const invitator = participants.find(i=> String(i._id) === socket.decoded_token.id);
                 participants = participants.filter(user => {
@@ -350,7 +352,9 @@ module.exports = (server) => {
         socket.on('searchUsers', async params =>{
             try {
                 const users = await User.find({name: {$regex: '.*' + params + '.*', $options : 'i'},
-                    _id:{$ne:socket.decoded_token.id}});
+                    _id:{$ne:socket.decoded_token.id},
+                    blacklist:{$ne:socket.decoded_token.id}
+                });
                 io.to(socket.id).emit('searchResult', users)
             }catch (e){
                 console.log(e)
