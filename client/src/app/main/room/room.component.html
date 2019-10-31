@@ -25,40 +25,15 @@
                 'own': message.creator._id === me && !message.isSystemMessage,
                 'foreign' : message.creator._id !== me && !message.isSystemMessage,
                 'system' : message.isSystemMessage}">
-                <ng-container *ngIf="message.isSystemMessage">
-                    <span class="sys-message"
-                          (click)="message.room === '' ? messageRequest(true) : false"
+                <div class="message-item">
+                    <app-message-item [message]="message"
+                                      [users]="users"
+                                      (loadRequest)="messageRequest($event)"
                     >
-                        <i>{{message.content}}</i>
-                    </span>
-                </ng-container>
-                <ng-container *ngIf="!message.isSystemMessage">
-                    <span class="message-user">
-                    <ng-container *ngIf="users[message.creator._id] === undefined">
-                        <span class="online">Deleted</span>
-                        <span>
-                            {{message.creator.name}}
-                        </span>
-                    </ng-container>
-                    <ng-container *ngIf="users[message.creator._id] !== undefined">
-                        <span class="online" *ngIf="users[message.creator._id].online">Online</span>
-                            <span [ngClass]="{'premium': users[message.creator._id].premium}">
-                                <span *ngIf="users[message.creator._id].premium">👑</span>
-                                {{users[message.creator._id].name}}
-                                <span *ngIf="users[message.creator._id].premium">👑</span>
-                            </span>
-                        </ng-container>
-                    </span>
-                    <p class="message-text">
-                        {{message.content}}
-                    </p>
-                    <small class="message-date">
-                        {{message.createdAt | date: 'HH:mm:ss | dd.MM' : ''}}
-                    </small>
-                </ng-container>
+                    </app-message-item>
+                </div>
             </mat-list-item>
         </mat-list>
-
     </perfect-scrollbar>
 
     <div class="input-area">

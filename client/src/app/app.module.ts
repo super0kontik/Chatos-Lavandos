@@ -47,6 +47,7 @@ import {ContextMenuComponent} from './context-menu/context-menu.component';
 import {MenuDirective} from './shared/directives/menu.directive';
 import {ContextMenuModule} from "@syncfusion/ej2-angular-navigations";
 import {MatBadgeModule} from "@angular/material/badge";
+import { MessageItemComponent } from './main/room/message-item/message-item.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -72,6 +73,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DialogRoomSettingsComponent,
         ContextMenuComponent,
         MenuDirective,
+        MessageItemComponent,
     ],
     imports: [
         BrowserModule,
