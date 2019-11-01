@@ -17,13 +17,15 @@
                             <mat-divider></mat-divider>
 
                         </mat-list-item>
-                        <ejs-contextmenu #contextmenu
-                                         target='#contextmenutarget'
-                                         [items]='menuItems'
-                                         (select)="onSelect($event)"
-                                         (beforeItemRender)="addDisabled($event)"
-                                         (created)='onCreated()'>
-                        </ejs-contextmenu>
+                            <ejs-contextmenu
+                                #contextmenu
+                                target='#contextmenutarget'
+                                [items]='menuItems'
+                                (select)="onSelect($event)"
+                                (beforeItemRender)="addDisabled($event)"
+                                (created)='onCreated()'
+                            >
+                            </ejs-contextmenu>
                     </mat-list>
                 </div>
             </div>

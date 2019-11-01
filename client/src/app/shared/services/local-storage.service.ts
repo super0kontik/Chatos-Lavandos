@@ -20,6 +20,14 @@ export class LocalStorageService {
         return user ? JSON.parse(localStorage.getItem('user'))['token'] : false;
     }
 
+    public static getBlacklist(): string[] {
+        return JSON.parse(localStorage.getItem('user'))['blacklist'];
+    }
+
+    public static setBlacklist(blacklistIds: string[]): void {
+        localStorage.setItem('blacklist', JSON.stringify(blacklistIds));
+    }
+
     public static logout(): void {
         localStorage.removeItem('user');
     }

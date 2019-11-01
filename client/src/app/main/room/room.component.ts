@@ -34,12 +34,12 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     @Input() newMessage: object | boolean;
     @Input() tabIndex: number;
     @Output() leaveFromChat: EventEmitter<any> = new EventEmitter<any>();
-    @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
+    @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
 
     private emoji: EmojifyPipe = new EmojifyPipe();
-    public loadMessage: Message = {
+    private loadMessage: Message = {
         room: '',
         creator: {
             _id: '0',
@@ -53,23 +53,21 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         _id: '0',
         isSystemMessage: true
     };
+    private isLoadedTemplate: boolean = false;
+    private isInit: boolean = false;
+    public isSmiles: boolean = false;
     public messages: Message[] = [];
-    public me: string = '';
-    public users: object[] = [];
-    public isLoadedTemplate = false;
-    public isSmiles = false;
-    public smile: string = '';
     public creator: User;
-    public isInit: boolean = false;
+    public me: string = '';
+    public smile: string = '';
+    public users: object[] = [];
     public config: PerfectScrollbarConfigInterface = {
         scrollingThreshold: 0,
     };
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
-                public dialog: MatDialog
-    ) {
-    }
+                public dialog: MatDialog) {}
 
     public ngOnInit(): void {
         this.me = LocalStorageService.getUser()['id'];
@@ -94,6 +92,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                 };
             });
         }
+
         this.coincidenceOfTabIndex();
 
         this.chatService.flipCard.subscribe((flag) => {

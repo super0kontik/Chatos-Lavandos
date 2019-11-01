@@ -22,6 +22,7 @@ export class AuthComponent implements OnInit {
     public ngOnInit(): void {
         this.user = this.route.snapshot.queryParams;
         LocalStorageService.setUser(JSON.stringify(this.user));
+        LocalStorageService.setBlacklist(this.user['blacklist']);
         this.socketService.connect();
         this.authService.user.next(this.user);
         this.router.navigate(['/chat']);

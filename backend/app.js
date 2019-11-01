@@ -11,6 +11,7 @@ const {API_URL,MESSAGE_KEY, SECRET_WORD} = require('./config/config');
 const crypto = require('crypto-js');
 const jwt = require('jsonwebtoken');
 const fingerprint = require('express-fingerprint');
+const User = require('./models/user');
 
 app.use(bp.json());
 app.use(bp.urlencoded({extended:false}));

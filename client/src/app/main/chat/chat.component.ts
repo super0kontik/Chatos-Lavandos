@@ -8,7 +8,6 @@ import {DialogAddingRoomComponent} from "../../dialog-adding-room/dialog-adding-
 import {DialogInvitationComponent} from "../../dialog-invitation/dialog-invitation.component";
 import {LocalStorageService} from "../../shared/services/local-storage.service";
 
-
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
@@ -20,11 +19,10 @@ export class ChatComponent implements OnInit {
     public rooms: Room[];
     public newMessage: object = {};
     public userLeft: string;
-    public currentTabIndex: number = 0;
-    public isRoomList: boolean = false;
-
-    public selectedTab: number;
     public me: string;
+    public currentTabIndex: number = 0;
+    public selectedTab: number;
+    public isRoomList: boolean = false;
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
