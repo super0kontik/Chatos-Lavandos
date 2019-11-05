@@ -11,16 +11,12 @@ import {SocketService} from "../shared/services/socket.service";
 })
 export class HeaderComponent implements OnInit{
     public signButton: boolean = true;
-    public user: object = {
-        name: '',
-    };
+    public user: object = {name: ''};
     public isUser: boolean = false;
 
     constructor(private authService: AuthService,
                 private router: Router,
-                private socketService: SocketService
-                ) {
-    }
+                private socketService: SocketService) {}
 
     public ngOnInit(): void {
         this.authService.user.subscribe(user => {
@@ -45,13 +41,10 @@ export class HeaderComponent implements OnInit{
     }
 
     public logOut(): void {
-        console.log(1);
         this.signButton = true;
         LocalStorageService.logout();
         this.isUser = false;
         this.socketService.disconnect();
         this.router.navigate(['/auth']);
-
     }
-
 }

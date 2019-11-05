@@ -12,15 +12,11 @@ export class SocketService {
     public readonly uri: string = 'http://localhost:8080';
     public isConnected: boolean = false;
 
-    constructor(private authService: AuthService) {
-
-    }
+    constructor(private authService: AuthService) {}
 
     public connect(): void {
         if (this.authService.isAuthenticated() && !this.isConnected) {
-            this.socket = io(this.uri, {
-                query: `token=${LocalStorageService.getToken()}`,
-            });
+            this.socket = io(this.uri, {query: `token=${LocalStorageService.getToken()}`});
             this.isConnected = true;
         } else {
             console.log('Unauthorized');

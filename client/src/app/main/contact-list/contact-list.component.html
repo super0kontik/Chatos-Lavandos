@@ -7,15 +7,11 @@
             <div id="contextmenu-control">
                 <div id="contextmenutarget">
                     <mat-list>
-                        <mat-list-item *ngFor="let item of list; let i=index"
-                                       (contextmenu)="onContactRightClick(item)">
-                            <i class="material-icons" *ngIf="item.online">brightness_1</i>
-                            <i class="material-icons" *ngIf="item['creator']">
-                                person
-                            </i>
+                        <mat-list-item *ngFor="let item of list" (contextmenu)="onContactRightClick(item)">
+                            <mat-icon *ngIf="item.online">brightness_1</mat-icon>
+                            <mat-icon *ngIf="item['creator']">person</mat-icon>
                             <p class="contact-list-item" [ngClass]="{'creator': item['creator']}">{{item.name}}</p>
                             <mat-divider></mat-divider>
-
                         </mat-list-item>
                             <ejs-contextmenu
                                 #contextmenu
@@ -23,16 +19,11 @@
                                 [items]='menuItems'
                                 (select)="onSelect($event)"
                                 (beforeItemRender)="addDisabled($event)"
-                                (created)='onCreated()'
-                            >
+                                (created)='onCreated()'>
                             </ejs-contextmenu>
                     </mat-list>
                 </div>
             </div>
         </perfect-scrollbar>
     </ng-container>
-
 </div>
-
-<!--<ng-template appMenu>-->
-<!--</ng-template>-->

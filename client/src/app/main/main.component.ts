@@ -1,8 +1,7 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ChatService} from "../shared/services/chat.service";
 import {AuthService} from "../shared/services/auth.service";
 import {SocketService} from "../shared/services/socket.service";
-
 import {ContextMenuComponent} from "@syncfusion/ej2-angular-navigations";
 
 @Component({
@@ -12,16 +11,14 @@ import {ContextMenuComponent} from "@syncfusion/ej2-angular-navigations";
 })
 export class MainComponent implements OnInit, AfterViewInit {
     @ViewChild('cardInner', {static: false}) card: ElementRef;
+    @ViewChild('contextmenu', {static: false}) public contextmenu: ContextMenuComponent;
     public isFlipped: boolean = false;
     public isLoaded: boolean = false;
     public content: string = '';
 
-    @ViewChild('contextmenu', {static: false}) public contextmenu: ContextMenuComponent;
-
     constructor(private chatService: ChatService,
                 private authService: AuthService,
-                private socketService: SocketService
-                ) {
+                private socketService: SocketService) {
         if (this.authService.isAuthenticated()) {
             this.socketService.connect();
         }
@@ -39,7 +36,7 @@ export class MainComponent implements OnInit, AfterViewInit {
         this.isLoaded = true;
     }
 
-    public flipCardToggle() {
+    public flipCardToggle(): void {
         if (!this.isFlipped) {
             this.card.nativeElement.style.transform = 'rotateY(180deg)';
             this.isFlipped = true;
@@ -47,11 +44,5 @@ export class MainComponent implements OnInit, AfterViewInit {
             this.card.nativeElement.style.transform = '';
             this.isFlipped = false;
         }
-    }
-
-
-
-    onSelect(e): void {
-        console.log(e);
     }
 }

@@ -14,8 +14,8 @@
                 <app-room [currentRoom]="room"
                           [newMessage]="newMessage"
                           [tabIndex]="currentTabIndex"
-                          (leaveFromChat)="leaveRoom($event)"
-                ></app-room>
+                          (leaveFromChat)="leaveRoom($event)">
+                </app-room>
             </mat-tab>
         </ng-container>
         <ng-container *ngIf="isRoomList">

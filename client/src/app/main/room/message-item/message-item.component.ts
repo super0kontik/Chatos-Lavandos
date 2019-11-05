@@ -11,13 +11,10 @@ export class MessageItemComponent implements OnInit {
     @Input() message: Message;
     @Input() users: any[];
     @Output() loadRequest: EventEmitter<any> = new EventEmitter<any>();
-
     public me: string = '';
 
-    constructor() {
-    }
+    public ngOnInit(): void {
 
-    ngOnInit() {
         this.me = LocalStorageService.getUser()['id'];
     }
 

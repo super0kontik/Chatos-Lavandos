@@ -6,11 +6,9 @@ import {Directive, ElementRef, Input, OnChanges} from '@angular/core';
 export class SetReferenceDirective implements OnChanges{
     @Input('appSetReference') text: string;
 
-    constructor(private el: ElementRef) {
-    }
+    constructor(private el: ElementRef) {}
 
     public ngOnChanges(): void {
         this.el.nativeElement.innerText += this.text;
     }
-
 }

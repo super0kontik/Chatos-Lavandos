@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Route, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {LocalStorageService} from "../shared/services/local-storage.service";
 import {AuthService} from "../shared/services/auth.service";
 import {SocketService} from "../shared/services/socket.service";
 
 @Component({
     selector: 'app-auth',
-    templateUrl: './auth.component.html',
-    styleUrls: ['./auth.component.scss']
+    template: '',
 })
 export class AuthComponent implements OnInit {
     public user: object;
@@ -15,9 +14,7 @@ export class AuthComponent implements OnInit {
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private authService: AuthService,
-                private socketService: SocketService
-                ) {
-    }
+                private socketService: SocketService) {}
 
     public ngOnInit(): void {
         this.user = this.route.snapshot.queryParams;
@@ -27,5 +24,4 @@ export class AuthComponent implements OnInit {
         this.authService.user.next(this.user);
         this.router.navigate(['/chat']);
     }
-
 }

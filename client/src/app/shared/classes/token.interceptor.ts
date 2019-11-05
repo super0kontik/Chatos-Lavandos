@@ -8,18 +8,15 @@ import {LocalStorageService} from "../services/local-storage.service";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-	constructor(
-		private  auth: AuthService,
-		private router: Router,
-	) {
-	}
+	constructor(private auth: AuthService,
+		        private router: Router) {}
 
 	public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		if (this.auth.isAuthenticated()) {
 			req = req.clone({
 				setHeaders: {
-					Authorization: `Bearer ${LocalStorageService.getToken()}`,
-				},
+				    Authorization: `Bearer ${LocalStorageService.getToken()}`
+                },
 			});
 		}
 		return next.handle(req).pipe(

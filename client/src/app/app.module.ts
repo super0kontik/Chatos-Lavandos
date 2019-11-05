@@ -1,7 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from "./app-routing.module";
-
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatTabsModule} from "@angular/material/tabs";
@@ -13,7 +12,6 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {PERFECT_SCROLLBAR_CONFIG} from 'ngx-perfect-scrollbar';
 import {PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
-
 import {MainComponent} from './main/main.component';
 import {HeaderComponent} from './header/header.component';
 import {ChatComponent} from './main/chat/chat.component';
@@ -43,11 +41,9 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {DialogRoomSettingsComponent} from './dialog-room-settings/dialog-room-settings.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
-import {ContextMenuComponent} from './context-menu/context-menu.component';
-import {MenuDirective} from './shared/directives/menu.directive';
 import {ContextMenuModule} from "@syncfusion/ej2-angular-navigations";
 import {MatBadgeModule} from "@angular/material/badge";
-import { MessageItemComponent } from './main/room/message-item/message-item.component';
+import {MessageItemComponent} from './main/room/message-item/message-item.component';
 import {NguiParallaxScrollModule} from "@ngui/parallax-scroll";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -72,8 +68,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DialogInvitingRoomComponent,
         SearchPipe,
         DialogRoomSettingsComponent,
-        ContextMenuComponent,
-        MenuDirective,
         MessageItemComponent,
     ],
     imports: [

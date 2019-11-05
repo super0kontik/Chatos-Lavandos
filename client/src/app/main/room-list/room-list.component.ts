@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {SocketService} from "../../shared/services/socket.service";
-import {log} from "util";
 
 @Component({
     selector: 'app-room-list',
@@ -11,17 +10,13 @@ import {log} from "util";
 })
 export class RoomListComponent implements OnInit {
     @Input() rooms: Room[];
-    public searchedRooms: Room[];
     @Output() onSelectedRoom: EventEmitter<any> = new EventEmitter<any>();
+    public searchedRooms: Room[];
     public searchText: string = '';
     public isSearchRoomList: boolean = false;
-    public config: PerfectScrollbarConfigInterface = {
-        wheelSpeed: 0.2,
-        scrollingThreshold: 0,
-    };
+    public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
 
-    constructor(private socketService: SocketService) {
-    }
+    constructor(private socketService: SocketService) {}
 
     public ngOnInit(): void {
         this.socketService.listen('searchRoomsResult').subscribe(rooms => {

@@ -14,8 +14,7 @@
                            [matRippleColor]="'rgba(51, 51, 70, 0.2)'"
                            (click)="roomSettings()"
                            *ngIf="currentRoom.creator._id === me"
-            >Settings
-                <mat-icon>settings</mat-icon>
+            >Settings<mat-icon>settings</mat-icon>
             </mat-list-item>
         </mat-list>
     </div>
@@ -62,9 +61,3 @@
         </div>
     </div>
 </div>
-
-<ng-template #loader>
-    <div class="spinner" *ngIf="currentRoom._id !== 'common'">
-        <mat-spinner></mat-spinner>
-    </div>
-</ng-template>

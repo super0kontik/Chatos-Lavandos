@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
@@ -7,11 +7,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
     styleUrls: ['./dialog-invitation.component.scss']
 })
 export class DialogInvitationComponent {
-
     constructor(public dialogRef: MatDialogRef<DialogInvitationComponent>,
-                @Inject(MAT_DIALOG_DATA) public data
-    ) {
-    }
+                @Inject(MAT_DIALOG_DATA) public data) {}
 
     public onAgree(): void {
         this.dialogRef.close({

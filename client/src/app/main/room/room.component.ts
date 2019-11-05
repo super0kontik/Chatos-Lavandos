@@ -61,9 +61,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     public me: string = '';
     public smile: string = '';
     public users: object[] = [];
-    public config: PerfectScrollbarConfigInterface = {
-        scrollingThreshold: 0,
-    };
+    public config: PerfectScrollbarConfigInterface = {scrollingThreshold: 0};
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
@@ -180,16 +178,14 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(messages => {
             this.messages = this.messages.filter(message => message.room !== '');
             this.messages = [...messages, ...this.messages];
-            if (this.messages.length > 50) {
-                this.messages.unshift(this.loadMessage);
-            }
+            this.messages.unshift(this.loadMessage);
         });
         if (scroll) {
             this.componentRef.directiveRef.scrollToY(1600);
         }
     }
 
-    public animateSmile(): void {
+    private animateSmile(): void {
         if (!this.isSmiles) {
             this.smileImg.nativeElement.style.filter = 'invert(100%) drop-shadow(0px 5px 5px black)';
             this.isSmiles = true;
@@ -217,13 +213,13 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         }
     }
 
-    public coincidenceOfTabIndex(): void {
+    private coincidenceOfTabIndex(): void {
         if (this.tabIndex === this.currentRoom.index) {
             this.chatService.currentRoomUsers.next(Object.values(this.users));
         }
     }
 
-    public scrollToBottom(): void {
+    private scrollToBottom(): void {
         this.componentRef.directiveRef.scrollToBottom(0, 0.3);
     }
 

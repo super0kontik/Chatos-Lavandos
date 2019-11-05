@@ -22,38 +22,13 @@ import {LocalStorageService} from "../../shared/services/local-storage.service";
 export class ContactListComponent implements OnInit {
     @Input() isDisplayed: boolean;
     @ViewChild('contextmenu', {static: false}) public contextmenu: ContextMenuComponent;
+    private me: string = LocalStorageService.getUser()['id'];
     public content: string = '';
     public lastSelectedContactId: string = '';
     public list: object[] = [];
     public blacklist: string[] = [];
     public roomId: string = '';
-    public config: PerfectScrollbarConfigInterface = {
-        wheelSpeed: 0.2,
-        scrollingThreshold: 0,
-    };
-
-    constructor(private socketService: SocketService,
-                private chatService: ChatService,
-                private authService: AuthService,
-    ) {
-    }
-
-    public ngOnInit(): void {
-        if (this.authService.isAuthenticated()) {
-            this.blacklist = LocalStorageService.getBlacklist();
-            this.chatService.currentRoomUsers.subscribe(users => {
-                this.list = users;
-            });
-        }
-    }
-
-    public addDisabled(args: MenuEventArgs) {
-        if (args.item.text === 'Link') {
-            args.element.classList.add('e-disabled');
-        }
-
-    }
-
+    public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
     public menuItems: MenuItemModel[] = [
         {
             id: 'invite',
@@ -69,6 +44,25 @@ export class ContactListComponent implements OnInit {
             iconCss: 'e-cm-icons e-ban'
         }];
 
+    constructor(private socketService: SocketService,
+                private chatService: ChatService,
+                private authService: AuthService) {}
+
+    public ngOnInit(): void {
+        if (this.authService.isAuthenticated()) {
+            this.blacklist = LocalStorageService.getBlacklist();
+            this.chatService.currentRoomUsers.subscribe(users => {
+                this.list = users;
+            });
+        }
+    }
+
+    public addDisabled(args: MenuEventArgs) {
+        if (args.item.text === 'Link') {
+            args.element.classList.add('e-disabled');
+        }
+    }
+
     public onCreated(): void {
         if (Browser.isDevice) {
             this.content = 'Touch hold to open the ContextMenu';
@@ -80,15 +74,16 @@ export class ContactListComponent implements OnInit {
     }
 
     public onSelect(e): void {
-        if (e.item.properties.id === 'invite') {
-            console.log(`User with id: ${this.lastSelectedContactId} was invited`);
-        } else if (e.item.properties.id === 'ban') {
-            if (this.blacklist.indexOf(this.lastSelectedContactId) >= 0) {
-                this.deleteFromBlacklist();
-            } else {
-                this.addToBlacklist();
+        if (this.lastSelectedContactId !== this.me) {
+            if (e.item.properties.id === 'invite') {
+                console.log(`User with id: ${this.lastSelectedContactId} was invited`);
+            } else if (e.item.properties.id === 'ban') {
+                if (this.blacklist.indexOf(this.lastSelectedContactId) >= 0) {
+                    this.deleteFromBlacklist();
+                } else {
+                    this.addToBlacklist();
+                }
             }
-
         }
     }
 
@@ -108,11 +103,23 @@ export class ContactListComponent implements OnInit {
 
     public onContactRightClick(user: object): void {
         this.lastSelectedContactId = user['userId'];
-        if (this.blacklist.indexOf(this.lastSelectedContactId) >= 0) {
-            this.menuItems[2].text = 'Remove from blacklist';
+        if (this.lastSelectedContactId === this.me) {
+            this.menuItems[0].text = '***You can not invite or';
+            this.menuItems[0].iconCss = '';
+            this.menuItems[2].text = 'add yourself to blacklist***';
+            this.menuItems[2].iconCss = '';
+            this.contextmenu.items = this.menuItems;
         } else {
-            this.menuItems[2].text = 'Add to blacklist';
+            this.menuItems[0].text = 'Invite to the chat';
+            this.menuItems[0].iconCss = 'e-cm-icons e-add';
+            if (this.blacklist.indexOf(this.lastSelectedContactId) >= 0) {
+                this.menuItems[2].text = 'Remove from blacklist';
+                this.menuItems[2].iconCss = 'e-cm-icons e-add';
+            } else {
+                this.menuItems[2].text = 'Add to blacklist';
+                this.menuItems[2].iconCss = 'e-cm-icons e-ban';
+            }
+            this.contextmenu.items = this.menuItems;
         }
-        this.contextmenu.items = this.menuItems;
     }
 }

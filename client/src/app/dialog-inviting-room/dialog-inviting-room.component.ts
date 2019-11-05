@@ -3,7 +3,6 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {SocketService} from "../shared/services/socket.service";
-import {LocalStorageService} from "../shared/services/local-storage.service";
 
 @Component({
     selector: 'app-dialog-inviting-room',
@@ -11,23 +10,16 @@ import {LocalStorageService} from "../shared/services/local-storage.service";
     styleUrls: ['./dialog-inviting-room.component.scss']
 })
 export class DialogInvitingRoomComponent implements OnInit {
-    private me = LocalStorageService.getUser()['id'];
     public addUsersForm: FormGroup; // form group instance
     public selectedInput: number = 0;
     public searchedUsers: any[] = [];
     public userIds: any = [false];
-    public config: PerfectScrollbarConfigInterface = {
-        wheelSpeed: 0.2,
-        scrollingThreshold: 0,
-    };
+    public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
 
-    constructor(
-        public dialogRef: MatDialogRef<DialogInvitingRoomComponent>,
-        private fb: FormBuilder,
-        private socketService: SocketService,
-        @Inject(MAT_DIALOG_DATA) public data
-    ) {
-    }
+    constructor(public dialogRef: MatDialogRef<DialogInvitingRoomComponent>,
+                private fb: FormBuilder,
+                private socketService: SocketService,
+                @Inject(MAT_DIALOG_DATA) public data) {}
 
     public ngOnInit(): void {
         console.log(this.data);
@@ -88,7 +80,7 @@ export class DialogInvitingRoomComponent implements OnInit {
         this.userIds.push(false);
     }
 
-    public deleteParticipant(index): void {
+    public deleteParticipant(index: number): void {
         this.selectedInput = null;
         this.participants.removeAt(index);
         this.userIds.splice(index, 1);
@@ -131,12 +123,8 @@ export class DialogInvitingRoomComponent implements OnInit {
         });
     }
 
-    public pushId(userId): void {
-        console.log(userId);
-        console.log(this.selectedInput);
+    public pushId(userId: string): void {
         this.userIds[this.selectedInput] = userId;
-
-        console.log(this.userIds);
     }
 
     public validateInputs(): boolean {

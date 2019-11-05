@@ -12,34 +12,24 @@ import {LocalStorageService} from "../shared/services/local-storage.service";
 })
 export class DialogAddingRoomComponent implements OnInit {
     private me = LocalStorageService.getUser()['id'];
-    public addRoomForm: FormGroup; // form group instance
+    public addRoomForm: FormGroup;
     public selectedInput: number = null;
     public searchedUsers: any;
     public userIds: any[] = [false];
     public isPublic = true;
-    public config: PerfectScrollbarConfigInterface = {
-        wheelSpeed: 0.2,
-        scrollingThreshold: 0,
-    };
+    public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
 
-    constructor(
-        public dialogRef: MatDialogRef<DialogAddingRoomComponent>,
-        private fb: FormBuilder,
-        private socketService: SocketService
-    ) {}
+    constructor(public dialogRef: MatDialogRef<DialogAddingRoomComponent>,
+                private fb: FormBuilder,
+                private socketService: SocketService) {}
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.addRoomForm = this.fb.group({
             title: ['', [
                 Validators.required,
                 Validators.minLength(3),
-                Validators.maxLength(15),
-            ]
-            ],
-            participants: this.fb.array([this.fb.group({name: ['',
-                    [Validators.required
-                        /*Validators.pattern('^[0-9]+$')*/]
-                ]})])
+                Validators.maxLength(15)]],
+            participants: this.fb.array([this.fb.group({name: ['', [Validators.required]]})])
         });
         this.onSearch();
 
@@ -58,13 +48,11 @@ export class DialogAddingRoomComponent implements OnInit {
     }
 
     public addParticipant(): void {
-        this.participants.push(this.fb.group({name:['',
-                [Validators.required/*, Validators.pattern('^[0-9]+$')*/]
-            ]}));
+        this.participants.push(this.fb.group({name:['', [Validators.required]]}));
         this.userIds.push(false);
     }
 
-    public deleteParticipant(index): void {
+    public deleteParticipant(index: number): void {
         this.selectedInput = null;
         this.participants.removeAt(index);
         this.userIds.splice(index, 1);
@@ -94,7 +82,7 @@ export class DialogAddingRoomComponent implements OnInit {
         });
     }
 
-    public pushId(userId): void {
+    public pushId(userId: string): void {
         this.userIds[this.selectedInput] = userId;
     }
 

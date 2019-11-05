@@ -1,34 +1,28 @@
 <div class="message-wrapper" [ngClass]="{
-                'own': message.creator._id === me && !message.isSystemMessage,
-                'foreign' : message.creator._id !== me && !message.isSystemMessage,
-                'system' : message.isSystemMessage}">
+        'own': message.creator._id === me && !message.isSystemMessage,
+        'foreign' : message.creator._id !== me && !message.isSystemMessage,
+        'system' : message.isSystemMessage}">
     <ng-container *ngIf="message.isSystemMessage">
-                    <span class="sys-message"
-                          (click)="message.room === '' ? messageRequest(true) : false"
-                    >
-                        <i>{{message.content}}</i>
-                    </span>
+        <span class="sys-message" (click)="message.room === '' ? messageRequest(true) : false">
+            <i>{{message.content}}</i>
+        </span>
     </ng-container>
     <ng-container *ngIf="!message.isSystemMessage">
-                    <span class="message-user">
-                    <ng-container *ngIf="users[message.creator._id] === undefined">
-                        <span class="online">Deleted</span>
-                        <span>
-                            {{message.creator.name}}
-                        </span>
-                    </ng-container>
-                    <ng-container *ngIf="users[message.creator._id] !== undefined">
-                        <span class="online" *ngIf="users[message.creator._id].online">Online</span>
-                            <span [ngClass]="{'premium': users[message.creator._id].premium}">
-                                <span *ngIf="users[message.creator._id].premium">👑</span>
-                                {{users[message.creator._id].name}}
-                                <span *ngIf="users[message.creator._id].premium">👑</span>
-                            </span>
-                        </ng-container>
-                    </span>
-        <p class="message-text">
-            {{message.content}}
-        </p>
+        <span class="message-user">
+        <ng-container *ngIf="users[message.creator._id] === undefined">
+            <span class="online">Deleted</span>
+            <span>{{message.creator.name}}</span>
+        </ng-container>
+        <ng-container *ngIf="users[message.creator._id] !== undefined">
+            <span class="online" *ngIf="users[message.creator._id].online">Online</span>
+                <span [ngClass]="{'premium': users[message.creator._id].premium}">
+                    <span *ngIf="users[message.creator._id].premium">👑</span>
+                    {{users[message.creator._id].name}}
+                    <span *ngIf="users[message.creator._id].premium">👑</span>
+                </span>
+            </ng-container>
+        </span>
+        <p class="message-text">{{message.content}}</p>
         <small class="message-date">
             {{message.createdAt | date: 'HH:mm:ss | dd.MM' : ''}}
         </small>

@@ -1,9 +1,7 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {LocalStorageService} from "../shared/services/local-storage.service";
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {SocketService} from "../shared/services/socket.service";
 import {Room} from "../shared/models/Room";
 
 @Component({
@@ -13,22 +11,16 @@ import {Room} from "../shared/models/Room";
 })
 export class DialogRoomSettingsComponent implements OnInit {
     @ViewChild('title', {static: false}) title: ElementRef;
-
-    private me = LocalStorageService.getUser()['id'];
+    private me: string = LocalStorageService.getUser()['id'];
     public removedUserIds: string[] = [];
-    public isPublic = true;
+    public isPublic: boolean = true;
     public delete: boolean = false;
-    public config: PerfectScrollbarConfigInterface = {
-        wheelSpeed: 0.2,
-        scrollingThreshold: 0,
-    };
+    public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
 
-    constructor(
-        public dialogRef: MatDialogRef<DialogRoomSettingsComponent>,
-        @Inject(MAT_DIALOG_DATA) public room: Room
-    ) {}
+    constructor(public dialogRef: MatDialogRef<DialogRoomSettingsComponent>,
+                @Inject(MAT_DIALOG_DATA) public room: Room) {}
 
-    public ngOnInit() {
+    public ngOnInit(): void {
         this.room.users = this.room.users.filter(user => user._id !== this.me);
     }
 

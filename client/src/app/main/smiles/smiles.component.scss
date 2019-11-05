@@ -41,11 +41,23 @@
             height: 65px;
             border-radius: 50px;
 
+            .smile-img {
+                transition: 0.5s;
+                transform: scale(1);
+            }
+
             &:hover {
                 transform: scale(1.13);
                 transition: 0.3s;
                 box-shadow: 0 0 10px white;
+
+                .smile-img {
+                    transition: 0.5s;
+                    transform: scale(2);
+                }
             }
+
+
         }
     }
     ::ng-deep .ps__thumb-y {

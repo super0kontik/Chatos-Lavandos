@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {ChatService} from "../../shared/services/chat.service";
 import {SocketService} from "../../shared/services/socket.service";
@@ -15,7 +15,6 @@ import {LocalStorageService} from "../../shared/services/local-storage.service";
 })
 export class ChatComponent implements OnInit {
     @ViewChild('search', {static: false}) search: ElementRef;
-
     public rooms: Room[];
     public newMessage: object = {};
     public userLeft: string;
@@ -27,9 +26,7 @@ export class ChatComponent implements OnInit {
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
                 private authService: AuthService,
-                public dialog: MatDialog
-    ) {
-    }
+                public dialog: MatDialog) {}
 
     public ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
@@ -44,18 +41,24 @@ export class ChatComponent implements OnInit {
 
             this.socketService.listen('newMessage').subscribe(data => {
                 let currTab = '';
+                let isChangeTab = true;
                 for (let i = 0; i < this.rooms.length; i++) {
                     if (this.currentTabIndex === this.rooms[i].index) {
+                        if (this.currentTabIndex === 0 && this.rooms[i]._id === data.room) {
+                            isChangeTab = false;
+                        }
                         currTab = this.rooms[i]._id;
                     }
                 }
-                const firstRoomId = data.room;
-                let tempRooms = this.rooms.map(i => i._id);
-                tempRooms = Array.from(new Set([firstRoomId, ...tempRooms]));
-                this.rooms = tempRooms.map((item, index) => {
-                    return {...this.rooms.find(i => i._id === item), index}
-                });
-                this.selectedTab = this.rooms.filter(room => room._id === currTab)[0].index;
+                if (isChangeTab) {
+                    const firstRoomId = data.room;
+                    let tempRooms = this.rooms.map(i => i._id);
+                    tempRooms = Array.from(new Set([firstRoomId, ...tempRooms]));
+                    this.rooms = tempRooms.map((item, index) => {
+                        return {...this.rooms.find(i => i._id === item), index}
+                    });
+                    this.selectedTab = this.rooms.filter(room => room._id === currTab)[0].index;
+                }
                 this.newMessage = data;
             });
 
@@ -84,7 +87,6 @@ export class ChatComponent implements OnInit {
             this.socketService.listen('roomRename').subscribe(data => {
                 this.rooms = this.rooms.map(room => {
                     if (room._id === data.id) {
-                        console.log('match');
                         room.title = data.title;
                     }
                     return room;
@@ -102,11 +104,11 @@ export class ChatComponent implements OnInit {
         }
     }
 
-    public onTabChange(event): void {
+    public onTabChange(event: number): void {
         this.currentTabIndex = event;
     }
 
-    public leaveRoom(roomId): void {
+    public leaveRoom(roomId: string): void {
         this.rooms = this.rooms.filter(room => room._id !== roomId);
         this.rooms = this.rooms.map((room, index) => {
             return {...room, index};
@@ -127,7 +129,7 @@ export class ChatComponent implements OnInit {
         });
     }
 
-    public openInvitation(data: any): void {
+    private openInvitation(data: any): void {
         const invitationDialogRef = this.dialog.open(DialogInvitationComponent, {
             width: '450px',
             height: '200px',
@@ -157,7 +159,7 @@ export class ChatComponent implements OnInit {
         this.isRoomList = !this.isRoomList;
     }
 
-    public toggleRoom(index): void {
+    public toggleRoom(index: number): void {
         this.toggleOnList();
         this.selectedTab = index;
     }

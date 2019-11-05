@@ -5,9 +5,8 @@
     <perfect-scrollbar [config]="config">
         <div class="smiles-list">
             <div class="smile-item" *ngFor="let smile of smiles" (click)="sendToInput($event)">
-                {{smile}}
+                <span class="smile-img">{{smile}}</span>
             </div>
         </div>
     </perfect-scrollbar>
-
 </div>

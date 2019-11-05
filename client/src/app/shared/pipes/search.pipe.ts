@@ -5,9 +5,7 @@ import {Room} from "../models/Room";
     name: 'search'
 })
 export class SearchPipe implements PipeTransform {
-
     transform(rooms: Room[], searchText: string): any {
         return rooms.filter(room => room.title.toLowerCase().includes(searchText.toLowerCase()));
     }
-
 }
