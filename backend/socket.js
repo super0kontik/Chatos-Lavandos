@@ -23,6 +23,9 @@ module.exports = (server) => {
     io.on('connection', async socket => {
         try {
             let user = await User.findById(socket.decoded_token.id);
+            if(!user){
+                throw new Error('Invalid user')
+            }
             await user.updateOne({isOnline:true});
             user.isOnline = true;
             user.socketIds.push(socket.id);
@@ -126,6 +129,7 @@ module.exports = (server) => {
             }
         });
 
+
         socket.on('joinRoom', async params =>{
             try {
                 let room = await Room.findOne({_id: params.roomId, users:{$ne:socket.decoded_token.id}, isPublic:true});
@@ -154,6 +158,7 @@ module.exports = (server) => {
                 io.to(socket.id).emit('error',{error:{type: e.message}});
             }
         });
+
 
         socket.on('leaveRoom', async params =>{
             try {
@@ -317,6 +322,7 @@ module.exports = (server) => {
             }
         });
 
+
         socket.on('deleteParticipant', async params =>{
             try{
                 const room = await Room.findById(params.roomId).populate('creator');
@@ -349,6 +355,7 @@ module.exports = (server) => {
             }
         });
 
+
         socket.on('searchUsers', async params =>{
             try {
                 const users = await User.find({name: {$regex: '.*' + params + '.*', $options : 'i'},
@@ -371,6 +378,22 @@ module.exports = (server) => {
             }
         });
 
+        socket.on('changeColor', async params =>{
+            if(params.theme !== 'dark' && params.theme !== 'light'){
+                throw new Error('invalid value');
+            }
+            try{
+                const user = await User.findById(socket.decoded_token.id);
+                if(!user){
+                    throw new Error('User not found');
+                }
+                await user.update({colorTheme: params.theme});
+                io.to(getUserSocketsRoom(user)).emit('colorChanged', params.theme);
+            }catch (e) {
+                console.log(e);
+                io.to(socket.id).emit('error', {type: e.message})
+            }
+        });
 
         socket.on('disconnect', async () => {
             try {

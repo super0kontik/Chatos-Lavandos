@@ -21,6 +21,11 @@ const userSchema = new Schema({
     blacklist:[{
         type:Schema.Types.ObjectId,
         ref:'User'
+    }],
+    colorTheme:[{
+        type:String,
+        enum:['dark', 'light'],
+        default: 'dark'
     }]
 });
 module.exports = mongoose.model('User',userSchema);
