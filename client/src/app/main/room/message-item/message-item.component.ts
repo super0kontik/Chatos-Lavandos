@@ -14,7 +14,6 @@ export class MessageItemComponent implements OnInit {
     public me: string = '';
 
     public ngOnInit(): void {
-
         this.me = LocalStorageService.getUser()['id'];
     }
 

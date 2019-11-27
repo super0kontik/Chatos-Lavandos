@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {ChatService} from "../../shared/services/chat.service";
 import {SocketService} from "../../shared/services/socket.service";
@@ -7,6 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogAddingRoomComponent} from "../../dialog-adding-room/dialog-adding-room.component";
 import {DialogInvitationComponent} from "../../dialog-invitation/dialog-invitation.component";
 import {LocalStorageService} from "../../shared/services/local-storage.service";
+import {MatBadge} from "@angular/material/badge";
 
 @Component({
     selector: 'app-chat',
@@ -15,6 +16,7 @@ import {LocalStorageService} from "../../shared/services/local-storage.service";
 })
 export class ChatComponent implements OnInit {
     @ViewChild('search', {static: false}) search: ElementRef;
+    @ViewChild(MatBadge, {static: false}) badge: MatBadge;
     public rooms: Room[];
     public newMessage: object = {};
     public userLeft: string;
@@ -22,11 +24,13 @@ export class ChatComponent implements OnInit {
     public currentTabIndex: number = 0;
     public selectedTab: number;
     public isRoomList: boolean = false;
+    public unreadInRooms: object = {};
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
                 private authService: AuthService,
-                public dialog: MatDialog) {}
+                public dialog: MatDialog,
+                private cdr: ChangeDetectorRef) {}
 
     public ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
@@ -35,6 +39,7 @@ export class ChatComponent implements OnInit {
             this.socketService.listen('join').subscribe(data => {
                 this.rooms = data.rooms;
                 this.rooms = this.rooms.map((room, index) => {
+                    this.unreadInRooms[room._id] = 0;
                     return {...room, index};
                 });
             });
@@ -157,6 +162,11 @@ export class ChatComponent implements OnInit {
             this.search.nativeElement.style.filter = '';
         }
         this.isRoomList = !this.isRoomList;
+    }
+
+    public changeUnreadByRoomId(e): void {
+        this.unreadInRooms[e.roomId] = e.unread;
+        this.cdr.detectChanges();
     }
 
     public toggleRoom(index: number): void {

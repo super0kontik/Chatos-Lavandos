@@ -14,12 +14,13 @@
                            [matRippleColor]="'rgba(51, 51, 70, 0.2)'"
                            (click)="roomSettings()"
                            *ngIf="currentRoom.creator._id === me"
-            >Settings<mat-icon>settings</mat-icon>
+            >Settings
+                <mat-icon>settings</mat-icon>
             </mat-list-item>
         </mat-list>
     </div>
-    <perfect-scrollbar [config]="config">
-        <mat-list class="mt-lst">
+    <perfect-scrollbar [config]="config" (psScrollY)="onScroll($event)">
+        <mat-list class="mt-lst" >
             <mat-list-item *ngFor="let message of messages" [ngClass]="{
                 'own': message.creator._id === me && !message.isSystemMessage,
                 'foreign' : message.creator._id !== me && !message.isSystemMessage,
@@ -27,8 +28,7 @@
                 <div class="message-item">
                     <app-message-item [message]="message"
                                       [users]="users"
-                                      (loadRequest)="messageRequest($event)"
-                    >
+                                      (loadRequest)="messageRequest($event)">
                     </app-message-item>
                 </div>
             </mat-list-item>

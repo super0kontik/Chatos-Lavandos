@@ -23,6 +23,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogInvitingRoomComponent} from "../../dialog-inviting-room/dialog-inviting-room.component";
 import {EmojifyPipe} from "angular-emojify";
 import {DialogRoomSettingsComponent} from "../../dialog-room-settings/dialog-room-settings.component";
+import {interval} from "rxjs";
+import {log} from "util";
 
 @Component({
     selector: 'app-room',
@@ -34,6 +36,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     @Input() newMessage: object | boolean;
     @Input() tabIndex: number;
     @Output() leaveFromChat: EventEmitter<any> = new EventEmitter<any>();
+    @Output() unreadMessages: EventEmitter<any> = new EventEmitter<any>();
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
@@ -61,11 +64,15 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     public me: string = '';
     public smile: string = '';
     public users: object[] = [];
+    public maxScrollHeight: number = 0;
+    public currentScrollPosition: number = 0;
+    public amountOfUnread: number = 0;
     public config: PerfectScrollbarConfigInterface = {scrollingThreshold: 0};
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
-                public dialog: MatDialog) {}
+                public dialog: MatDialog) {
+    }
 
     public ngOnInit(): void {
         this.me = LocalStorageService.getUser()['id'];
@@ -149,13 +156,24 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         if (this.isInit) {
             if (changes['newMessage']) {
                 if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
+                    const defaultScale = 19;
+                    const countOfSymbolsBeforeENDL = 40;
+                    if (changes['newMessage'].currentValue.message.isSystemMessage) {
+                        this.maxScrollHeight += 52;
+                    } else {
+                        this.maxScrollHeight += (Math.floor(changes['newMessage'].currentValue.message.content.length / countOfSymbolsBeforeENDL) === 0)
+                            ? 112
+                            : (112 + Math.floor(changes['newMessage'].currentValue.message.content.length / countOfSymbolsBeforeENDL) * defaultScale);
+                    }
+                }
+                if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
                     this.messages.push(changes['newMessage'].currentValue.message);
                 }
             }
         }
         if (changes['tabIndex']) {
             const to = setTimeout(() => {
-                this.scrollToBottom();
+                this.scrollY(this.currentScrollPosition);
                 clearTimeout(to);
             }, 100);
             this.coincidenceOfTabIndex();
@@ -172,6 +190,30 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.isLoadedTemplate = true;
     }
 
+    public setMaxScrollHeight(): void {
+        const defaultScale = 19;
+        const countOfSymbolsBeforeENDL = 40;
+        for (let message of this.messages) {
+            if (message.isSystemMessage) {
+                this.maxScrollHeight += 52;
+            } else {
+                this.maxScrollHeight += (Math.floor(message.content.length / countOfSymbolsBeforeENDL) === 0)
+                    ? 112
+                    : (112 + Math.floor(message.content.length / countOfSymbolsBeforeENDL) * defaultScale);
+            }
+        }
+        this.maxScrollHeight = (this.maxScrollHeight - 622);
+    }
+
+    public onScroll(e): void {
+        this.currentScrollPosition = e.target.scrollTop;
+        this.amountOfUnread = Math.ceil((this.maxScrollHeight - this.currentScrollPosition) / 112);
+        this.unreadMessages.emit({
+            unread: this.amountOfUnread,
+            roomId: this.currentRoom._id
+        });
+    }
+
     public messageRequest(scroll?: boolean): void {
         const mesOff = this.messages.length;
         const mesLim = this.messages.length < 50 ? 50 : 20;
@@ -179,9 +221,10 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
             this.messages = this.messages.filter(message => message.room !== '');
             this.messages = [...messages, ...this.messages];
             this.messages.unshift(this.loadMessage);
+            this.setMaxScrollHeight();
         });
         if (scroll) {
-            this.componentRef.directiveRef.scrollToY(1600);
+            this.scrollY(1600);
         }
     }
 
@@ -217,6 +260,10 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         if (this.tabIndex === this.currentRoom.index) {
             this.chatService.currentRoomUsers.next(Object.values(this.users));
         }
+    }
+
+    private scrollY(scrollTop): void {
+        this.componentRef.directiveRef.scrollToY(scrollTop);
     }
 
     private scrollToBottom(): void {
@@ -287,7 +334,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
                         roomId: data.roomId
                     })
                 }
-
             }
         })
     }

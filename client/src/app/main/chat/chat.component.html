@@ -7,14 +7,19 @@
     </div>
     <mat-tab-group (selectedIndexChange)="onTabChange($event)" [(selectedIndex)]="selectedTab">
         <ng-container *ngIf="!isRoomList">
-            <mat-tab *ngFor="let room of rooms" [id]="room._id">
+            <mat-tab *ngFor="let room of rooms; let i=index" [id]="room._id">
                 <ng-template matTabLabel>
-                    <span class="tab-label" [matBadge]="'5'" matBadgeOverlap="false" matBadgePosition="above before">{{room.title}}</span>
+                    <span class="tab-label" [matBadge]="unreadInRooms[room._id]"
+                          matBadgeOverlap="false"
+                          matBadgePosition="above before">
+                        {{room.title}}
+                    </span>
                 </ng-template>
                 <app-room [currentRoom]="room"
                           [newMessage]="newMessage"
                           [tabIndex]="currentTabIndex"
-                          (leaveFromChat)="leaveRoom($event)">
+                          (leaveFromChat)="leaveRoom($event)"
+                          (unreadMessages)="changeUnreadByRoomId($event)"  >
                 </app-room>
             </mat-tab>
         </ng-container>
