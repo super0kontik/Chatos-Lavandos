@@ -1,9 +1,6 @@
 const User = require('../../models/user');
 const Room = require('../../models/room');
 const {getUserSocketsRoom} = require('./utils');
-const crypto = require('crypto-js');
-const validator = require('validator');
-const Message = require('../../models/message');
 
 module.exports = {
     connect : async (io, socket) => {

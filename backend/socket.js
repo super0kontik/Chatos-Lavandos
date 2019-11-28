@@ -29,7 +29,7 @@ const {
     deleteParticipant
 } = require('./controllers/socket/roomAdministration');
 
-module.exports = (server) => {
+module.exports = server => {
     const io = socketIO(server);
 
     io.use(sjwt.authorize({

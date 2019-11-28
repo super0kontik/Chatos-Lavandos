@@ -1,7 +1,7 @@
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const {callbackURL,clientID,clientSecret, SECRET_WORD} = require('../config/config');
+const {callbackURL, clientID, clientSecret, SECRET_WORD} = require('../config/config');
 const User = require('../models/user');
 
 passport.use(
@@ -27,10 +27,10 @@ passport.use(
     })
 );
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser((user, done) => {
     done(null, user);
 });
 
-passport.deserializeUser(function(obj, done) {
+passport.deserializeUser((obj, done) => {
     done(null, obj);
 });
