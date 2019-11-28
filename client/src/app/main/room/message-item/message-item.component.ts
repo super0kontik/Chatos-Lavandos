@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Message} from "../../../shared/models/Message";
 import {LocalStorageService} from "../../../shared/services/local-storage.service";
+import {ChatService} from "../../../shared/services/chat.service";
 
 @Component({
     selector: 'app-message-item',
@@ -11,14 +12,30 @@ export class MessageItemComponent implements OnInit {
     @Input() message: Message;
     @Input() users: any[];
     @Output() loadRequest: EventEmitter<any> = new EventEmitter<any>();
+    @Output() viewChange: EventEmitter<object> = new EventEmitter<object>();
     public me: string = '';
+    public theme: string = 'dark';
+
+    constructor(private chatService: ChatService) {}
+
 
     public ngOnInit(): void {
+        this.chatService.theme.subscribe(selectedTheme => {
+            this.theme = selectedTheme;
+        });
         this.me = LocalStorageService.getUser()['id'];
     }
 
     public messageRequest(scroll?: boolean): void {
         this.loadRequest.emit(scroll);
+    }
+
+    public viewportChange(e): void {
+        this.viewChange.emit({
+            inView: e,
+            id: this.message._id,
+            text: this.message.content,
+        });
     }
 
 }

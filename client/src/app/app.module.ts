@@ -45,6 +45,7 @@ import {ContextMenuModule} from "@syncfusion/ej2-angular-navigations";
 import {MatBadgeModule} from "@angular/material/badge";
 import {MessageItemComponent} from './main/room/message-item/message-item.component';
 import {NguiParallaxScrollModule} from "@ngui/parallax-scroll";
+import {InViewportModule} from "@thisissoon/angular-inviewport";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -97,7 +98,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatButtonToggleModule,
         ContextMenuModule,
         MatBadgeModule,
-        NguiParallaxScrollModule
+        NguiParallaxScrollModule,
+        InViewportModule
     ],
     entryComponents: [
         DialogAddingRoomComponent,

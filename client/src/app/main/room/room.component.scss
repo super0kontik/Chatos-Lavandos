@@ -24,29 +24,18 @@
     }
 
     .chat-menu {
-        background: linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent);
+
         .menu-items {
             flex-direction: row;
             justify-content: flex-start;
-
-            mat-divider {
-                background-color: rgba(255, 255, 255, 0.27) !important;
-            }
 
             mat-list-item {
                 cursor: pointer;
                 transition: 0.3s;
                 width: 190px;
-                color: white;
 
                 mat-icon {
                     margin-left: 15px;
-                    color: #f3a311;
-                }
-
-                &:hover {
-                    transition: 0.3s;
-                    filter: drop-shadow(0 3px 10px white);
                 }
             }
         }
@@ -55,7 +44,7 @@
     .input-area {
         display: flex;
         padding: 20px 0px 10px 40px;
-        background: linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent);
+
         position: relative;
         height: auto;
         min-height: 12%;
@@ -82,7 +71,6 @@
             display: inline-block;
             width: 70%;
             height: auto;
-            background-color: rgba(247, 255, 252, 0.69);
             border-radius: 30px;
             font-size: 19px;
             box-sizing: border-box;
@@ -107,37 +95,20 @@
             text-align: center;
 
             .send-btn {
-                transition: .3s;
                 padding-left: 5px;
                 width: 100%;
                 height: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-
-                &:hover {
-                    transition: .3s;
-                    filter: drop-shadow(0 5px 10px black) invert(100%);
-                }
             }
 
             .smile-btn {
-                transition: .3s;
                 width: 100%;
                 height: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-
-                &:hover {
-                    transition: .3s;
-                    filter: drop-shadow(0 5px 10px black) invert(100%);
-                }
-            }
-
-            &:hover {
-                transition: .3s;
-                background: rgba(0, 0, 0, 0.49);
 
             }
         }
@@ -182,6 +153,137 @@
             flex-direction: column !important;
             align-items: flex-start ;
             margin: 8px 20px 8px 20px;
+        }
+    }
+}
+
+.light {
+    .chat-menu {
+        background: rgba(0, 0, 0, 0.18);
+        //background: linear-gradient(90deg, rgba(0, 0, 0, 0.38), transparent);
+        .menu-items {
+            mat-divider {
+                background-color: rgba(85, 85, 85, 0.57) !important;
+            }
+
+            mat-list-item {
+                color: black;
+
+                mat-icon {
+                    color: #ffffff;
+                }
+
+                &:hover {
+                    transition: 0.3s;
+                    filter: drop-shadow(0 3px 10px #000000);
+                }
+            }
+        }
+    }
+
+    .input-area {
+        background: rgba(0, 0, 0, 0.18);
+        // background: linear-gradient(90deg, rgba(0, 0, 0, 0.38), transparent);
+        .input-message {
+            background-color: rgba(247, 255, 252, 0.69);
+
+            &:focus {
+                transition: 0.5s;
+                box-shadow: 0 0 15px rgb(0, 0, 0);
+            }
+        }
+
+        .wrap-btn {
+            transition: 0.3s;
+            background: transparent;
+
+            .send-btn {
+                transition: .3s;
+                &:hover {
+                    transition: .3s;
+                    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0)) invert(100%);
+                }
+            }
+
+            .smile-btn {
+                transition: .3s;
+                &:hover {
+                    transition: .3s;
+                    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0)) invert(100%);
+                }
+            }
+
+            &:hover {
+                transition: .3s;
+                background: rgba(0, 0, 0, 0.53);
+            }
+        }
+    }
+}
+
+
+.dark {
+    .chat-menu {
+        background: rgba(0, 0, 0, 0.18);
+        //background: linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent);
+        .menu-items {
+            mat-divider {
+                background-color: rgba(255, 255, 255, 0.27) !important;
+            }
+
+            mat-list-item {
+                color: white;
+
+                mat-icon {
+                    color: #f3a311;
+                }
+
+                &:hover {
+                    transition: 0.3s;
+                    filter: drop-shadow(0 3px 10px white);
+                }
+            }
+        }
+    }
+
+    .input-area {
+        background: rgba(0, 0, 0, 0.18);
+        //background: linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent);
+        .input-message {
+            background-color: rgba(247, 255, 252, 0.69);
+
+            &:focus {
+                transition: 0.5s;
+                box-shadow: 0 0 15px rgb(255, 255, 255);
+            }
+        }
+
+        .wrap-btn {
+            transition: 0.3s;
+            background: transparent;
+
+            .send-btn {
+                transition: .3s;
+                filter: invert(100%);
+                &:hover {
+                    transition: .3s;
+                    filter: drop-shadow(0 5px 10px black);
+                }
+            }
+
+            .smile-btn {
+                transition: .3s;
+                filter: invert(100%);
+                &:hover {
+                    transition: .3s;
+                    filter: drop-shadow(0 5px 10px black);
+                }
+            }
+
+            &:hover {
+                transition: .3s;
+                background: rgba(255, 255, 255, 0.53);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-<div class="dialog-wrapper" [perfectScrollbar]="config">
+<div class="dialog-wrapper" [perfectScrollbar]="config" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="dialog-content-wrapper">
 
         <h1 mat-dialog-title>

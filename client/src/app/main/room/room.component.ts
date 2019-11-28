@@ -68,6 +68,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     public currentScrollPosition: number = 0;
     public amountOfUnread: number = 0;
     public config: PerfectScrollbarConfigInterface = {scrollingThreshold: 0};
+    public theme: string = 'dark';
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
@@ -75,6 +76,10 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     }
 
     public ngOnInit(): void {
+        this.chatService.theme.subscribe(selectedTheme => {
+            this.theme = selectedTheme;
+        });
+
         this.me = LocalStorageService.getUser()['id'];
 
         if (this.currentRoom._id !== 'common') {
@@ -156,17 +161,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         if (this.isInit) {
             if (changes['newMessage']) {
                 if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
-                    const defaultScale = 19;
-                    const countOfSymbolsBeforeENDL = 40;
-                    if (changes['newMessage'].currentValue.message.isSystemMessage) {
-                        this.maxScrollHeight += 52;
-                    } else {
-                        this.maxScrollHeight += (Math.floor(changes['newMessage'].currentValue.message.content.length / countOfSymbolsBeforeENDL) === 0)
-                            ? 112
-                            : (112 + Math.floor(changes['newMessage'].currentValue.message.content.length / countOfSymbolsBeforeENDL) * defaultScale);
-                    }
-                }
-                if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
                     this.messages.push(changes['newMessage'].currentValue.message);
                 }
             }
@@ -190,24 +184,16 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.isLoadedTemplate = true;
     }
 
-    public setMaxScrollHeight(): void {
-        const defaultScale = 19;
-        const countOfSymbolsBeforeENDL = 40;
-        for (let message of this.messages) {
-            if (message.isSystemMessage) {
-                this.maxScrollHeight += 52;
-            } else {
-                this.maxScrollHeight += (Math.floor(message.content.length / countOfSymbolsBeforeENDL) === 0)
-                    ? 112
-                    : (112 + Math.floor(message.content.length / countOfSymbolsBeforeENDL) * defaultScale);
+    public onViewportChange(e): void {
+        this.messages = this.messages.map(message => {
+            if (e.id === message._id && message['read'] === false) {
+                setTimeout(() => message['read'] = e.inView,300);
             }
-        }
-        this.maxScrollHeight = (this.maxScrollHeight - 622);
+            return message;
+        });
     }
 
-    public onScroll(e): void {
-        this.currentScrollPosition = e.target.scrollTop;
-        this.amountOfUnread = Math.ceil((this.maxScrollHeight - this.currentScrollPosition) / 112);
+    public onScroll(): void {
         this.unreadMessages.emit({
             unread: this.amountOfUnread,
             roomId: this.currentRoom._id
@@ -220,8 +206,11 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(messages => {
             this.messages = this.messages.filter(message => message.room !== '');
             this.messages = [...messages, ...this.messages];
+            this.messages = this.messages.map(message => {
+                message['read'] = false;
+                return message;
+            });
             this.messages.unshift(this.loadMessage);
-            this.setMaxScrollHeight();
         });
         if (scroll) {
             this.scrollY(1600);

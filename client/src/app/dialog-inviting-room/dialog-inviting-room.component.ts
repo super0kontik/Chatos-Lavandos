@@ -3,6 +3,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {SocketService} from "../shared/services/socket.service";
+import {ChatService} from "../shared/services/chat.service";
 
 @Component({
     selector: 'app-dialog-inviting-room',
@@ -15,14 +16,18 @@ export class DialogInvitingRoomComponent implements OnInit {
     public searchedUsers: any[] = [];
     public userIds: any = [false];
     public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
+    public theme: string = 'dark';
 
     constructor(public dialogRef: MatDialogRef<DialogInvitingRoomComponent>,
                 private fb: FormBuilder,
                 private socketService: SocketService,
-                @Inject(MAT_DIALOG_DATA) public data) {}
+                @Inject(MAT_DIALOG_DATA) public data,
+                private chatService: ChatService) {}
 
     public ngOnInit(): void {
-        console.log(this.data);
+        this.chatService.theme.subscribe(selectedTheme => {
+            this.theme = selectedTheme;
+        });
         this.addUsersForm = this.fb.group({
             participants: this.fb.array([this.fb.group({
                 name: ['',

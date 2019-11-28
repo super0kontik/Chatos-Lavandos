@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SMILES} from "../../shared/data";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
+import {ChatService} from "../../shared/services/chat.service";
 
 @Component({
     selector: 'app-smiles',
@@ -10,8 +11,15 @@ import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 export class SmilesComponent implements OnInit {
     public smiles: string[] = [];
     public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.5, scrollingThreshold: 0,};
+    public theme: string = 'dark';
+
+    constructor(private chatService: ChatService) {}
+
 
     public ngOnInit(): void {
+        this.chatService.theme.subscribe(selectedTheme => {
+            this.theme = selectedTheme;
+        });
         this.smiles = Object.values(SMILES);
     }
 

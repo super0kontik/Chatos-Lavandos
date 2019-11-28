@@ -1,4 +1,4 @@
-<div class="room-list-wrapper">
+<div class="room-list-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="search-rooms">
         <label *ngIf="!isSearchRoomList">
             <input matInput placeholder="Search room..." [(ngModel)]="searchText" >

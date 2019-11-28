@@ -3,6 +3,7 @@ import {LocalStorageService} from "../shared/services/local-storage.service";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Room} from "../shared/models/Room";
+import {ChatService} from "../shared/services/chat.service";
 
 @Component({
   selector: 'app-dialog-room-settings',
@@ -16,11 +17,16 @@ export class DialogRoomSettingsComponent implements OnInit {
     public isPublic: boolean = true;
     public delete: boolean = false;
     public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
+    public theme: string = 'dark';
 
     constructor(public dialogRef: MatDialogRef<DialogRoomSettingsComponent>,
-                @Inject(MAT_DIALOG_DATA) public room: Room) {}
+                @Inject(MAT_DIALOG_DATA) public room: Room,
+                private chatService: ChatService) {}
 
     public ngOnInit(): void {
+        this.chatService.theme.subscribe(selectedTheme => {
+            this.theme = selectedTheme;
+        });
         this.room.users = this.room.users.filter(user => user._id !== this.me);
     }
 

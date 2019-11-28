@@ -1,4 +1,4 @@
-<div class="dialog-wrapper" >
+<div class="dialog-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="dialog-content-wrapper">
         <h1 mat-dialog-title>{{data.creator.name}} invites you to {{data.title}}</h1>
 
@@ -15,6 +15,3 @@
             </button>
         </div>
 </div>
-
-
-

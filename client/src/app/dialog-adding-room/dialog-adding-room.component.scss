@@ -1,21 +1,12 @@
 ::ng-deep .mat-dialog-container {
-    background: #273038;
     padding: 0;
-    overflow: hidden;
 }
 
 .dialog-wrapper {
+    padding: 24px;
     position: relative;
-    color: white;
     height: 100%;
-
-    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-        background-color: #f3a311;
-    }
-
-    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-        background-color: #a97010;
-    }
+    box-sizing: border-box;
 
     mat-slide-toggle {
         margin-bottom: 20px;
@@ -51,10 +42,6 @@
         }
     }
 
-    ::ng-deep .mat-list-item {
-        color: white;
-    }
-
     .part-input {
         margin-right: 30px;
     }
@@ -79,11 +66,69 @@
     }
 
     ::ng-deep .mat-form-field-infix {
-        width: 340px;
+        width: 310px;
     }
 
     ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
         border-radius: 50px;
+    }
+}
+
+.light {
+    color: black;
+
+
+    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+        background-color: #3071c2;
+    }
+
+    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+        background-color: #233f7d;
+    }
+
+    ::ng-deep .mat-list-item {
+        color: black;
+    }
+
+    ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
+        background: rgba(0, 0, 0, 0.18);
+    }
+
+    ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+        color: black;
+    }
+
+    ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+        color: #f44336;
+    }
+
+    ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+        background-color: black;
+    }
+
+    ::ng-deep mat-form-field.mat-focused .mat-form-field-ripple {
+        background-color: black;
+    }
+
+}
+
+.dark {
+    color: white;
+    background: #273038;
+
+    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+        background-color: #f3a311;
+    }
+
+    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+        background-color: #a97010;
+    }
+
+    ::ng-deep .mat-list-item {
+        color: white;
+    }
+
+    ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
         background: rgba(255, 255, 255, 0.11);
     }
 

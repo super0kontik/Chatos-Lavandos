@@ -4,6 +4,7 @@ import {MatDialogRef} from "@angular/material/dialog";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {SocketService} from "../shared/services/socket.service";
 import {LocalStorageService} from "../shared/services/local-storage.service";
+import {ChatService} from "../shared/services/chat.service";
 
 @Component({
     selector: 'app-dialog-adding-room',
@@ -18,12 +19,17 @@ export class DialogAddingRoomComponent implements OnInit {
     public userIds: any[] = [false];
     public isPublic = true;
     public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
+    public theme: string = 'dark';
 
     constructor(public dialogRef: MatDialogRef<DialogAddingRoomComponent>,
                 private fb: FormBuilder,
-                private socketService: SocketService) {}
+                private socketService: SocketService,
+                private chatService: ChatService) {}
 
     public ngOnInit(): void {
+        this.chatService.theme.subscribe(selectedTheme => {
+            this.theme = selectedTheme;
+        });
         this.addRoomForm = this.fb.group({
             title: ['', [
                 Validators.required,
