@@ -4,6 +4,7 @@ const {getUserSocketsRoom} = require('./utils');
 const crypto = require('crypto-js');
 const validator = require('validator');
 const Message = require('../../models/message');
+const {MESSAGE_KEY} = require('../../config/config');
 
 module.exports = {
     acceptInvitation: async (io, socket, params) => {
@@ -43,7 +44,7 @@ module.exports = {
                 await Message.create({createdAt: Date.now(), room: params.roomId, content: contentEncrypted, isSystemMessage:true,creator: user});
                 io.to(getUserSocketsRoom(user)).emit('newRoom', room);
                 io.to(params.roomId).emit('userJoined', {user, roomId: params.roomId});
-                return io.to(params.roomId).emit('newMessage', {message:{content, createdAt:Date.now(), isSystemMessage:true,creator: user}, room: params.roomId })
+                return socket.broadcast.to(params.roomId).emit('newMessage', {message:{content, createdAt:Date.now(), isSystemMessage:true,creator: user}, room: params.roomId })
             }
             throw new Error('Not allowed');
         }catch (e){

@@ -1,10 +1,10 @@
 const User = require('../../models/user');
-const RoomAdministration = require('../../models/room');
+const Room = require('../../models/room');
 const Message = require('../../models/message');
 const {getUserSocketsRoom} = require('./utils');
 const crypto = require('crypto-js');
 const validator = require('validator');
-
+const {MESSAGE_KEY} = require('../../config/config');
 module.exports = {
     createRoom: async (io, socket, params) => {
         try{
@@ -22,7 +22,7 @@ module.exports = {
             if(participants.length<2){
                 throw new Error('not enough participants')
             }
-            let room = await RoomAdministration.create({title: validator.escape(params.roomTitle), users: participants,
+            let room = await Room.create({title: validator.escape(params.roomTitle), users: participants,
                 creator: socket.decoded_token.id, lastAction: Date.now(), isPublic: params.isPublic});
             room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
             participants = room.users.filter(i=> String(i._id) !== socket.decoded_token.id);
@@ -64,6 +64,7 @@ module.exports = {
                 }
                 return flag;
             });
+            room.creator = invitor;
             for (let user of participants){
                 room.users.push(user._id);
                 io.to(getUserSocketsRoom(user)).emit('invitation', room)
@@ -72,7 +73,7 @@ module.exports = {
             const content = `${invitor.name} invited ${newParticipantsNames.join(', ')}`;
             const contentEncrypted = crypto.AES.encrypt(validator.escape(content), MESSAGE_KEY).toString();
             await Message.create({createdAt: Date.now(), room: params.roomId, isSystemMessage:true,creator: invitor, content: contentEncrypted});
-            io.to(params.roomId).emit('newMessage', {message:{content, createdAt, isSystemMessage:true,creator: invitor}, room: params.roomId });
+            io.to(params.roomId).emit('newMessage', {message:{content,createdAt: Date.now(), isSystemMessage:true,creator: invitor}, room: params.roomId });
             room.lastAction = Date.now();
             await room.save()
         }catch (e){
