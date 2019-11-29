@@ -58,3 +58,21 @@ app-smiles {
     transform: rotateY(180deg);
 }
 
+.light {
+    transition: 0.5s;
+    background-color: #e6e7f2;
+    .flip-card {
+        transition: 0.5s;
+        background-color: #e6e7f2;
+    }
+}
+
+.dark {
+    transition: 0.5s;
+    background-color: #273038;
+    .flip-card {
+        transition: 0.5s;
+        background-color: #273038;
+    }
+}
+

@@ -1,4 +1,4 @@
-<div class="dialog-wrapper" [perfectScrollbar]="config">
+<div class="dialog-wrapper" [perfectScrollbar]="config" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="dialog-content-wrapper">
         <h1 mat-dialog-title>Invitations to {{data.title}}</h1>
 
@@ -53,7 +53,7 @@
                 || addUsersForm.untouched
                 || !validateInputs()
                 || participants.length < 1
-            ">Create room</button>
+            ">Invite</button>
         </div>
     </div>
 </div>

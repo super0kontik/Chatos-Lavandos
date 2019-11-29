@@ -1,5 +1,17 @@
-<mat-nav-list class="nav-wrapper" [ngClass]="{'center': !isUser}">
+<mat-nav-list class="nav-wrapper" [ngClass]="{'center': !isUser, 'dark': theme === 'dark', 'light': theme === 'light'}">
     <span class="brand-logo">CHATOS-LAVANDOS</span>
+
+    <div class="theme-chooser">
+        <mat-icon class="theme-icon">wb_sunny</mat-icon>
+        <mat-slide-toggle
+            class="example-margin"
+            [checked]="theme === 'dark'"
+            (change)="toggleTheme()"
+        >
+        </mat-slide-toggle>
+        <mat-icon class="theme-icon">brightness_3</mat-icon>
+    </div>
+
     <div class="nav-links" *ngIf="isUser">
         <mat-list-item class="c-white">{{user.name}}</mat-list-item>
         <mat-list-item class="nav-link" (click)="logOut()">

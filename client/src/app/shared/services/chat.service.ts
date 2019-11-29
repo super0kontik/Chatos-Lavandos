@@ -10,8 +10,15 @@ import {Message} from "../models/Message";
 export class ChatService {
     public flipCard: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public currentRoomUsers: BehaviorSubject<object[]> = new BehaviorSubject<object[]>([]);
+    public theme: BehaviorSubject<string> = new BehaviorSubject<string>('light');
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {
+        this.init();
+    }
+
+    private init(): void {
+        this.theme.next('light');
+    }
 
     public getRoomContent(id: string, offset?: number, limit?: number): Observable<Message[]> {
         return this.http.get<Message[]>(`${config.API_URL}/roomContent/${id}?offset=${offset}&limit=${limit}`);

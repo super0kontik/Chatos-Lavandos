@@ -1,4 +1,4 @@
-<div class="room-wrapper">
+<div class="room-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="chat-menu" *ngIf="currentRoom._id !== 'common'">
         <mat-list class="menu-items">
             <mat-list-item matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="inviteUsers()">
@@ -19,7 +19,7 @@
             </mat-list-item>
         </mat-list>
     </div>
-    <perfect-scrollbar [config]="config" (psScrollY)="onScroll($event)">
+    <perfect-scrollbar [config]="config" (psScrollY)="onScroll()">
         <mat-list class="mt-lst" >
             <mat-list-item *ngFor="let message of messages" [ngClass]="{
                 'own': message.creator._id === me && !message.isSystemMessage,
@@ -28,7 +28,8 @@
                 <div class="message-item">
                     <app-message-item [message]="message"
                                       [users]="users"
-                                      (loadRequest)="messageRequest($event)">
+                                      (loadRequest)="messageRequest($event)"
+                                      (viewChange)="onViewportChange($event)">
                     </app-message-item>
                 </div>
             </mat-list-item>

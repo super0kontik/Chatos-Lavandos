@@ -1,4 +1,4 @@
-<div class="main-wrapper">
+<div class="main-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <app-chat></app-chat>
     <div class="flip-card">
         <div class="flip-card-inner" #cardInner>

@@ -25,6 +25,7 @@ export class ChatComponent implements OnInit {
     public selectedTab: number;
     public isRoomList: boolean = false;
     public unreadInRooms: object = {};
+    public theme: string = 'dark';
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
@@ -34,6 +35,10 @@ export class ChatComponent implements OnInit {
 
     public ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
+            this.chatService.theme.subscribe(selectedTheme => {
+                this.theme = selectedTheme;
+            });
+
             this.me = LocalStorageService.getUser()['id'];
 
             this.socketService.listen('join').subscribe(data => {
@@ -150,14 +155,14 @@ export class ChatComponent implements OnInit {
             } else {
                 this.socketService.emit('leaveRoom', {
                     roomId: response.roomId
-                })
+                });
             }
         });
     }
 
     public toggleOnList(): void {
         if (!this.isRoomList) {
-            this.search.nativeElement.style.filter = 'invert(100%) drop-shadow(0px 3px 10px white)';
+            this.search.nativeElement.style.filter = 'invert(100%) drop-shadow(0px 3px 10px black)';
         } else {
             this.search.nativeElement.style.filter = '';
         }
@@ -165,7 +170,7 @@ export class ChatComponent implements OnInit {
     }
 
     public changeUnreadByRoomId(e): void {
-        this.unreadInRooms[e.roomId] = e.unread;
+        //this.unreadInRooms[e.roomId] = e.unread;
         this.cdr.detectChanges();
     }
 

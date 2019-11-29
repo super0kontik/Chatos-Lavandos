@@ -26,6 +26,7 @@
     "@ngui/parallax-scroll": "^0.5.1",
     "@syncfusion/ej2": "^17.3.21",
     "@syncfusion/ej2-angular-navigations": "^17.3.21",
+    "@thisissoon/angular-inviewport": "^4.2.0",
     "angular-emojify": "^1.0.0",
     "emojify.js": "^1.1.0",
     "hammerjs": "^2.0.8",

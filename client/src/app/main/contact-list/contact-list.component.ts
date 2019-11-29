@@ -29,6 +29,7 @@ export class ContactListComponent implements OnInit {
     public blacklist: string[] = [];
     public roomId: string = '';
     public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
+    public theme: string = 'dark';
     public menuItems: MenuItemModel[] = [
         {
             id: 'invite',
@@ -50,6 +51,9 @@ export class ContactListComponent implements OnInit {
 
     public ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
+            this.chatService.theme.subscribe(selectedTheme => {
+                this.theme = selectedTheme;
+            });
             this.blacklist = LocalStorageService.getBlacklist();
             this.chatService.currentRoomUsers.subscribe(users => {
                 this.list = users;

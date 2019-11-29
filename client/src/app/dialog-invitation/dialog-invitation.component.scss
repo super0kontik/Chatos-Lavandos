@@ -1,12 +1,11 @@
 ::ng-deep .mat-dialog-container {
-    background: #273038;
     padding: 0;
-    overflow: hidden;
 }
 
 .dialog-wrapper {
-    color: white;
     overflow: hidden;
+    height: 100%;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -32,7 +31,24 @@
 
     ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
         border-radius: 50px;
-        background: rgba(255, 255, 255, 0.11);
     }
 
+}
+
+.light {
+    background: #e6e7f2;
+    color: black;
+
+    ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
+        background: rgba(255, 255, 255, 0.11);
+    }
+}
+
+.dark {
+    background: #273038;
+    color: white;
+
+    ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
+        background: rgba(255, 255, 255, 0.11);
+    }
 }

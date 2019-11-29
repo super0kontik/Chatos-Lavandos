@@ -7,13 +7,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #273038;
+
     padding: 10px 60px 5px 0;
     border-bottom: 1px solid black;
     position: relative;
 
     .brand-logo {
-        color: rgb(255, 255, 255);
         user-select: none;
         margin-left: 50px;
         cursor: pointer;
@@ -25,12 +24,22 @@
         //font-family: 'Kaushan Script', cursive;
         font-family: 'Julius Sans One', sans-serif;
 
-        &:hover {
-            transition: 0.3s;
-            filter: drop-shadow(0px 0px 7px #ffffff);
-            transform: scale(1.1) translateX(70px) ;
+
+    }
+
+    .theme-chooser {
+        width: 150px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        mat-icon {
+            width: 35px;
+            height: 35px;
         }
     }
+
+
 
     .c-white {
         color: white;
@@ -70,6 +79,69 @@
                 }
             }
         }
+    }
+}
+
+.light {
+    transition: .5s;
+    background: #e6e7f2;
+
+    .brand-logo {
+        color: rgb(0, 0, 0);
+
+        &:hover {
+            transition: 0.3s;
+            filter: drop-shadow(0px 0px 7px #16181b);
+            transform: scale(1.1) translateX(70px) ;
+        }
+    }
+
+    .theme-icon {
+        font-size: 35px;
+        color: black;
+    }
+
+    .c-white {
+        color: black;
+    }
+
+    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+        background-color: #a0c334;
+    }
+
+    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+        background-color: #759427;
+    }
+}
+
+.dark {
+    transition: .5s;
+    background: #273038;
+
+    .brand-logo {
+        color: rgb(255, 255, 255);
+
+        &:hover {
+            transition: 0.3s;
+            filter: drop-shadow(0px 0px 7px #ffffff);
+            transform: scale(1.1) translateX(70px) ;
+        }
+    }
+    .theme-icon {
+        font-size: 35px;
+        color: white;
+    }
+
+    .c-white {
+        color: white;
+    }
+
+    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+        background-color: #f3a311;
+    }
+
+    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+        background-color: #a97010;
     }
 }
 

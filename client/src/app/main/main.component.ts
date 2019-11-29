@@ -15,6 +15,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     public isFlipped: boolean = false;
     public isLoaded: boolean = false;
     public content: string = '';
+    public theme: string = 'dark';
 
     constructor(private chatService: ChatService,
                 private authService: AuthService,
@@ -25,6 +26,9 @@ export class MainComponent implements OnInit, AfterViewInit {
     }
 
     public ngOnInit(): void {
+        this.chatService.theme.subscribe(selectedTheme => {
+            this.theme = selectedTheme;
+        });
         this.chatService.flipCard.subscribe(() => {
             if (this.isLoaded) {
                 this.flipCardToggle();
