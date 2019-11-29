@@ -18,6 +18,10 @@ const messageSchema = new Schema({
     isSystemMessage:{
         type: Boolean,
         default: false
+    },
+    read: {
+        type: Boolean,
+        default: false
     }
 });
 module.exports = mongoose.model('Message',messageSchema);

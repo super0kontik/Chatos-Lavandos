@@ -17,7 +17,8 @@ const {
 } = require('./controllers/socket/roomInteraction');
 
 const {
-    createMessage
+    createMessage,
+    readMessage
 } = require('./controllers/socket/message');
 
 const {
@@ -65,6 +66,8 @@ module.exports = server => {
         socket.on('searchRooms', async params => await searchRoom(io, socket, params));
 
         socket.on('changeColor', async params => await changeColor(io, socket, params));
+
+        socket.on('readMessage', async params => await readMessage(io, socket, params));
 
         socket.on('disconnect', async () => await disconnect(io, socket));
     });

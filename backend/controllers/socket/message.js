@@ -19,13 +19,31 @@ module.exports = {
                 if(room) {
                     const content = crypto.AES.encrypt(validator.escape(params.message), MESSAGE_KEY).toString();
                     await Message.create({createdAt, creator, room: params.room, content});
-                    await room.updateOne({lastAction:Date.now()});
+                    await room.update({lastAction:Date.now()});
                 }else{
                     throw new Error('Forbidden')
                 }
             }
             io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, creator, isSystemMessage:false}, room: params.room })
         }catch(e){
+            console.log(e);
+            io.to(socket.id).emit('error',{error:{type: e.message}});
+        }
+    },
+
+    readMessage: async (io, socket, params) => {
+        try {
+            const message = await Message.findById(params.messageId).populate('room');
+            if(!message){
+                throw new Error('Message not found');
+            }
+            const userInRoom = !!message.room.users.find(item => String(item) === String(socket.decoded_token.id));
+            if(!userInRoom){
+                throw new Error('User not in room');
+            }
+            await message.update({read:true});
+            io.to(message.room._id).emit('messageRead', params.messageId);
+        }catch (e) {
             console.log(e);
             io.to(socket.id).emit('error',{error:{type: e.message}});
         }
