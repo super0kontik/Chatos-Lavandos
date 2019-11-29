@@ -29,4 +29,12 @@ export class LocalStorageService {
         localStorage.removeItem('user');
     }
 
+    public static setScrollPosition(roomId, scrollPos): void {
+        localStorage.setItem(roomId, scrollPos);
+    }
+
+    public static getScrollPosition(roomId): string {
+        return localStorage.getItem(roomId);
+    }
+
 }

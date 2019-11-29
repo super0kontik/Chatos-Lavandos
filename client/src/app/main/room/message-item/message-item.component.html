@@ -3,7 +3,7 @@
         'foreign' : message.creator._id !== me && !message.isSystemMessage,
         'system' : message.isSystemMessage,
         'dark': theme === 'dark', 'light': theme === 'light'}"
-        snInViewport (inViewportChange)="viewportChange($event)">
+        >
     <ng-container *ngIf="message.isSystemMessage">
         <span class="sys-message" (click)="message.room === '' ? messageRequest(true) : false">
             <i>{{message.content}}</i>
@@ -24,10 +24,10 @@
                 </span>
             </ng-container>
         </span>
-        <p class="message-text">{{message.content}}</p>
+        <p class="message-text" snInViewport (inViewportChange)="viewportChange($event)">{{message.content}}</p>
         <small class="message-date">
             {{message.createdAt | date: 'HH:mm:ss | dd.MM' : ''}}
-            <mat-icon>{{message['read'] ? 'done_all' : 'done'}}</mat-icon>
+            <mat-icon *ngIf="message.creator._id === me">{{message['read'] ? 'done_all' : 'done'}}</mat-icon>
         </small>
     </ng-container>
 </div>

@@ -58,9 +58,15 @@ export class HeaderComponent implements OnInit{
 
     public toggleTheme(): void {
         if (this.theme === themes[0]) {
-            this.chatService.theme.next(themes[1]);
+            this.socketService.emit('changeColor', {
+                theme: themes[1]
+            });
+            //this.chatService.theme.next(themes[1]);
         } else {
-            this.chatService.theme.next(themes[0]);
+            this.socketService.emit('changeColor', {
+                theme: themes[0]
+            });
+            //this.chatService.theme.next(themes[0]);
         }
     }
 }

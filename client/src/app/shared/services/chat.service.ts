@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
 import {config} from "../config";
 import {Message} from "../models/Message";
+import {SocketService} from "./socket.service";
 
 @Injectable({
     providedIn: 'root'
@@ -12,12 +13,13 @@ export class ChatService {
     public currentRoomUsers: BehaviorSubject<object[]> = new BehaviorSubject<object[]>([]);
     public theme: BehaviorSubject<string> = new BehaviorSubject<string>('light');
 
-    constructor(private http: HttpClient) {
-        this.init();
+    constructor(private http: HttpClient, private socketService: SocketService) {
     }
 
-    private init(): void {
-        this.theme.next('light');
+    public init(): void {
+        this.socketService.listen('colorChanged').subscribe(theme => {
+            this.theme.next(theme);
+        });
     }
 
     public getRoomContent(id: string, offset?: number, limit?: number): Observable<Message[]> {

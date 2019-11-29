@@ -54,7 +54,8 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         createdAt: new Date(),
         content: 'Load previous messages',
         _id: '0',
-        isSystemMessage: true
+        isSystemMessage: true,
+        read: true,
     };
     private isLoadedTemplate: boolean = false;
     private isInit: boolean = false;
@@ -64,11 +65,12 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     public me: string = '';
     public smile: string = '';
     public users: object[] = [];
-    public maxScrollHeight: number = 0;
     public currentScrollPosition: number = 0;
-    public amountOfUnread: number = 0;
+    private amountOfUnread: number = 0;
     public config: PerfectScrollbarConfigInterface = {scrollingThreshold: 0};
     public theme: string = 'dark';
+    private isBottom: boolean = false;
+    private isSet: boolean = false;
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
@@ -79,7 +81,6 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.chatService.theme.subscribe(selectedTheme => {
             this.theme = selectedTheme;
         });
-
         this.me = LocalStorageService.getUser()['id'];
 
         if (this.currentRoom._id !== 'common') {
@@ -114,7 +115,7 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         if (this.currentRoom._id !== 'common') {
             this.messageRequest();
             const to = setTimeout(() => {
-                this.scrollToBottom();
+                // this.scrollToBottom();
                 clearTimeout(to);
             }, 200);
         }
@@ -158,6 +159,10 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
+        if (!this.isSet) {
+            this.currentScrollPosition = +LocalStorageService.getScrollPosition(this.currentRoom._id);
+            this.isSet = true;
+        }
         if (this.isInit) {
             if (changes['newMessage']) {
                 if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
@@ -182,18 +187,28 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
     public ngAfterViewInit(): void {
         this.isLoadedTemplate = true;
+        this.scrollY(this.currentScrollPosition);
     }
 
     public onViewportChange(e): void {
         this.messages = this.messages.map(message => {
             if (e.id === message._id && message['read'] === false) {
-                setTimeout(() => message['read'] = e.inView,300);
+                message['read'] = e.inView;
             }
             return message;
         });
+        this.messages.forEach(message => {
+            if (!message['read'] && message.creator._id !== this.me) {
+                this.amountOfUnread -= 1 ;
+            }
+        });
+        this.amountOfUnread -= 1;
+
     }
 
-    public onScroll(): void {
+    public onScroll(e): void {
+        this.currentScrollPosition = e.target.scrollTop;
+        LocalStorageService.setScrollPosition(this.currentRoom._id, e.target.scrollTop);
         this.unreadMessages.emit({
             unread: this.amountOfUnread,
             roomId: this.currentRoom._id
@@ -252,10 +267,12 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     }
 
     private scrollY(scrollTop): void {
+        console.log(scrollTop,'3', this.currentRoom.title)
         this.componentRef.directiveRef.scrollToY(scrollTop);
     }
 
     private scrollToBottom(): void {
+        console.log(this.currentRoom.title)
         this.componentRef.directiveRef.scrollToBottom(0, 0.3);
     }
 

@@ -4,7 +4,7 @@ const Message = require('../../models/message');
 const {getUserSocketsRoom} = require('./utils');
 const crypto = require('crypto-js');
 const validator = require('validator');
-
+const {MESSAGE_KEY} = require('../../config/config');
 
 module.exports = {
     createMessage: async (io, socket, params) => {

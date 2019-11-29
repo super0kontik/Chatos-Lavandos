@@ -9,11 +9,18 @@
         <ng-container *ngIf="!isRoomList">
             <mat-tab *ngFor="let room of rooms; let i=index" [id]="room._id">
                 <ng-template matTabLabel>
-                    <span class="tab-label" [matBadge]="unreadInRooms[room._id]"
+                    <span class="tab-label"
+                          *ngIf="unreadInRooms[room._id] > 0; else noUnread"
+                          [matBadge]="unreadInRooms[room._id]"
                           matBadgeOverlap="false"
                           matBadgePosition="above before">
                         {{room.title}}
                     </span>
+                    <ng-template #noUnread>
+                        <span class="tab-label" >
+                        {{room.title}}
+                    </span>
+                    </ng-template>
                 </ng-template>
                 <app-room [currentRoom]="room"
                           [newMessage]="newMessage"

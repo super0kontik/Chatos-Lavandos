@@ -162,6 +162,7 @@
         background: rgba(0, 0, 0, 0.18);
         //background: linear-gradient(90deg, rgba(0, 0, 0, 0.38), transparent);
         .menu-items {
+            background: transparent;
             mat-divider {
                 background-color: rgba(85, 85, 85, 0.57) !important;
             }

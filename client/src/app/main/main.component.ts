@@ -26,6 +26,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     }
 
     public ngOnInit(): void {
+        this.chatService.init();
         this.chatService.theme.subscribe(selectedTheme => {
             this.theme = selectedTheme;
         });

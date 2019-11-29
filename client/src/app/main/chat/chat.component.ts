@@ -170,7 +170,7 @@ export class ChatComponent implements OnInit {
     }
 
     public changeUnreadByRoomId(e): void {
-        //this.unreadInRooms[e.roomId] = e.unread;
+        this.unreadInRooms[e.roomId] = e.unread;
         this.cdr.detectChanges();
     }
 

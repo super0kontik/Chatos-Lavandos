@@ -7,4 +7,5 @@ export interface Message {
     room: string;
     _id: string;
     isSystemMessage: boolean;
+    read: boolean;
 }
