@@ -50,25 +50,6 @@ export class ChatComponent implements OnInit {
             });
 
             this.socketService.listen('newMessage').subscribe(data => {
-                let currTab = '';
-                let isChangeTab = true;
-                for (let i = 0; i < this.rooms.length; i++) {
-                    if (this.currentTabIndex === this.rooms[i].index) {
-                        if (this.currentTabIndex === 0 && this.rooms[i]._id === data.room) {
-                            isChangeTab = false;
-                        }
-                        currTab = this.rooms[i]._id;
-                    }
-                }
-                if (isChangeTab) {
-                    const firstRoomId = data.room;
-                    let tempRooms = this.rooms.map(i => i._id);
-                    tempRooms = Array.from(new Set([firstRoomId, ...tempRooms]));
-                    this.rooms = tempRooms.map((item, index) => {
-                        return {...this.rooms.find(i => i._id === item), index}
-                    });
-                    this.selectedTab = this.rooms.filter(room => room._id === currTab)[0].index;
-                }
                 this.newMessage = data;
             });
 

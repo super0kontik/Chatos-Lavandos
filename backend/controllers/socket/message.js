@@ -9,6 +9,7 @@ const {MESSAGE_KEY} = require('../../config/config');
 module.exports = {
     createMessage: async (io, socket, params) => {
         try {
+            let messId = 0;
             const createdAt = Date.now();
             const creator = await User.findById(socket.decoded_token.id);
             if(params.message.trim().length<1 || !creator){
@@ -18,13 +19,15 @@ module.exports = {
                 const room = await Room.findOne({_id:params.room, users:socket.decoded_token.id});
                 if(room) {
                     const content = crypto.AES.encrypt(validator.escape(params.message), MESSAGE_KEY).toString();
-                    await Message.create({createdAt, creator, room: params.room, content});
+                    const mess = await Message.create({createdAt, creator, room: params.room, content});
+                    messId = mess._id;
                     await room.update({lastAction:Date.now()});
                 }else{
                     throw new Error('Forbidden')
                 }
             }
-            io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, creator, isSystemMessage:false}, room: params.room })
+            console.log('New message ',params.room);
+            io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, _id:messId , creator, isSystemMessage:false}, room: params.room })
         }catch(e){
             console.log(e);
             io.to(socket.id).emit('error',{error:{type: e.message}});
@@ -33,6 +36,7 @@ module.exports = {
 
     readMessage: async (io, socket, params) => {
         try {
+            console.log(params.messageId);
             const message = await Message.findById(params.messageId).populate('room');
             if(!message){
                 throw new Error('Message not found');
@@ -45,7 +49,8 @@ module.exports = {
                 throw new Error('User not in room');
             }
             await message.update({read:true});
-            return io.to(message.room._id).emit('messageRead', params.messageId);
+            console.log('read ',message.room._id)
+            return io.to(String(message.room._id)).emit('messageRead', params.messageId);
         }catch (e) {
             console.log(e);
             io.to(socket.id).emit('error',{error:{type: e.message}});

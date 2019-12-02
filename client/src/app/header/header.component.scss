@@ -7,7 +7,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 10px 60px 5px 0;
     border-bottom: 1px solid black;
     position: relative;
@@ -20,11 +19,7 @@
         font-size: 4vw;
         letter-spacing: 10px;
         line-height: 20px;
-        //font-family: 'Bungee Inline', cursive;
-        //font-family: 'Kaushan Script', cursive;
         font-family: 'Julius Sans One', sans-serif;
-
-
     }
 
     .theme-chooser {
@@ -62,10 +57,6 @@
             font-size: 1.3vw;
             white-space: nowrap;
 
-            &:first-child {
-                animation: piu-piu 10s ease-in-out infinite;
-            }
-
             span {
                 transition: 0.3s;
             }
@@ -97,6 +88,7 @@
     }
 
     .theme-icon {
+        user-select: none;
         font-size: 35px;
         color: black;
     }
@@ -148,22 +140,4 @@
 .auth-block {
     height: 100%;
 
-}
-
-@keyframes piu-piu {
-    0% {
-
-    }
-    1% {
-        transform: translateY(-10px);
-    }
-    4% {
-        transform: translateY(0px);
-    }
-    7% {
-        transform: translateY(-10px);
-    }
-    10% {
-        transform: translateY(0px);
-    }
 }

@@ -31,11 +31,16 @@ export class MessageItemComponent implements OnInit {
     }
 
     public viewportChange(e): void {
-        this.viewChange.emit({
-            inView: e,
-            id: this.message._id,
-            text: this.message.content,
-        });
+
+        if (!this.message.read && this.me !== this.message.creator._id) {
+            console.log(this.message)
+            this.viewChange.emit({
+                inView: e,
+                id: this.message._id,
+                text: this.message.content,
+            });
+        }
+
     }
 
 }

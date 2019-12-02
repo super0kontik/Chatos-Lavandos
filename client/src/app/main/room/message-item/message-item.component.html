@@ -3,20 +3,21 @@
         'foreign' : message.creator._id !== me && !message.isSystemMessage,
         'system' : message.isSystemMessage,
         'dark': theme === 'dark', 'light': theme === 'light'}"
-        >
+>
     <ng-container *ngIf="message.isSystemMessage">
         <span class="sys-message" (click)="message.room === '' ? messageRequest(true) : false">
             <i>{{message.content}}</i>
         </span>
     </ng-container>
     <ng-container *ngIf="!message.isSystemMessage">
+<!--        <div class="avatar"></div>-->
         <span class="message-user">
-        <ng-container *ngIf="users[message.creator._id] === undefined">
-            <span class="online">Deleted</span>
-            <span>{{message.creator.name}}</span>
-        </ng-container>
-        <ng-container *ngIf="users[message.creator._id] !== undefined">
-            <span class="online" *ngIf="users[message.creator._id].online">Online</span>
+            <ng-container *ngIf="users[message.creator._id] === undefined">
+                <span class="online">Deleted</span>
+                <span>{{message.creator.name}}</span>
+            </ng-container>
+            <ng-container *ngIf="users[message.creator._id] !== undefined">
+                <span class="online" *ngIf="users[message.creator._id].online">Online</span>
                 <span [ngClass]="{'premium': users[message.creator._id].premium}">
                     <span *ngIf="users[message.creator._id].premium">👑</span>
                     {{users[message.creator._id].name}}

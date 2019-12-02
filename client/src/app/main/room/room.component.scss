@@ -168,15 +168,23 @@
             }
 
             mat-list-item {
+                user-select: none;
                 color: black;
 
                 mat-icon {
-                    color: #ffffff;
+                    transition: 0.3s;
+                    color: #000000;
                 }
 
                 &:hover {
                     transition: 0.3s;
                     filter: drop-shadow(0 3px 10px #000000);
+                    color: white;
+
+                    mat-icon {
+                        transition: 0.3s;
+                        color: #ffffff;
+                    }
                 }
             }
         }
@@ -195,6 +203,7 @@
         }
 
         .wrap-btn {
+            user-select: none;
             transition: 0.3s;
             background: transparent;
 

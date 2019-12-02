@@ -22,11 +22,12 @@ import {LocalStorageService} from "../../shared/services/local-storage.service";
 export class ContactListComponent implements OnInit {
     @Input() isDisplayed: boolean;
     @ViewChild('contextmenu', {static: false}) public contextmenu: ContextMenuComponent;
+
     private me: string = LocalStorageService.getUser()['id'];
-    public content: string = '';
-    public lastSelectedContactId: string = '';
+    private blacklist: string[] = [];
+    private lastSelectedContactId: string = '';
+    private content: string = '';
     public list: object[] = [];
-    public blacklist: string[] = [];
     public roomId: string = '';
     public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
     public theme: string = 'dark';
@@ -51,9 +52,7 @@ export class ContactListComponent implements OnInit {
 
     public ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-            this.chatService.theme.subscribe(selectedTheme => {
-                this.theme = selectedTheme;
-            });
+            this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
             this.blacklist = LocalStorageService.getBlacklist();
             this.chatService.currentRoomUsers.subscribe(users => {
                 this.list = users;

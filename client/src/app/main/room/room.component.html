@@ -19,7 +19,7 @@
             </mat-list-item>
         </mat-list>
     </div>
-    <perfect-scrollbar [config]="config" (psScrollY)="onScroll($event)">
+    <perfect-scrollbar [config]="config" (psScrollY)="onScroll($event)" (psYReachEnd)="isEnd($event)">
         <mat-list class="mt-lst" >
             <mat-list-item *ngFor="let message of messages" [ngClass]="{
                 'own': message.creator._id === me && !message.isSystemMessage,

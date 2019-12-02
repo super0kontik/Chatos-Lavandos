@@ -31,7 +31,7 @@ import {log} from "util";
     templateUrl: './room.component.html',
     styleUrls: ['./room.component.scss']
 })
-export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges {
+export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() currentRoom: Room;
     @Input() newMessage: object | boolean;
     @Input() tabIndex: number;
@@ -42,6 +42,13 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
     @ViewChild('inputText', {static: false}) input: ElementRef;
 
     private emoji: EmojifyPipe = new EmojifyPipe();
+    private isLoadedTemplate: boolean = false;
+    private isBottom: boolean = false;
+    private isInit: boolean = false;
+    private isSet: boolean = false;
+    private currentScrollPosition: number = 0;
+    private amountOfUnread: number = 0;
+    private isSmiles: boolean = false;
     private loadMessage: Message = {
         room: '',
         creator: {
@@ -57,31 +64,22 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         isSystemMessage: true,
         read: true,
     };
-    private isLoadedTemplate: boolean = false;
-    private isInit: boolean = false;
-    public isSmiles: boolean = false;
     public messages: Message[] = [];
     public creator: User;
     public me: string = '';
     public smile: string = '';
     public users: object[] = [];
-    public currentScrollPosition: number = 0;
-    private amountOfUnread: number = 0;
     public config: PerfectScrollbarConfigInterface = {scrollingThreshold: 0};
     public theme: string = 'dark';
-    private isBottom: boolean = false;
-    private isSet: boolean = false;
+
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
-                public dialog: MatDialog) {
-    }
+                public dialog: MatDialog) {}
 
     public ngOnInit(): void {
-        this.chatService.theme.subscribe(selectedTheme => {
-            this.theme = selectedTheme;
-        });
         this.me = LocalStorageService.getUser()['id'];
+        this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
 
         if (this.currentRoom._id !== 'common') {
             this.currentRoom.users.forEach(user => {
@@ -106,26 +104,23 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
 
         this.coincidenceOfTabIndex();
 
-        this.chatService.flipCard.subscribe((flag) => {
-            if (this.isLoadedTemplate && flag) {
-                this.animateSmile();
-            }
-        });
+        this.chatService.flipCard.subscribe((flag) => this.isLoadedTemplate && flag ? this.animateSmile() : false);
 
-        if (this.currentRoom._id !== 'common') {
-            this.messageRequest();
-            const to = setTimeout(() => {
-                // this.scrollToBottom();
-                clearTimeout(to);
-            }, 200);
-        }
+        if (this.currentRoom._id !== 'common') this.messageRequest();
 
-        this.socketService.listen('userConnected').subscribe(userId => {
-            this.changeUserStatusOnline(true, userId);
-        });
+        this.socketService.listen('userConnected').subscribe(userId => this.changeUserStatusOnline(true, userId));
 
-        this.socketService.listen('userDisconnected').subscribe(userId => {
-            this.changeUserStatusOnline(false, userId);
+        this.socketService.listen('userDisconnected').subscribe(userId => this.changeUserStatusOnline(false, userId));
+
+        this.socketService.listen('messageRead').subscribe(messageId => {
+            this.messages = this.messages.map(message => {
+
+                if (message.creator._id === this.me && !message.read && message._id === messageId) {
+                    console.log(message.read);
+                    message.read = true;
+                }
+                return message;
+            });
         });
 
         this.socketService.listen('userJoined').subscribe(data => {
@@ -179,36 +174,50 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         }
     }
 
-    public ngDoCheck(): void {
-        if (this.isLoadedTemplate) {
-            this.coincidenceOfTabIndex();
+    public ngAfterViewInit(): void {
+        this.isLoadedTemplate = true;
+        const to = setTimeout(() => {
+            this.scrollY(this.currentScrollPosition);
+            clearTimeout(to);
+        }, 200);
+    }
+
+    public sendMessage(event: any): void {
+        if (this.input.nativeElement.innerText.trim().length > 0) {
+            if (event.code === 'Enter') {
+                event.preventDefault();
+            }
+            const transformedMessage = this.emoji.transform(this.input.nativeElement.innerText);
+            this.socketService.emit('createMessage', {
+                message: transformedMessage.trim(),
+                room: this.currentRoom._id,
+            });
+            this.input.nativeElement.innerText = '';
+            const to = setTimeout(() => {
+                this.scrollToBottom();
+                clearTimeout(to);
+            }, 250);
         }
     }
 
-    public ngAfterViewInit(): void {
-        this.isLoadedTemplate = true;
-        this.scrollY(this.currentScrollPosition);
-    }
-
-    public onViewportChange(e): void {
-        this.messages = this.messages.map(message => {
-            if (e.id === message._id && message['read'] === false) {
-                message['read'] = e.inView;
-            }
-            return message;
-        });
-        this.messages.forEach(message => {
-            if (!message['read'] && message.creator._id !== this.me) {
-                this.amountOfUnread -= 1 ;
-            }
-        });
-        this.amountOfUnread -= 1;
+    public isEnd(event: any) {
 
     }
 
-    public onScroll(e): void {
-        this.currentScrollPosition = e.target.scrollTop;
-        LocalStorageService.setScrollPosition(this.currentRoom._id, e.target.scrollTop);
+    public onViewportChange(event: any): void {
+        if (this.isLoadedTemplate) {
+            console.log(41414141414, event);
+            if (this.currentRoom._id !== 'common') {
+                if (event.inView) {
+                    this.socketService.emit('readMessage', {messageId: event.id});
+                }
+            }
+        }
+    }
+
+    public onScroll(event: any): void {
+        LocalStorageService.setScrollPosition(this.currentRoom._id, event.target.scrollTop);
+        this.currentScrollPosition = event.target.scrollTop;
         this.unreadMessages.emit({
             unread: this.amountOfUnread,
             roomId: this.currentRoom._id
@@ -221,59 +230,11 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(messages => {
             this.messages = this.messages.filter(message => message.room !== '');
             this.messages = [...messages, ...this.messages];
-            this.messages = this.messages.map(message => {
-                message['read'] = false;
-                return message;
-            });
             this.messages.unshift(this.loadMessage);
         });
         if (scroll) {
             this.scrollY(1600);
         }
-    }
-
-    private animateSmile(): void {
-        if (!this.isSmiles) {
-            this.smileImg.nativeElement.style.filter = 'invert(100%) drop-shadow(0px 5px 5px black)';
-            this.isSmiles = true;
-        } else {
-            this.smileImg.nativeElement.style.filter = '';
-            this.isSmiles = false;
-        }
-    }
-
-    public sendMessage(e): void {
-        if (this.input.nativeElement.innerText.trim().length > 0) {
-            if (e.code === 'Enter') {
-                e.preventDefault();
-            }
-            const transformedMessage = this.emoji.transform(this.input.nativeElement.innerText);
-            this.socketService.emit('createMessage', {
-                message: transformedMessage,
-                room: this.currentRoom._id,
-            });
-            this.input.nativeElement.innerText = '';
-            const to = setTimeout(() => {
-                this.scrollToBottom();
-                clearTimeout(to);
-            }, 250);
-        }
-    }
-
-    private coincidenceOfTabIndex(): void {
-        if (this.tabIndex === this.currentRoom.index) {
-            this.chatService.currentRoomUsers.next(Object.values(this.users));
-        }
-    }
-
-    private scrollY(scrollTop): void {
-        console.log(scrollTop,'3', this.currentRoom.title)
-        this.componentRef.directiveRef.scrollToY(scrollTop);
-    }
-
-    private scrollToBottom(): void {
-        console.log(this.currentRoom.title)
-        this.componentRef.directiveRef.scrollToBottom(0, 0.3);
     }
 
     public openSmiles(): void {
@@ -344,9 +305,33 @@ export class RoomComponent implements OnInit, AfterViewInit, DoCheck, OnChanges 
         })
     }
 
-    private changeUserStatusOnline(connection: boolean, userId: string): void {
-        if (this.users[userId]) {
-            this.users[userId]['online'] = connection;
+    private animateSmile(): void {
+        if (!this.isSmiles) {
+            this.smileImg.nativeElement.style.filter = 'invert(100%) drop-shadow(0px 5px 5px black)';
+            this.isSmiles = true;
+        } else {
+            this.smileImg.nativeElement.style.filter = '';
+            this.isSmiles = false;
         }
+    }
+
+    private coincidenceOfTabIndex(): void {
+        if (this.tabIndex === this.currentRoom.index) {
+            this.chatService.currentRoomUsers.next(Object.values(this.users));
+        }
+    }
+
+    private scrollY(scrollTop: number): void {
+        if (this.tabIndex === this.currentRoom.index) {
+            this.componentRef.directiveRef.scrollToY(scrollTop);
+        }
+    }
+
+    private scrollToBottom(): void {
+        this.componentRef.directiveRef.scrollToBottom(0, 0.3);
+    }
+
+    private changeUserStatusOnline(connection: boolean, userId: string): void {
+        if (this.users[userId]) this.users[userId]['online'] = connection;
     }
 }
