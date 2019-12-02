@@ -37,12 +37,15 @@ module.exports = {
             if(!message){
                 throw new Error('Message not found');
             }
+            if(message.read){
+                return console.log('message already read');
+            }
             const userInRoom = !!message.room.users.find(item => String(item) === String(socket.decoded_token.id));
             if(!userInRoom){
                 throw new Error('User not in room');
             }
             await message.update({read:true});
-            io.to(message.room._id).emit('messageRead', params.messageId);
+            return io.to(message.room._id).emit('messageRead', params.messageId);
         }catch (e) {
             console.log(e);
             io.to(socket.id).emit('error',{error:{type: e.message}});
