@@ -5,22 +5,34 @@
     width: 100%;
     //background: linear-gradient(90deg, #3b4b5c, rgb(51, 51, 70));
 
+    ::ng-deep .mat-drawer-inner-container {
+        overflow: hidden;
+    }
 
-    .add-btn {
-        user-select: none;
-        border: 0 !important;
-        cursor: pointer;
-        background: rgba(0, 0, 0, 0.18);
-        position: absolute;
-        width: 50px;
-        height: 47px;
+    ::ng-deep .mat-drawer-container, .mat-drawer {
+        background: transparent;
+    }
 
-        img {
-            transition: 0.3s;
-            border-radius: 50px;
-            width: 100%;
-            height: 100%;
-        }
+    ::ng-deep .mat-drawer-side {
+        border: 0;
+    }
+
+    .sidenav-wrapper {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+
+    .sidenav-content {
+        display: flex;
+        height: 100%;
+        width: 300px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .room-wrapper {
+        overflow: hidden;
     }
 
     .room-list {

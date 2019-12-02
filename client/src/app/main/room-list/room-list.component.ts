@@ -15,11 +15,12 @@ export class RoomListComponent implements OnInit {
     public searchedRooms: Room[];
     public searchText: string = '';
     public isSearchRoomList: boolean = false;
-    public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.2, scrollingThreshold: 0};
+    public config: PerfectScrollbarConfigInterface = {wheelSpeed: 0.2, scrollingThreshold: 0};
     public theme: string = 'dark';
 
     constructor(private socketService: SocketService,
-                private chatService: ChatService) {}
+                private chatService: ChatService) {
+    }
 
     public ngOnInit(): void {
         this.chatService.theme.subscribe(selectedTheme => {
@@ -30,9 +31,14 @@ export class RoomListComponent implements OnInit {
         });
     }
 
-    public goToRoom(searchedRoom: Room | number): void {
-        if (typeof searchedRoom === 'number') {
-           this.onSelectedRoom.emit(searchedRoom);
+    public createRoom(): void {
+
+    }
+
+    public goToRoom(searchedRoom: Room): void {
+        if (!this.isSearchRoomList) {
+            console.log(searchedRoom)
+            this.onSelectedRoom.emit(searchedRoom);
         } else {
             searchedRoom = searchedRoom as Room;
             for (let room of this.rooms) {
@@ -42,7 +48,7 @@ export class RoomListComponent implements OnInit {
                 }
             }
             this.socketService.emit('joinRoom', {roomId: searchedRoom._id});
-            this.onSelectedRoom.emit(searchedRoom.index);
+            this.onSelectedRoom.emit(searchedRoom._id);
         }
     }
 

@@ -1,27 +1,39 @@
 <div class="room-list-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
-    <div class="search-rooms">
-        <label *ngIf="!isSearchRoomList">
-            <input matInput placeholder="Search room..." [(ngModel)]="searchText" >
-        </label>
-        <label *ngIf="isSearchRoomList">
-            <input matInput placeholder="Search room..." [(ngModel)]="searchText" (input)="searchRooms()">
-        </label>
-        <mat-slide-toggle class="searchToggle"
-                          (change)="toggleSearch()"
-        >{{isSearchRoomList ? 'Global search' : 'Local search'}}</mat-slide-toggle>
+    <div class="list-title">
+        <p>Room-list</p>
     </div>
-    <perfect-scrollbar [config]="config">
-        <mat-list *ngIf="!isSearchRoomList">
-            <mat-list-item *ngFor="let room of rooms | search: searchText">
-                <mat-divider></mat-divider>
-                <p class="room-title" (click)="goToRoom(room.index)">{{room.title}}</p>
-            </mat-list-item>
-        </mat-list>
-        <mat-list *ngIf="isSearchRoomList">
-            <mat-list-item *ngFor="let room of searchedRooms">
-                <mat-divider></mat-divider>
-                <p class="room-title" (click)="goToRoom(room)">{{room.title}}</p>
-            </mat-list-item>
-        </mat-list>
-    </perfect-scrollbar>
+    <div class="list-content">
+        <div class="search-rooms">
+            <div class="add-btn" (click)="createRoom()" matRipple>
+                <mat-icon>add</mat-icon>
+                <span>Create new room</span>
+            </div>
+            <input matInput placeholder="Search room..."
+                   [(ngModel)]="searchText"
+                   *ngIf="!isSearchRoomList">
+            <input matInput placeholder="Search room..."
+                   [(ngModel)]="searchText"
+                   (input)="searchRooms()"
+                   *ngIf="isSearchRoomList">
+            <mat-slide-toggle class="searchToggle"
+                              (change)="toggleSearch()">
+                {{isSearchRoomList ? 'Globally' : 'Locally'}}
+            </mat-slide-toggle>
+        </div>
+        <perfect-scrollbar [config]="config">
+            <mat-list *ngIf="!isSearchRoomList">
+                <mat-list-item *ngFor="let room of rooms | search: searchText">
+                    <mat-divider></mat-divider>
+                    <p class="room-title" (click)="goToRoom(room)">{{room.title}}</p>
+                </mat-list-item>
+            </mat-list>
+            <mat-list *ngIf="isSearchRoomList">
+                <mat-list-item *ngFor="let room of searchedRooms">
+                    <mat-divider></mat-divider>
+                    <p class="room-title" (click)="goToRoom(room)">{{room.title}}</p>
+                </mat-list-item>
+            </mat-list>
+        </perfect-scrollbar>
+    </div>
+
 </div>

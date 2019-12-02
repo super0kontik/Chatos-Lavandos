@@ -14,7 +14,7 @@
         align-items: center;
         width: 100%;
         color: white;
-        height: 47px;
+        height: 48px;
         background: rgba(0, 0, 0, 0.51);
 
         p {
@@ -50,7 +50,6 @@
             &:hover {
                 transform: scale(1.13);
                 transition: 0.3s;
-                box-shadow: 0 0 10px white;
 
                 .smile-img {
                     transition: 0.5s;

@@ -1,21 +1,69 @@
 .room-list-wrapper {
-    padding: 0px 25px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .list-content {
+        border-right: 1px solid rgba(0, 0, 0, 0.2);
+        height: calc(100vh - 48px);
+    }
+
+    .add-btn {
+        padding: 5px 10px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        user-select: none;
+        border: 0 !important;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.18);
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+
+        span {
+            font-weight: 300;
+            font-size: 24px;
+        }
+
+        mat-icon {
+            font-size: 30px;
+            height: auto;
+            width: auto;
+        }
+    }
+
+    .list-title {
+        user-select: none;
+        display: flex;
+        justify-content: center;
+        font-family: 'Montserrat Alternates', sans-serif;
+        align-items: center;
+        width: 100%;
+        color: white;
+        height: 48px;
+
+        p {
+            font-weight: 300;
+            font-size: 30px;
+        }
+    }
 
     .search-rooms {
-        display: flex;
-        margin-top: 30px;
-        margin-bottom: 30px;
-        width: 61.5%;
-
+        padding: 20px;
         input {
+            box-sizing: border-box;
             transition: 0.3s;
             height: 30px;
             width: 100%;
             border: 0;
+            margin-bottom: 25px;
             box-shadow: 0 0 0;
             border-radius: 50px;
             outline:none;
             padding: 5px 20px;
+
             font-size: 24px;
             background: rgba(255, 255, 255, 0.45);
 
@@ -37,16 +85,15 @@
     }
 
     .searchToggle {
-        position: relative;
-        left: 60px;
+        box-sizing: border-box;
         cursor: pointer;
         transition: 0.3s;
+        padding: 0 20px;
         height: 30px;
-        width: 250px;
-        box-shadow: 0 0 0;
+        width: auto;
         border-radius: 50px;
-        padding: 5px 20px;
-        font-size: 24px;
+        font-size: 20px;
+        font-weight: 300;
         background: rgba(255, 255, 255, 0.45);
 
         &:hover, &:focus {
@@ -62,7 +109,7 @@
         color: white;
         font-family: 'Montserrat Alternates', sans-serif;
         font-weight: 400;
-        font-size: 34px;
+        font-size: 25px;
 
         &:hover {
             transition: 0.3s;
@@ -71,11 +118,16 @@
     }
     ::ng-deep .mat-divider {
         background-color: rgba(255, 255, 255, 0.47);
-        width: 65%;
+        width: 90%;
     }
 }
 
 .light {
+
+    .list-title {
+        background: rgba(0, 0, 0, 0.39);
+    }
+
     .search-rooms {
 
         input {
@@ -118,11 +170,15 @@
     }
     ::ng-deep .mat-divider {
         background-color: rgba(0, 0, 0, 0.72);
-        width: 65%;
     }
 }
 
 .dark {
+
+    .list-title {
+        background: rgba(0, 0, 0, 0.51);
+    }
+
     .search-rooms {
 
         input {
@@ -165,6 +221,5 @@
     }
     ::ng-deep .mat-divider {
         background-color: rgba(255, 255, 255, 0.47);
-        width: 65%;
     }
 }

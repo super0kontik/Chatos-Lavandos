@@ -6,6 +6,10 @@
     background: transparent;
     flex-direction: column;
 
+    .list-content {
+        border-left: 1px solid rgba(0, 0, 0, 0.2);
+        height: calc(100vh - 48px);
+    }
 
     .list-title {
         user-select: none;
@@ -15,7 +19,7 @@
         align-items: center;
         width: 100%;
         color: white;
-        height: 47px;
+        height: 48px;
         background: rgba(0, 0, 0, 0.51);
 
         p {

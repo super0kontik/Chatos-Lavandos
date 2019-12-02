@@ -37,6 +37,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() tabIndex: number;
     @Output() leaveFromChat: EventEmitter<any> = new EventEmitter<any>();
     @Output() unreadMessages: EventEmitter<any> = new EventEmitter<any>();
+    @Output() openList: EventEmitter<any> = new EventEmitter<any>();
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
@@ -114,9 +115,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
 
         this.socketService.listen('messageRead').subscribe(messageId => {
             this.messages = this.messages.map(message => {
-
                 if (message.creator._id === this.me && !message.read && message._id === messageId) {
-                    console.log(message.read);
                     message.read = true;
                 }
                 return message;
@@ -124,7 +123,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
         });
 
         this.socketService.listen('userJoined').subscribe(data => {
-            console.log('wuuuuaaasaaap');
             if (this.currentRoom._id === data.roomId) {
                 if (this.currentRoom._id !== 'common') {
                     this.users[data.user._id] = {
@@ -155,10 +153,10 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
-        if (!this.isSet) {
-            this.currentScrollPosition = +LocalStorageService.getScrollPosition(this.currentRoom._id);
-            this.isSet = true;
-        }
+        // if (!this.isSet) {
+        //     this.currentScrollPosition = +LocalStorageService.getScrollPosition(this.currentRoom._id);
+        //     this.isSet = true;
+        // }
         if (this.isInit) {
             if (changes['newMessage']) {
                 if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
@@ -166,17 +164,11 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
                 }
             }
         }
-        if (changes['tabIndex']) {
-            const to = setTimeout(() => {
-                this.scrollY(this.currentScrollPosition);
-                clearTimeout(to);
-            }, 100);
-            this.coincidenceOfTabIndex();
-        }
     }
 
     public ngAfterViewInit(): void {
         this.isLoadedTemplate = true;
+        this.coincidenceOfTabIndex();
         const to = setTimeout(() => {
             this.scrollY(this.currentScrollPosition);
             clearTimeout(to);
@@ -203,6 +195,10 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
 
     public isEnd(event: any) {
 
+    }
+
+    public openRoomList(): void {
+        this.openList.emit();
     }
 
     public onViewportChange(event: any): void {

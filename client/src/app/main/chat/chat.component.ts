@@ -17,12 +17,13 @@ import {MatBadge} from "@angular/material/badge";
 export class ChatComponent implements OnInit {
     @ViewChild('search', {static: false}) search: ElementRef;
     @ViewChild(MatBadge, {static: false}) badge: MatBadge;
+    public opened: boolean = false;
     public rooms: Room[];
     public newMessage: object = {};
     public userLeft: string;
     public me: string;
     public currentTabIndex: number = 0;
-    public selectedTab: number;
+    public selectedRoom: Room;
     public isRoomList: boolean = false;
     public unreadInRooms: object = {};
     public theme: string = 'dark';
@@ -35,10 +36,7 @@ export class ChatComponent implements OnInit {
 
     public ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-            this.chatService.theme.subscribe(selectedTheme => {
-                this.theme = selectedTheme;
-            });
-
+            this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
             this.me = LocalStorageService.getUser()['id'];
 
             this.socketService.listen('join').subscribe(data => {
@@ -47,6 +45,7 @@ export class ChatComponent implements OnInit {
                     this.unreadInRooms[room._id] = 0;
                     return {...room, index};
                 });
+                this.selectedRoom = this.rooms[0];
             });
 
             this.socketService.listen('newMessage').subscribe(data => {
@@ -67,7 +66,6 @@ export class ChatComponent implements OnInit {
             this.socketService.listen('userLeft').subscribe(data => {
                 if (data.userId === this.me) {
                     this.leaveRoom(data.roomId);
-                    this.selectedTab = this.currentTabIndex = 0;
                 }
             });
 
@@ -106,6 +104,10 @@ export class ChatComponent implements OnInit {
         });
     }
 
+    public openSideNav(): void {
+        this.opened = !this.opened;
+    }
+
     public createRoom(): void {
         const dialogRef = this.dialog.open(DialogAddingRoomComponent, {
             width: '500px',
@@ -141,23 +143,18 @@ export class ChatComponent implements OnInit {
         });
     }
 
-    public toggleOnList(): void {
-        if (!this.isRoomList) {
-            this.search.nativeElement.style.filter = 'invert(100%) drop-shadow(0px 3px 10px black)';
-        } else {
-            this.search.nativeElement.style.filter = '';
-        }
-        this.isRoomList = !this.isRoomList;
-    }
-
     public changeUnreadByRoomId(e): void {
         this.unreadInRooms[e.roomId] = e.unread;
         this.cdr.detectChanges();
     }
 
-    public toggleRoom(index: number): void {
-        this.toggleOnList();
-        this.selectedTab = index;
+    public toggleRoom(id: string): void {
+        this.rooms.forEach(room => {
+            console.log(id, room._id)
+            if (id === room._id) {
+                this.selectedRoom = room;
+            }
+        });
     }
 }
 
