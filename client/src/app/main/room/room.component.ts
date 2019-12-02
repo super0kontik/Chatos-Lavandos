@@ -124,6 +124,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
         });
 
         this.socketService.listen('userJoined').subscribe(data => {
+            console.log('wuuuuaaasaaap');
             if (this.currentRoom._id === data.roomId) {
                 if (this.currentRoom._id !== 'common') {
                     this.users[data.user._id] = {
