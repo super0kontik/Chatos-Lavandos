@@ -26,7 +26,6 @@ module.exports = {
                     throw new Error('Forbidden')
                 }
             }
-            console.log('New message ',params.room);
             io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, _id:messId , creator, isSystemMessage:false}, room: params.room })
         }catch(e){
             console.log(e);
@@ -49,7 +48,6 @@ module.exports = {
                 throw new Error('User not in room');
             }
             await message.update({read:true});
-            console.log('read ',message.room._id)
             return io.to(String(message.room._id)).emit('messageRead', params.messageId);
         }catch (e) {
             console.log(e);
