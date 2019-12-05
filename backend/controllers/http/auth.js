@@ -11,7 +11,7 @@ module.exports.signIn = passport.authenticate(
 
 
 module.exports.callback = (req,res) => {
-    const url = `${API_URL}/auth?token=${req.user.token}&id=${req.user.id}&name=${req.user.name}&blacklist=${JSON.stringify(req.user.blacklist)}&isPremium=true&colorTheme=${req.user.colorTheme}`;
+    const url = `${API_URL}/auth?token=${req.user.token}&id=${req.user.id}&name=${req.user.name}&blacklist=${JSON.stringify(req.user.blacklist)}&isPremium=true&colorTheme=${req.user.colorTheme}&avatar=${req.user.avatar}`;
     res.redirect(url)
 };
 

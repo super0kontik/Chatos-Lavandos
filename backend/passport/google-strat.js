@@ -19,7 +19,8 @@ passport.use(
                 isPremium: user.isPremium,
                 token: token,
                 blacklist: user.blacklist,
-                colorTheme: user.colorTheme
+                colorTheme: user.colorTheme,
+                avatar: profile._json.picture
             });
         }catch (e){
             throw new Error(e.message)
