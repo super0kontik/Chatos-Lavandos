@@ -2,30 +2,28 @@
     <div class="list-title">
         <p>Participants</p>
     </div>
-    <div class="list-content">
-        <ng-container *ngIf="!isDisplayed">
-            <perfect-scrollbar [config]="config">
-                <div id="contextmenu-control">
-                    <div id="contextmenutarget">
-                        <mat-list>
-                            <mat-list-item *ngFor="let item of list" (contextmenu)="onContactRightClick(item)">
-                                <mat-icon *ngIf="item.online">brightness_1</mat-icon>
-                                <mat-icon *ngIf="item['creator']">person</mat-icon>
-                                <p class="contact-list-item" [ngClass]="{'creator': item['creator']}">{{item.name}}</p>
-                                <mat-divider></mat-divider>
-                            </mat-list-item>
-                            <ejs-contextmenu
-                                #contextmenu
-                                target='#contextmenutarget'
-                                [items]='menuItems'
-                                (select)="onSelect($event)"
-                                (beforeItemRender)="addDisabled($event)"
-                                (created)='onCreated()'>
-                            </ejs-contextmenu>
-                        </mat-list>
-                    </div>
+    <ng-container *ngIf="!isDisplayed">
+        <perfect-scrollbar [config]="config">
+            <div id="contextmenu-control">
+                <div id="contextmenutarget">
+                    <mat-list>
+                        <mat-list-item *ngFor="let item of list" (contextmenu)="onContactRightClick(item)">
+                            <mat-icon *ngIf="item.online">brightness_1</mat-icon>
+                            <mat-icon *ngIf="item['creator']">person</mat-icon>
+                            <p class="contact-list-item" [ngClass]="{'creator': item['creator']}">{{item.name}}</p>
+                            <mat-divider></mat-divider>
+                        </mat-list-item>
+                        <ejs-contextmenu
+                            #contextmenu
+                            target='#contextmenutarget'
+                            [items]='menuItems'
+                            (select)="onSelect($event)"
+                            (beforeItemRender)="addDisabled($event)"
+                            (created)='onCreated()'>
+                        </ejs-contextmenu>
+                    </mat-list>
                 </div>
-            </perfect-scrollbar>
-        </ng-container>
-    </div>
+            </div>
+        </perfect-scrollbar>
+    </ng-container>
 </div>

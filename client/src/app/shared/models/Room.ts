@@ -6,5 +6,6 @@ export interface Room {
     users: User[];
     creator: User;
     index?: number;
+    lastAction?: Date;
     isPublic: boolean;
 }

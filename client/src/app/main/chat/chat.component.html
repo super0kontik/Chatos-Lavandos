@@ -1,53 +1,21 @@
 <div class="chat-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
-
-    <!--    <div class="room-list" matRipple (click)="toggleOnList()" #search>-->
-    <!--        <mat-icon>search</mat-icon>-->
-    <!--    </div>-->
     <ng-container *ngIf="rooms">
         <mat-drawer-container autosize class="sidenav-wrapper">
-
-            <mat-drawer class="sidenav-content" [(opened)]="opened" mode="side">
-                <app-room-list [rooms]="rooms" (onSelectedRoom)="toggleRoom($event)"></app-room-list>
+            <mat-drawer class="sidenav-content"
+                        [(opened)]="opened"
+                        mode="side">
+                <app-room-list [rooms]="rooms | updateRooms"
+                               [unread]="unreadInRooms"
+                               (onSelectedRoom)="toggleRoom($event)"
+                               (onCreateRoom)="createRoom()">
+                </app-room-list>
             </mat-drawer>
             <app-room [currentRoom]="selectedRoom"
                       [newMessage]="newMessage"
-                      [tabIndex]="currentTabIndex"
                       (leaveFromChat)="leaveRoom($event)"
                       (unreadMessages)="changeUnreadByRoomId($event)"
                       (openList)="openSideNav()">
             </app-room>
         </mat-drawer-container>
     </ng-container>
-
-    <!--    <mat-tab-group (selectedIndexChange)="onTabChange($event)" [(selectedIndex)]="selectedTab">-->
-    <!--        <ng-container *ngIf="!isRoomList">-->
-    <!--            <mat-tab *ngFor="let room of rooms; let i=index" [id]="room._id">-->
-    <!--                <ng-template matTabLabel>-->
-    <!--                    <span class="tab-label"-->
-    <!--                          *ngIf="unreadInRooms[room._id] > 0; else noUnread"-->
-    <!--                          [matBadge]="unreadInRooms[room._id]"-->
-    <!--                          matBadgeOverlap="false"-->
-    <!--                          matBadgePosition="above before">-->
-    <!--                        {{room.title}}-->
-    <!--                    </span>-->
-    <!--                    <ng-template #noUnread>-->
-    <!--                        <span class="tab-label" >-->
-    <!--                        {{room.title}}-->
-    <!--                    </span>-->
-    <!--                    </ng-template>-->
-    <!--                </ng-template>-->
-    <!--                <app-room [currentRoom]="room"-->
-    <!--                          [newMessage]="newMessage"-->
-    <!--                          [tabIndex]="currentTabIndex"-->
-    <!--                          (leaveFromChat)="leaveRoom($event)"-->
-    <!--                          (unreadMessages)="changeUnreadByRoomId($event)"  >-->
-    <!--                </app-room>-->
-    <!--            </mat-tab>-->
-    <!--        </ng-container>-->
-    <!--        <ng-container *ngIf="isRoomList">-->
-    <!--            <mat-tab [label]="'Rooms'">-->
-    <!--                <app-room-list [rooms]="rooms" (onSelectedRoom)="toggleRoom($event)"></app-room-list>-->
-    <!--            </mat-tab>-->
-    <!--        </ng-container>-->
-    <!--    </mat-tab-group>-->
 </div>

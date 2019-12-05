@@ -21,16 +21,24 @@
         color: white;
         height: 48px;
         background: rgba(0, 0, 0, 0.51);
+        min-height: 48px;
 
         p {
             font-weight: 300;
-            font-size: 30px;
+            font-size: 1.8vw;
+
         }
     }
 
     mat-list {
         width: 100%;
     }
+
+    mat-icon {
+        position: relative;
+        top: 5px;
+    }
+
 
     .contact-list-item {
         cursor: pointer;
@@ -64,49 +72,47 @@
 
 .light {
     .list-title {
+        transition: 0.3s;
         color: #ffffff;
         background: rgba(0, 0, 0, 0.38);
 
-        p {
-            font-weight: 300;
-            font-size: 30px;
-        }
     }
 
     .contact-list-item {
+        transition: 0.3s;
         color: #000000;
     }
 
     .material-icons {
+        transition: 0.3s;
         color: #3071c2;
     }
 
     .creator  {
+        transition: 0.3s;
         border-bottom: 2px solid #000000;
     }
 }
 
 .dark {
     .list-title {
+        transition: 0.3s;
         color: white;
         background: rgba(0, 0, 0, 0.51);
-
-        p {
-            font-weight: 300;
-            font-size: 30px;
-        }
     }
 
-
     .contact-list-item {
+        transition: 0.3s;
         color: white;
     }
 
     .material-icons {
+        transition: 0.3s;
         color: #ff6162;
     }
 
     .creator  {
+        transition: 0.3s;
         border-bottom: 2px solid #ffffff;
     }
 }

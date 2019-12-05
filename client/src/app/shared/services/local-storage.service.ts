@@ -37,4 +37,12 @@ export class LocalStorageService {
         return localStorage.getItem(roomId);
     }
 
+    public static setlastRoomId(id): void {
+        localStorage.setItem('lastRoomId', id)
+    }
+
+    public static getlastRoomId(): string {
+        return localStorage.getItem('lastRoomId');
+    }
+
 }

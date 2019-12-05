@@ -11,9 +11,12 @@ import {ChatService} from "../../shared/services/chat.service";
 })
 export class RoomListComponent implements OnInit {
     @Input() rooms: Room[];
+    @Input() unread: object;
     @Output() onSelectedRoom: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onCreateRoom: EventEmitter<any> = new EventEmitter<any>();
     public searchedRooms: Room[];
     public searchText: string = '';
+    public amountOfUnread: number = 0;
     public isSearchRoomList: boolean = false;
     public config: PerfectScrollbarConfigInterface = {wheelSpeed: 0.2, scrollingThreshold: 0};
     public theme: string = 'dark';
@@ -31,14 +34,14 @@ export class RoomListComponent implements OnInit {
         });
     }
 
-    public createRoom(): void {
 
+    public createRoom(): void {
+        this.onCreateRoom.emit();
     }
 
     public goToRoom(searchedRoom: Room): void {
         if (!this.isSearchRoomList) {
-            console.log(searchedRoom)
-            this.onSelectedRoom.emit(searchedRoom);
+            this.onSelectedRoom.emit(searchedRoom._id);
         } else {
             searchedRoom = searchedRoom as Room;
             for (let room of this.rooms) {

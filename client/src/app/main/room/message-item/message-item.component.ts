@@ -20,9 +20,7 @@ export class MessageItemComponent implements OnInit {
 
 
     public ngOnInit(): void {
-        this.chatService.theme.subscribe(selectedTheme => {
-            this.theme = selectedTheme;
-        });
+        this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
         this.me = LocalStorageService.getUser()['id'];
     }
 
@@ -31,16 +29,7 @@ export class MessageItemComponent implements OnInit {
     }
 
     public viewportChange(e): void {
-
-        if (!this.message.read && this.me !== this.message.creator._id) {
-            console.log(this.message)
-            this.viewChange.emit({
-                inView: e,
-                id: this.message._id,
-                text: this.message.content,
-            });
-        }
-
+        if (!this.message.read && this.me !== this.message.creator._id)
+            this.viewChange.emit({inView: e, id: this.message._id,});
     }
-
 }

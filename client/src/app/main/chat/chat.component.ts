@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {ChatService} from "../../shared/services/chat.service";
 import {SocketService} from "../../shared/services/socket.service";
@@ -8,6 +8,7 @@ import {DialogAddingRoomComponent} from "../../dialog-adding-room/dialog-adding-
 import {DialogInvitationComponent} from "../../dialog-invitation/dialog-invitation.component";
 import {LocalStorageService} from "../../shared/services/local-storage.service";
 import {MatBadge} from "@angular/material/badge";
+import {User} from "../../shared/models/User";
 
 @Component({
     selector: 'app-chat',
@@ -17,91 +18,104 @@ import {MatBadge} from "@angular/material/badge";
 export class ChatComponent implements OnInit {
     @ViewChild('search', {static: false}) search: ElementRef;
     @ViewChild(MatBadge, {static: false}) badge: MatBadge;
+
+    public tempRoomForPushing: Room = {
+        _id: 'string',
+        title: 'string',
+        users:  [],
+        creator: {
+            _id: '0',
+            name: 'me',
+            isOnline: true,
+            isPremium: true,
+            socketId: '1'
+        },
+        index: 1,
+        lastAction: new Date(),
+        isPublic: true,
+    };
     public opened: boolean = false;
     public rooms: Room[];
     public newMessage: object = {};
-    public userLeft: string;
     public me: string;
-    public currentTabIndex: number = 0;
     public selectedRoom: Room;
-    public isRoomList: boolean = false;
     public unreadInRooms: object = {};
     public theme: string = 'dark';
+    public listOfRooms: Room[] = [];
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
                 private authService: AuthService,
                 public dialog: MatDialog,
-                private cdr: ChangeDetectorRef) {}
+                private cdr: ChangeDetectorRef) {
+    }
 
     public ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
             this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
             this.me = LocalStorageService.getUser()['id'];
-
             this.socketService.listen('join').subscribe(data => {
                 this.rooms = data.rooms;
                 this.rooms = this.rooms.map((room, index) => {
                     this.unreadInRooms[room._id] = 0;
+                    room.lastAction = new Date(room.lastAction);
                     return {...room, index};
                 });
-                this.selectedRoom = this.rooms[0];
+                this.listOfRooms = this.rooms;
+                this.selectedRoom = this.rooms.find((room) => {
+                    if (room._id === LocalStorageService.getlastRoomId()) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }) || this.rooms[0];
             });
-
             this.socketService.listen('newMessage').subscribe(data => {
                 this.newMessage = data;
-            });
-
-            this.socketService.listen('invitation').subscribe(data => {
-                this.openInvitation(data);
-            });
-
-            this.socketService.listen('newRoom').subscribe(data => {
-                this.rooms.unshift(data);
-                this.rooms = this.rooms.map((room, index) => {
-                    return {...room, index};
+                const tempRoom = this.rooms.find((room) => {
+                    if (room._id === data.room) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
                 });
-            });
-
-            this.socketService.listen('userLeft').subscribe(data => {
-                if (data.userId === this.me) {
-                    this.leaveRoom(data.roomId);
-                }
-            });
-
-            this.socketService.listen('roomDeleted').subscribe(data => {
-                this.rooms = this.rooms.filter(room => room._id !== data.id);
-            });
-
-            this.socketService.listen('roomRename').subscribe(data => {
-                this.rooms = this.rooms.map(room => {
-                    if (room._id === data.id) {
-                        room.title = data.title;
+                this.rooms = this.rooms.map((room) => {
+                    if (room._id === tempRoom._id) {
+                        room.lastAction = new Date();
                     }
                     return room;
                 });
+                this.listOfRooms = this.rooms;
             });
-
+            this.socketService.listen('invitation').subscribe(data => this.openInvitation(data));
+            this.socketService.listen('newRoom').subscribe(data => {
+                this.rooms.unshift(data);
+                this.rooms = this.rooms.map((room, index) => ({...room, index}));
+            });
+            this.socketService.listen('userLeft').subscribe(data => {
+                if (data.userId === this.me) this.leaveRoom(data.roomId);
+            });
+            this.socketService.listen('roomDeleted').subscribe(data => {
+                this.rooms = this.rooms.filter(room => room._id !== data.id);
+            });
+            this.socketService.listen('roomRename').subscribe(data => {
+                this.rooms = this.rooms.map(room => {
+                    if (room._id === data.id) room.title = data.title;
+                    return room;
+                });
+            });
             this.socketService.listen('privacyChanged').subscribe(data => {
                 this.rooms = this.rooms.map(room => {
-                    if (room._id === data.id) {
-                        room.isPublic = data.isPublic;
-                    }
+                    if (room._id === data.id) room.isPublic = data.isPublic;
                     return room;
                 });
             })
         }
     }
 
-    public onTabChange(event: number): void {
-        this.currentTabIndex = event;
-    }
-
     public leaveRoom(roomId: string): void {
         this.rooms = this.rooms.filter(room => room._id !== roomId);
-        this.rooms = this.rooms.map((room, index) => {
-            return {...room, index};
-        });
+        this.rooms = this.rooms.map((room, index) => ({...room, index}));
     }
 
     public openSideNav(): void {
@@ -115,11 +129,11 @@ export class ChatComponent implements OnInit {
             hasBackdrop: true
         });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.socketService.emit('createRoom', result);
-            }
+        const aSub = dialogRef.afterClosed().subscribe(result => {
+            if (result) this.socketService.emit('createRoom', result);
+            aSub.unsubscribe();
         });
+
     }
 
     private openInvitation(data: any): void {
@@ -131,14 +145,16 @@ export class ChatComponent implements OnInit {
         });
 
         invitationDialogRef.afterClosed().subscribe(response => {
-            if (response.isAgree) {
-                this.socketService.emit('acceptInvitation', {
-                    roomId: response.roomId
-                });
-            } else {
-                this.socketService.emit('leaveRoom', {
-                    roomId: response.roomId
-                });
+            if (response) {
+                if (response.isAgree) {
+                    this.socketService.emit('acceptInvitation', {
+                        roomId: response.roomId
+                    });
+                } else {
+                    this.socketService.emit('leaveRoom', {
+                        roomId: response.roomId
+                    });
+                }
             }
         });
     }
@@ -149,12 +165,7 @@ export class ChatComponent implements OnInit {
     }
 
     public toggleRoom(id: string): void {
-        this.rooms.forEach(room => {
-            console.log(id, room._id)
-            if (id === room._id) {
-                this.selectedRoom = room;
-            }
-        });
+        this.rooms.forEach(room => id === room._id ? this.selectedRoom = room : false);
     }
 }
 

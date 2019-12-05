@@ -26,15 +26,31 @@
         display: flex;
         justify-content: space-between;
         padding-right: 15px;
+        min-height: 48px;
 
         .room-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
             .room-title {
+                mat-icon {
+                    position: relative;
+                    bottom: 2px;
+                    margin-right: 20px;
+                    font-size: 28px;
+                }
+                display: flex;
+                align-items: center;
+                margin-left: 35px;
                 font-family: 'Montserrat Alternates', sans-serif;
                 font-weight: 400;
                 font-size: 30px;
             }
+            button {
+                height: 100%;
+            }
         }
-
 
         .menu-items {
             flex-direction: row;
@@ -43,21 +59,17 @@
             mat-list-item {
                 cursor: pointer;
                 transition: 0.3s;
-
-                mat-icon {
-
-                }
             }
         }
     }
 
     .input-area {
         display: flex;
-        padding: 20px 0px 10px 40px;
+        padding: 20px 0 10px 40px;
         position: relative;
         height: auto;
         min-height: 12%;
-        bottom: 0px;
+        bottom: 0;
         align-items: flex-start;
 
         .composer_rich_textarea {
@@ -72,7 +84,7 @@
             max-height: 100px;
             box-sizing: border-box;
             flex-grow: 0;
-            font-family: Roboto, "Noto Color Emoji" ,"Helvetica Neue", sans-serif;
+            font-family: 'Quicksand', "Noto Color Emoji" ,"Helvetica Neue", sans-serif;
         }
 
         .input-message {
@@ -97,7 +109,7 @@
             border-radius: 50px;
             width: 70px;
             height: 70px;
-            margin: 0px 0 0 20px;
+            margin: 0 0 0 20px;
             transition: .3s;
             position: relative;
             top: -13px;
@@ -130,7 +142,7 @@
 .mt-lst {
 
     .message-item {
-        max-width: 40% !important;
+        max-width: 80% !important;
     }
 
     ::ng-deep .mat-list-item {
@@ -153,6 +165,7 @@
             flex-direction: column !important;
             align-items: flex-end ;
             margin: 8px 20px 8px 20px;
+            padding: 0;
         }
     }
 
@@ -162,6 +175,7 @@
             flex-direction: column !important;
             align-items: flex-start ;
             margin: 8px 20px 8px 20px;
+            padding: 0;
         }
     }
 }
@@ -170,6 +184,7 @@
     .chat-menu {
         .room-info {
             .room-title {
+                transition: 0.3s;
                 font-family: 'Montserrat Alternates', sans-serif;
                 font-weight: 400;
                 font-size: 30px;
@@ -209,10 +224,9 @@
     }
 
     .input-area {
-        //background: rgba(0, 0, 0, 0.18);
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.38), transparent);
+        background: rgba(0, 0, 0, 0.08);
         .input-message {
-            background-color: rgba(247, 255, 252, 0.69);
+            background-color: rgb(247, 255, 252);
 
             &:focus {
                 transition: 0.5s;
@@ -254,6 +268,7 @@
     .chat-menu {
         .room-info {
             .room-title {
+                transition: 0.3s;
                 font-family: 'Montserrat Alternates', sans-serif;
                 font-weight: 400;
                 font-size: 30px;
@@ -275,6 +290,7 @@
                 color: white;
 
                 mat-icon {
+                    transition: 0.3s;
                     color: #f3a311;
                 }
 
@@ -290,7 +306,7 @@
         background: rgba(0, 0, 0, 0.18);
         //background: linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent);
         .input-message {
-            background-color: rgba(247, 255, 252, 0.69);
+            background-color: rgb(247, 255, 252);
 
             &:focus {
                 transition: 0.5s;

@@ -1,32 +1,46 @@
 <div class="room-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
-    <div class="chat-menu" *ngIf="currentRoom._id !== 'common'">
-        <div class="room-info">
-            <button mat-button matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="openRoomList()">
-                <mat-icon>vertical_split</mat-icon>
-            </button>
-            <span class="room-title">
-                {{currentRoom.title}}
+    <div class="chat-menu">
+        <ng-container *ngIf="currentRoom._id !== 'common'; else ifCommon">
+            <div class="room-info">
+                <button mat-button matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="openRoomList()">
+                    <mat-icon>vertical_split</mat-icon>
+                </button>
+                <span class="room-title">
+                <mat-icon>meeting_room</mat-icon>
+                    {{currentRoom.title}}
             </span>
-        </div>
-        <mat-list class="menu-items">
-            <mat-list-item matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="inviteUsers()">
-                <mat-icon>person_add</mat-icon>
-            </mat-list-item>
-            <mat-divider vertical></mat-divider>
-            <mat-list-item matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="leaveRoom()">
-                <mat-icon>exit_to_app</mat-icon>
-            </mat-list-item>
-            <mat-divider vertical *ngIf="currentRoom.creator._id === me"></mat-divider>
-            <mat-list-item matRipple
-                           [matRippleColor]="'rgba(51, 51, 70, 0.2)'"
-                           (click)="roomSettings()"
-                           *ngIf="currentRoom.creator._id === me">
-                <mat-icon>settings</mat-icon>
-            </mat-list-item>
-        </mat-list>
+            </div>
+            <mat-list class="menu-items">
+                <mat-list-item matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="inviteUsers()">
+                    <mat-icon>person_add</mat-icon>
+                </mat-list-item>
+                <mat-divider vertical></mat-divider>
+                <mat-list-item matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="leaveRoom()">
+                    <mat-icon>exit_to_app</mat-icon>
+                </mat-list-item>
+                <mat-divider vertical *ngIf="currentRoom.creator._id === me"></mat-divider>
+                <mat-list-item matRipple
+                               [matRippleColor]="'rgba(51, 51, 70, 0.2)'"
+                               (click)="roomSettings()"
+                               *ngIf="currentRoom.creator._id === me">
+                    <mat-icon>settings</mat-icon>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-template #ifCommon>
+            <div class="room-info">
+                <button mat-button matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="openRoomList()">
+                    <mat-icon>vertical_split</mat-icon>
+                </button>
+                <span class="room-title">
+                <mat-icon>meeting_room</mat-icon>
+                    {{currentRoom.title}}
+            </span>
+            </div>
+        </ng-template>
     </div>
-    <perfect-scrollbar [config]="config" (psScrollY)="onScroll($event)" (psYReachEnd)="isEnd($event)">
-        <mat-list class="mt-lst" >
+    <perfect-scrollbar [config]="config" (psScrollY)="onScroll($event)">
+        <mat-list class="mt-lst">
             <mat-list-item *ngFor="let message of messages" [ngClass]="{
                 'own': message.creator._id === me && !message.isSystemMessage,
                 'foreign' : message.creator._id !== me && !message.isSystemMessage,
@@ -49,7 +63,6 @@
                      contenteditable="true"
                      #inputText
                      [id]="currentRoom.title"
-                     [appSetReference]="smile"
                      (keydown.enter)="sendMessage($event)"
                 >
                 </div>

@@ -17,9 +17,13 @@
         height: 48px;
         background: rgba(0, 0, 0, 0.51);
 
+        span {
+            font-family: Roboto, "Noto Color Emoji" ,"Helvetica Neue", sans-serif;
+        }
+
         p {
             font-weight: 300;
-            font-size: 30px;
+            font-size: 1.8vw;
         }
     }
 

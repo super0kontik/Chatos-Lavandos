@@ -47,6 +47,7 @@ import {MessageItemComponent} from './main/room/message-item/message-item.compon
 import {NguiParallaxScrollModule} from "@ngui/parallax-scroll";
 import {InViewportModule} from "@thisissoon/angular-inviewport";
 import {MatSidenavModule} from "@angular/material/sidenav";
+import { UpdateRoomsPipe } from './shared/pipes/update-rooms.pipe';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -71,6 +72,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         SearchPipe,
         DialogRoomSettingsComponent,
         MessageItemComponent,
+        UpdateRoomsPipe,
     ],
 	imports: [
 		BrowserModule,

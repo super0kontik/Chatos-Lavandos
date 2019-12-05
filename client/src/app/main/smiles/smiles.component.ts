@@ -15,11 +15,8 @@ export class SmilesComponent implements OnInit {
 
     constructor(private chatService: ChatService) {}
 
-
     public ngOnInit(): void {
-        this.chatService.theme.subscribe(selectedTheme => {
-            this.theme = selectedTheme;
-        });
+        this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
         this.smiles = Object.values(SMILES);
     }
 
