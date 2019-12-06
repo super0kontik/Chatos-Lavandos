@@ -2,8 +2,14 @@
     <div class="chat-menu">
         <ng-container *ngIf="currentRoom._id !== 'common'; else ifCommon">
             <div class="room-info">
-                <button mat-button matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="openRoomList()">
-                    <mat-icon>vertical_split</mat-icon>
+                <button mat-button matRipple
+                        [matRippleColor]="'rgba(51, 51, 70, 0.2)'"
+                        (click)="openRoomList()"
+                >
+                    <mat-icon [matBadge]="overallUnreadMessages.toString()"
+                              matBadgePosition="above before"
+                                [matBadgeHidden]="overallUnreadMessages === 0">
+                        vertical_split</mat-icon>
                 </button>
                 <span class="room-title">
                 <mat-icon>meeting_room</mat-icon>

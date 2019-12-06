@@ -42,6 +42,7 @@ export class ChatComponent implements OnInit {
     public unreadInRooms: object = {};
     public theme: string = 'dark';
     public listOfRooms: Room[] = [];
+    public overallUnreadMessages: number = 0;
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
@@ -85,24 +86,34 @@ export class ChatComponent implements OnInit {
                     }
                     return room;
                 });
+                if (data.room !== this.selectedRoom._id) {
+                    this.unreadInRooms[data.room] += 1;
+                    this.recountUnread();
+                }
                 this.listOfRooms = this.rooms;
             });
             this.socketService.listen('invitation').subscribe(data => this.openInvitation(data));
             this.socketService.listen('newRoom').subscribe(data => {
+                data.lastAction = new Date(data.lastAction);
                 this.rooms.unshift(data);
+                this.unreadInRooms[data._id] = 0;
                 this.rooms = this.rooms.map((room, index) => ({...room, index}));
+                this.listOfRooms = this.rooms;
             });
             this.socketService.listen('userLeft').subscribe(data => {
                 if (data.userId === this.me) this.leaveRoom(data.roomId);
             });
             this.socketService.listen('roomDeleted').subscribe(data => {
                 this.rooms = this.rooms.filter(room => room._id !== data.id);
+                this.listOfRooms = this.rooms;
+                this.selectedRoom = this.rooms[0];
             });
             this.socketService.listen('roomRename').subscribe(data => {
                 this.rooms = this.rooms.map(room => {
                     if (room._id === data.id) room.title = data.title;
                     return room;
                 });
+                this.listOfRooms = this.rooms;
             });
             this.socketService.listen('privacyChanged').subscribe(data => {
                 this.rooms = this.rooms.map(room => {
@@ -113,9 +124,17 @@ export class ChatComponent implements OnInit {
         }
     }
 
+    public recountUnread(): void {
+        this.overallUnreadMessages = 0;
+        Object.values(this.unreadInRooms).forEach((item) => {
+            this.overallUnreadMessages += item;
+        });
+    }
+
     public leaveRoom(roomId: string): void {
         this.rooms = this.rooms.filter(room => room._id !== roomId);
         this.rooms = this.rooms.map((room, index) => ({...room, index}));
+        this.selectedRoom = this.rooms[0];
     }
 
     public openSideNav(): void {
@@ -128,12 +147,10 @@ export class ChatComponent implements OnInit {
             height: '650px',
             hasBackdrop: true
         });
-
         const aSub = dialogRef.afterClosed().subscribe(result => {
             if (result) this.socketService.emit('createRoom', result);
             aSub.unsubscribe();
         });
-
     }
 
     private openInvitation(data: any): void {
@@ -143,8 +160,7 @@ export class ChatComponent implements OnInit {
             hasBackdrop: true,
             data
         });
-
-        invitationDialogRef.afterClosed().subscribe(response => {
+        const aSub = invitationDialogRef.afterClosed().subscribe(response => {
             if (response) {
                 if (response.isAgree) {
                     this.socketService.emit('acceptInvitation', {
@@ -156,11 +172,13 @@ export class ChatComponent implements OnInit {
                     });
                 }
             }
+            aSub.unsubscribe();
         });
     }
 
     public changeUnreadByRoomId(e): void {
         this.unreadInRooms[e.roomId] = e.unread;
+        this.recountUnread();
         this.cdr.detectChanges();
     }
 

@@ -32,6 +32,7 @@ import {log} from "util";
 export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() currentRoom: Room;
     @Input() newMessage: object | boolean;
+    @Input() unreadInRooms: number;
     @Output() leaveFromChat: EventEmitter<any> = new EventEmitter<any>();
     @Output() unreadMessages: EventEmitter<any> = new EventEmitter<any>();
     @Output() openList: EventEmitter<any> = new EventEmitter<any>();
@@ -44,7 +45,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     private isBottom: boolean = false;
     private isInit: boolean = false;
     private isSet: boolean = false;
-    private currentScrollPosition: number = 0;
+    private currentScrollPosition: number = 1;
     private amountOfUnread: number = 0;
     private isSmiles: boolean = false;
     private loadMessage: Message = {
@@ -62,6 +63,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
         isSystemMessage: true,
         read: true,
     };
+    public overallUnreadMessages: number = 0;
     public messages: Message[] = [];
     public creator: User;
     public me: string = '';
@@ -127,11 +129,9 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             if (changes['currentRoom']) {
                 LocalStorageService.setlastRoomId(this.currentRoom._id);
                 this.updateRoom();
-                this.currentScrollPosition = +LocalStorageService.getScrollPosition(this.currentRoom._id);
-                const to = setTimeout(() => {
-                    this.scrollY(this.currentScrollPosition);
-                    clearTimeout(to);
-                }, 200);
+            }
+            if (changes['unreadInRooms']) {
+                this.overallUnreadMessages = this.unreadInRooms;
             }
         }
     }
@@ -141,6 +141,15 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
         this.updateList();
         const to = setTimeout(() => {
             this.scrollY(this.currentScrollPosition);
+            clearTimeout(to);
+        }, 200);
+    }
+
+    private setScroll(): void {
+        this.currentScrollPosition = +LocalStorageService.getScrollPosition(this.currentRoom._id);
+        const to = setTimeout(() => {
+            this.scrollY(this.currentScrollPosition);
+            console.log(this.currentScrollPosition);
             clearTimeout(to);
         }, 200);
     }
@@ -210,6 +219,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     public onScroll(event: any): void {
+        console.log("SCROLL")
         LocalStorageService.setScrollPosition(this.currentRoom._id, event.target.scrollTop);
         this.currentScrollPosition = event.target.scrollTop;
     }
@@ -221,7 +231,13 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             this.messages = [...messages, ...this.messages];
             this.messages.unshift(this.loadMessage);
             this.countOfUnread();
-        });
+                console.log(1);
+        },
+            error => {},
+            () => {
+                console.log(2);
+                this.setScroll();
+            });
         if (scroll) this.scrollY(1600);
     }
 

@@ -34,7 +34,7 @@ export class DialogAddingRoomComponent implements OnInit {
             title: ['', [
                 Validators.required,
                 Validators.minLength(3),
-                Validators.maxLength(15)]],
+                Validators.maxLength(20)]],
             participants: this.fb.array([this.fb.group({name: ['', [Validators.required]]})])
         });
         this.onSearch();

@@ -25,9 +25,9 @@
                 <mat-list-item class="room-list-item" *ngFor="let room of rooms | search: searchText"
                                (click)="goToRoom(room)">
                     <mat-divider></mat-divider>
-                    <div class="unread"><span>{{unread[room._id]}}</span></div>
+                    <div class="unread" *ngIf="unread[room._id] > 0"><span>{{unread[room._id]}}</span></div>
                     <div class="room-title-wrapper">
-                        <p class="room-title">{{room.title}}</p>
+                        <span class="room-title">{{room.title}}</span>
                         <small *ngIf="room._id !== 'common'">Last action: {{room.lastAction | date: 'HH:mm:ss | dd.MM.yy'}}</small>
                     </div>
 
@@ -36,7 +36,9 @@
             <mat-list *ngIf="isSearchRoomList">
                 <mat-list-item class="room-list-item" *ngFor="let room of searchedRooms">
                     <mat-divider></mat-divider>
+                    <div class="room-title-wrapper">
                         <p class="room-title">{{room.title}}</p>
+                    </div>
                 </mat-list-item>
             </mat-list>
         </perfect-scrollbar>

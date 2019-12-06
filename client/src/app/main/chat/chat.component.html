@@ -12,6 +12,7 @@
             </mat-drawer>
             <app-room [currentRoom]="selectedRoom"
                       [newMessage]="newMessage"
+                      [unreadInRooms]="overallUnreadMessages"
                       (leaveFromChat)="leaveRoom($event)"
                       (unreadMessages)="changeUnreadByRoomId($event)"
                       (openList)="openSideNav()">

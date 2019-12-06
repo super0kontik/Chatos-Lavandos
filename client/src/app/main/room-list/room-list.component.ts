@@ -16,7 +16,6 @@ export class RoomListComponent implements OnInit {
     @Output() onCreateRoom: EventEmitter<any> = new EventEmitter<any>();
     public searchedRooms: Room[];
     public searchText: string = '';
-    public amountOfUnread: number = 0;
     public isSearchRoomList: boolean = false;
     public config: PerfectScrollbarConfigInterface = {wheelSpeed: 0.2, scrollingThreshold: 0};
     public theme: string = 'dark';
@@ -26,14 +25,9 @@ export class RoomListComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.chatService.theme.subscribe(selectedTheme => {
-            this.theme = selectedTheme;
-        });
-        this.socketService.listen('searchRoomsResult').subscribe(rooms => {
-            this.searchedRooms = rooms;
-        });
+        this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
+        this.socketService.listen('searchRoomsResult').subscribe(rooms => this.searchedRooms = rooms);
     }
-
 
     public createRoom(): void {
         this.onCreateRoom.emit();
@@ -42,17 +36,18 @@ export class RoomListComponent implements OnInit {
     public goToRoom(searchedRoom: Room): void {
         if (!this.isSearchRoomList) {
             this.onSelectedRoom.emit(searchedRoom._id);
-        } else {
-            searchedRoom = searchedRoom as Room;
-            for (let room of this.rooms) {
-                if (room._id === searchedRoom._id) {
-                    this.onSelectedRoom.emit(searchedRoom.index);
-                    return;
-                }
-            }
-            this.socketService.emit('joinRoom', {roomId: searchedRoom._id});
-            this.onSelectedRoom.emit(searchedRoom._id);
         }
+        // else {
+        //     searchedRoom = searchedRoom as Room;
+        //     for (let room of this.rooms) {
+        //         if (room._id === searchedRoom._id) {
+        //             this.onSelectedRoom.emit(searchedRoom.index);
+        //             return;
+        //         }
+        //     }
+        //     this.socketService.emit('joinRoom', {roomId: searchedRoom._id});
+        //     this.onSelectedRoom.emit(searchedRoom._id);
+        // }
     }
 
     public searchRooms(): void {
