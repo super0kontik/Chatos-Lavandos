@@ -1,4 +1,5 @@
-<div class="dialog-wrapper" [perfectScrollbar]="config" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
+<div class="dialog-wrapper" [perfectScrollbar]="config"
+     [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="dialog-content-wrapper">
 
         <h1 mat-dialog-title>
@@ -13,7 +14,12 @@
             <h2 mat-dialog-title>Participants</h2>
         </div>
         <div class="part-list" *ngFor="let user of room.users">
-            <span>{{user.name}}</span>
+            <div class="user-container">
+                <div class="avatar">
+                    <img [src]="user.avatar" alt="">
+                </div>
+                <span>{{user.name}}</span>
+            </div>
             <button type="button" mat-button (click)="deleteParticipant(user._id)">
                 <i class="material-icons">
                     delete

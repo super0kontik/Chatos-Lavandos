@@ -20,6 +20,7 @@ export class MessageItemComponent implements OnInit {
 
 
     public ngOnInit(): void {
+        console.log(this.users);
         this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
         this.me = LocalStorageService.getUser()['id'];
     }

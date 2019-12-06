@@ -99,10 +99,11 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
                         name: usr.name,
                         online: usr.isOnline,
                         premium: usr.isPremium,
-                        creator: this.currentRoom.creator._id === usr._id
+                        creator: this.currentRoom.creator._id === usr._id,
+                        avatar: usr.avatar
                     };
                 } else {
-                    this.users[usr._id] = {name: usr.name, online: usr.isOnline, premium: usr.isPremium};
+                    this.users[usr._id] = {name: usr.name, online: usr.isOnline, premium: usr.isPremium, avatar: usr.avatar};
                 }
                 this.updateList();
             }
@@ -188,13 +189,15 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
         this.users = [];
         this.messages = [];
         if (this.currentRoom._id !== 'common') {
+            console.log(this.currentRoom.users)
             this.currentRoom.users.forEach(user => {
                 this.users[user._id] = {
                     name: user.name,
                     online: user.isOnline,
                     premium: user.isPremium,
                     creator: this.currentRoom.creator._id === user._id,
-                    userId: user._id
+                    userId: user._id,
+                    avatar: user.avatar
                 };
             });
         } else {
@@ -203,7 +206,8 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
                     name: user.name,
                     online: user.isOnline,
                     premium: user.isPremium,
-                    userId: user._id
+                    userId: user._id,
+                    avatar: user.avatar
                 };
             });
         }

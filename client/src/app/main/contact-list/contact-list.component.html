@@ -10,6 +10,9 @@
                         <mat-list-item *ngFor="let item of list" (contextmenu)="onContactRightClick(item)">
                             <mat-icon *ngIf="item.online">brightness_1</mat-icon>
                             <mat-icon *ngIf="item['creator']">person</mat-icon>
+                            <div class="avatar">
+                                <img [src]="item['avatar']" alt="">
+                            </div>
                             <p class="contact-list-item" [ngClass]="{'creator': item['creator']}">{{item.name}}</p>
                             <mat-divider></mat-divider>
                         </mat-list-item>

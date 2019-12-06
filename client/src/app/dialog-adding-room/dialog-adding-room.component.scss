@@ -2,6 +2,15 @@
     padding: 0;
 }
 
+::ng-deep .mat-option-text {
+    img {
+        position: relative;
+        top: 5px;
+        border-radius: 50px;
+        margin-right: 10px;
+    }
+}
+
 .dialog-wrapper {
     padding: 24px;
     position: relative;
@@ -14,6 +23,19 @@
 
     .dialog-content-wrapper {
         padding: 20px;
+    }
+
+
+    .avatar {
+        width: 15px;
+        height: 15px;
+        border-radius: 50px;
+        background: black;
+
+    }
+
+    .avatar {
+        border-radius: 50px;
     }
 
     h1 {
@@ -58,7 +80,7 @@
         padding: 5px 20px;
     }
 
-    ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button{
+    ::ng-deep .mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
         padding: 0 10px;
         min-width: 20px;
         min-height: 0;

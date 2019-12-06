@@ -1,4 +1,5 @@
-<div class="dialog-wrapper" [perfectScrollbar]="config" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
+<div class="dialog-wrapper" [perfectScrollbar]="config"
+     [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="dialog-content-wrapper">
         <h1 mat-dialog-title>Create new room</h1>
         <mat-slide-toggle (change)="switchPrivate()">
@@ -33,7 +34,8 @@
                                         [value]="state.name"
                                         (click)="pushId(state._id)"
                             >
-                                <span >{{state.name}}</span>
+                                <img [src]="state.avatar" alt="" height="23">
+                                <span>{{state.name}}</span>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -56,7 +58,8 @@
                 || addRoomForm.untouched
                 || !validateInputs()
                 || participants.length < 1
-            ">Create room</button>
+            ">Create room
+            </button>
         </div>
     </div>
 </div>

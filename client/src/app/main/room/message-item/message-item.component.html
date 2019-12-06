@@ -14,7 +14,7 @@
     <ng-container *ngIf="!message.isSystemMessage">
         <div class="message-container">
             <div class="avatar" *ngIf="message.creator._id !== me">
-                <img src="../../../../assets/imgs/friend+human+man+member+person+profile+user+users+icon-1320168707291252637.png" alt="">
+                <img [src]="users[message.creator._id].avatar" alt="">
             </div>
             <div class="message-content">
                 <span class="message-user">
@@ -41,7 +41,7 @@
                 </small>
             </div>
             <div class="avatar" *ngIf="message.creator._id === me">
-                <img src="../../../../assets/imgs/friend+human+man+member+person+profile+user+users+icon-1320168707291252637.png" alt="">
+                <img [src]="users[message.creator._id].avatar" alt="">
             </div>
         </div>
     </ng-container>

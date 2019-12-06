@@ -3,6 +3,7 @@ import {ChatService} from "../shared/services/chat.service";
 import {AuthService} from "../shared/services/auth.service";
 import {SocketService} from "../shared/services/socket.service";
 import {ContextMenuComponent} from "@syncfusion/ej2-angular-navigations";
+import {LocalStorageService} from "../shared/services/local-storage.service";
 
 @Component({
     selector: 'app-main',
@@ -34,6 +35,10 @@ export class MainComponent implements OnInit, AfterViewInit {
             if (this.isLoaded) {
                 this.flipCardToggle();
             }
+        });
+        const aSub = this.chatService.getBlacklist().subscribe(blacklist => {
+            LocalStorageService.setBlacklist(blacklist);
+            aSub.unsubscribe();
         });
     }
 
