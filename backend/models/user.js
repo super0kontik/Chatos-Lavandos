@@ -18,14 +18,15 @@ const userSchema = new Schema({
         type:Boolean,
         default: false
     },
+    avatar: String,
     blacklist:[{
         type:Schema.Types.ObjectId,
         ref:'User'
     }],
-    colorTheme:[{
+    colorTheme:{
         type:String,
         enum:['dark', 'light'],
         default: 'dark'
-    }]
+    }
 });
 module.exports = mongoose.model('User',userSchema);

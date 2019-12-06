@@ -19,9 +19,9 @@ const messageSchema = new Schema({
         type: Boolean,
         default: false
     },
-    read: {
-        type: Boolean,
-        default: false
-    }
+    read: [{
+        type:Schema.Types.ObjectId,
+        ref:'User'
+    }]
 });
 module.exports = mongoose.model('Message',messageSchema);

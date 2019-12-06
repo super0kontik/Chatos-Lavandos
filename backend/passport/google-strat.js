@@ -10,7 +10,7 @@ passport.use(
         try {
             let user = await User.findOne({id: profile.id});
             if (!user) {
-                user = await User.create({id: profile.id, name: profile.displayName});
+                user = await User.create({id: profile.id, name: profile.displayName, avatar: profile._json.picture});
             }
             const token = jwt.sign({id: user._id, name: user.name},SECRET_WORD);
             return done(null, {

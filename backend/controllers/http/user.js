@@ -41,3 +41,11 @@ module.exports.removeFromBlacklist = async (req,res)=> {
         res.status(500).send(e.message)
     }
 };
+
+module.exports.getBlacklist = async (req, res) => {
+    let blacklistOwner = await User.findById(req.decoded.id);
+    if (!blacklistOwner) {
+        throw new Error('Your account not found')
+    }
+    res.send(blacklistOwner.blacklist)
+}

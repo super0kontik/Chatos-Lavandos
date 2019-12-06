@@ -40,15 +40,16 @@ module.exports = {
             if(!message){
                 throw new Error('Message not found');
             }
-            if(message.read){
+            const userInRoom = !!message.room.users.find(item => String(item) === String(socket.decoded_token.id));
+            if(!userInRoom || String(message.creator) === socket.decoded_token.id){
+                throw new Error('Not allowed to read');
+            }
+            if(!!message.read.find(i => String(i) === socket.decoded_token.id)){
                 return console.log('message already read');
             }
-            const userInRoom = !!message.room.users.find(item => String(item) === String(socket.decoded_token.id));
-            if(!userInRoom){
-                throw new Error('User not in room');
-            }
-            await message.update({read:true});
-            return io.to(String(message.room._id)).emit('messageRead', params.messageId);
+            message.read.push(socket.decoded_token.id);
+            await message.save();
+            return io.to(String(message.room._id)).emit('messageRead', {id: params.messageId, user: socket.decoded_token.id});
         }catch (e) {
             console.log(e);
             io.to(socket.id).emit('error',{error:{type: e.message}});

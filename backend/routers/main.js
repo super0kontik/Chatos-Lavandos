@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const {signIn, callback, checkJWT} = require('../controllers/http/auth');
 const {roomContent} = require('../controllers/http/messages');
-const {addToBlacklist, removeFromBlacklist} = require('../controllers/http/user');
+const {addToBlacklist, removeFromBlacklist, getBlacklist} = require('../controllers/http/user');
 const passport = require('passport');
 
 router.get('/auth', signIn);
@@ -14,6 +14,8 @@ router.get(
 router.use(checkJWT);
 
 router.get('/roomContent/:id', roomContent);
+
+router.get('/blacklist', getBlacklist);
 
 router.post('/blacklist', addToBlacklist);
 
