@@ -133,6 +133,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             if (changes['unreadInRooms']) {
                 this.overallUnreadMessages = this.unreadInRooms;
             }
+            console.log('gamno')
         }
     }
 
