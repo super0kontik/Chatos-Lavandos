@@ -5,6 +5,7 @@ const {getUserSocketsRoom} = require('./utils');
 const crypto = require('crypto-js');
 const validator = require('validator');
 const {MESSAGE_KEY} = require('../../config/config');
+
 module.exports = {
     createRoom: async (io, socket, params) => {
         try{
@@ -143,7 +144,6 @@ module.exports = {
             if(!room || String(room.creator) !== socket.decoded_token.id){
                 throw new Error ("Room not found or you don't have permission")
             }
-
             io.to(params.roomId).emit('roomDeleted',{id:params.roomId});
             room.users.forEach(user=>{
                 user.socketIds.forEach(socketId =>{
