@@ -28,7 +28,7 @@
                     <div class="unread" *ngIf="unread[room._id] > 0"><span>{{unread[room._id]}}</span></div>
                     <div class="room-title-wrapper">
                         <span class="room-title">{{room.title}}</span>
-                        <small *ngIf="room._id !== 'common'">Last action: {{room.lastAction | date: 'HH:mm:ss | dd.MM.yy'}}</small>
+                        <small *ngIf="room._id !== 'common'">Last action: {{room.lastAction | date: 'HH:mm:ss - dd.MM.yy'}}</small>
                     </div>
 
                 </mat-list-item>

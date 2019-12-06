@@ -29,7 +29,9 @@ export class MessageItemComponent implements OnInit {
     }
 
     public viewportChange(e): void {
-        if (!this.message.read && this.me !== this.message.creator._id)
+        if (this.message.read.indexOf(this.me) === -1 && this.me !== this.message.creator._id) {
             this.viewChange.emit({inView: e, id: this.message._id,});
+        }
+
     }
 }

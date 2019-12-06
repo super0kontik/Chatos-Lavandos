@@ -4,5 +4,6 @@ export interface User {
     isOnline: boolean;
     isPremium: boolean;
     socketId: string;
+    avatar: string;
 }
 

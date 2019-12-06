@@ -33,6 +33,12 @@
             justify-content: space-between;
             align-items: center;
 
+            ::ng-deep .mat-badge-content {
+                font-family: 'Quicksand', sans-serif;
+                font-size: 16px;
+                font-weight: 300;
+            }
+
             .room-title {
                 mat-icon {
                     position: relative;
@@ -158,7 +164,6 @@
         }
     }
 
-
     .own {
         ::ng-deep  .mat-list-item-content {
             display: flex;
@@ -182,7 +187,14 @@
 
 .light {
     .chat-menu {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
         .room-info {
+
+            ::ng-deep .mat-badge-content {
+                background: #3071c2;
+                color: white;
+            }
+
             .room-title {
                 transition: 0.3s;
                 font-family: 'Montserrat Alternates', sans-serif;
@@ -224,7 +236,9 @@
     }
 
     .input-area {
-        background: rgba(0, 0, 0, 0.08);
+        border-top: 2px solid rgba(0, 0, 0, 0.22);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.31);
+        //background: rgba(0, 0, 0, 0.08);
         .input-message {
             background-color: rgb(247, 255, 252);
 
@@ -267,6 +281,12 @@
 .dark {
     .chat-menu {
         .room-info {
+
+            ::ng-deep .mat-badge-content {
+                background: #f44336;
+                color: white;
+            }
+
             .room-title {
                 transition: 0.3s;
                 font-family: 'Montserrat Alternates', sans-serif;

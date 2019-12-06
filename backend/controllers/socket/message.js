@@ -26,7 +26,7 @@ module.exports = {
                     throw new Error('Forbidden')
                 }
             }
-            io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, _id:messId , creator, isSystemMessage:false}, room: params.room })
+            io.to(params.room).emit('newMessage', {message:{content: params.message, createdAt, _id:messId , creator, isSystemMessage:false, read: []}, room: params.room })
         }catch(e){
             console.log(e);
             io.to(socket.id).emit('error',{error:{type: e.message}});
@@ -48,6 +48,7 @@ module.exports = {
                 return console.log('message already read');
             }
             message.read.push(socket.decoded_token.id);
+            console.log(message.read)
             await message.save();
             return io.to(String(message.room._id)).emit('messageRead', {id: params.messageId, user: socket.decoded_token.id});
         }catch (e) {

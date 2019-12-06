@@ -1,6 +1,7 @@
 .center {
     justify-content: center !important;
 }
+
 .nav-wrapper {
     z-index: 100;
     height: 10%;
@@ -20,6 +21,11 @@
         letter-spacing: 10px;
         line-height: 40px;
         font-family: 'Julius Sans One', sans-serif;
+
+        &:hover {
+            transition: 0.3s;
+            transform: scale(1.05) translateX(10px);
+        }
     }
 
     .theme-chooser {
@@ -34,27 +40,46 @@
         }
     }
 
-
-
-    .c-white {
-        color: white;
-    }
-
     .nav-links {
         display: flex;
-        justify-content: space-between;
+        align-items: center;
+
+        .c-white {
+            display: flex;
+            align-items: center;
+            width: fit-content;
+            justify-content: center;
+            font-family: 'Quicksand', sans-serif;
+
+            .avatar {
+                margin-right: 20px;
+                min-width: 48px;
+                width: 48px;
+                height: 48px;
+                border-radius: 50px;
+
+                img {
+                    border-radius: 50px;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
 
         .nav-link {
+            margin-left: 20px;
+            cursor: pointer;
             user-select: none;
             transition: 0.3s;
-            font-family: 'Montserrat Alternates', sans-serif;
+            font-family: 'Quicksand', sans-serif;
             font-weight: 300;
             display: flex;
             justify-content: center;
             border-radius: 50px;
+            padding: 5px 10px;
             background-color: rgba(0, 0, 0, 0.33);
             color: white;
-            font-size: 1.3vw;
+            font-size: 16px;
             white-space: nowrap;
 
             span {
@@ -64,6 +89,7 @@
             &:hover {
                 transition: 0.3s;
                 box-shadow: 0 0 7px #ffffff;
+
                 span {
                     transition: 0.3s;
                     filter: drop-shadow(0 5px 15px white);
@@ -84,7 +110,6 @@
         &:hover {
             transition: 0.3s;
             filter: drop-shadow(0px 0px 7px #16181b);
-            transform: scale(1.1) translateX(70px) ;
         }
     }
 
@@ -120,9 +145,9 @@
         &:hover {
             transition: 0.3s;
             filter: drop-shadow(0px 0px 7px #ffffff);
-            transform: scale(1.1) translateX(70px) ;
         }
     }
+
     .theme-icon {
         transition: 0.3s;
         font-size: 35px;

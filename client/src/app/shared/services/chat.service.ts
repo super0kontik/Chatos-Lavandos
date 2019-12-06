@@ -26,6 +26,10 @@ export class ChatService {
         return this.http.get<Message[]>(`${config.API_URL}/roomContent/${id}?offset=${offset}&limit=${limit}`);
     }
 
+    public getBlacklist(): Observable<string[]> {
+        return this.http.get<string[]>(`${config.API_URL}/blacklist`);
+    }
+
     public addToBlacklist(id: string): Observable<string[]> {
         return this.http.post<string[]>(`${config.API_URL}/blacklist`, {
             blacklistedId: id,

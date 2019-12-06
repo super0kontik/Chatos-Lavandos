@@ -1,7 +1,7 @@
-<mat-nav-list class="nav-wrapper" [ngClass]="{'center': !isUser, 'dark': theme === 'dark', 'light': theme === 'light'}">
+<div class="nav-wrapper" [ngClass]="{'center': !isUser, 'dark': theme === 'dark', 'light': theme === 'light'}">
     <span class="brand-logo">CHATOS-LAVANDOS</span>
 
-    <div class="theme-chooser">
+    <div class="theme-chooser" *ngIf="isUser">
         <mat-icon class="theme-icon">wb_sunny</mat-icon>
         <mat-slide-toggle
             class="example-margin"
@@ -13,9 +13,12 @@
     </div>
 
     <div class="nav-links" *ngIf="isUser">
-        <mat-list-item class="c-white">{{user.name}}</mat-list-item>
-        <mat-list-item class="nav-link" (click)="logOut()">
+        <div class="c-white">
+            <div class="avatar"><img [src]="user.avatar" alt=""></div>
+            {{user.name}}
+        </div>
+        <div class="nav-link" (click)="logOut()">
             <span>Log out</span>
-        </mat-list-item>
+        </div>
     </div>
-</mat-nav-list>
+</div>

@@ -27,12 +27,9 @@ module.exports = {
                 creator: socket.decoded_token.id, lastAction: Date.now(), isPublic: params.isPublic});
             room = await room.populate([{path:'users'},{path:'creator'}]).execPopulate();
             participants = room.users.filter(i=> String(i._id) !== socket.decoded_token.id);
-            console.log(room);
             socket.join(room._id);
             for (let user of participants){
                 io.to(getUserSocketsRoom(user)).emit('invitation', room);
-                console.log('---------------');
-                console.log(user);
             }
             io.to(socket.id).emit('newRoom', room)
         }catch (e){

@@ -19,21 +19,6 @@ export class ChatComponent implements OnInit {
     @ViewChild('search', {static: false}) search: ElementRef;
     @ViewChild(MatBadge, {static: false}) badge: MatBadge;
 
-    public tempRoomForPushing: Room = {
-        _id: 'string',
-        title: 'string',
-        users:  [],
-        creator: {
-            _id: '0',
-            name: 'me',
-            isOnline: true,
-            isPremium: true,
-            socketId: '1'
-        },
-        index: 1,
-        lastAction: new Date(),
-        isPublic: true,
-    };
     public opened: boolean = false;
     public rooms: Room[];
     public newMessage: object = {};

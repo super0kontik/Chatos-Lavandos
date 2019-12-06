@@ -4,6 +4,7 @@ import {LocalStorageService} from "../shared/services/local-storage.service";
 import {Router} from "@angular/router";
 import {SocketService} from "../shared/services/socket.service";
 import {ChatService} from "../shared/services/chat.service";
+import {User} from "../shared/models/User";
 
 const themes = {0: 'light', 1: 'dark'};
 
@@ -14,7 +15,7 @@ const themes = {0: 'light', 1: 'dark'};
 })
 export class HeaderComponent implements OnInit{
     public signButton: boolean = true;
-    public user: object = {name: ''};
+    public user: User;
     public isUser: boolean = false;
     public theme: string = 'dark';
 
@@ -35,8 +36,9 @@ export class HeaderComponent implements OnInit{
                 this.isUser = false;
             }
         });
-        const user = LocalStorageService.getUser();
-        if (user && !this.isUser && this.authService.isAuthenticated()) {
+        const user = LocalStorageService.getUser() as User;
+        console.log(user)
+        if (user && this.authService.isAuthenticated()) {
             this.user = user;
             this.isUser = true;
         } else {

@@ -55,13 +55,14 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             name: 'me',
             isOnline: true,
             isPremium: true,
-            socketId: '1'
+            socketId: '1',
+            avatar: ''
         },
         createdAt: new Date(),
         content: 'Load previous messages',
         _id: '0',
         isSystemMessage: true,
-        read: true,
+        read: [],
     };
     public overallUnreadMessages: number = 0;
     public messages: Message[] = [];
@@ -73,19 +74,19 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
-                public dialog: MatDialog) {}
+                public dialog: MatDialog) {
+    }
 
     public ngOnInit(): void {
         this.me = LocalStorageService.getUser()['id'];
+        this.loadMessage.read.push(this.me);
         this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
         this.updateRoom();
         this.socketService.listen('userConnected').subscribe(userId => this.changeUserStatusOnline(true, userId));
         this.socketService.listen('userDisconnected').subscribe(userId => this.changeUserStatusOnline(false, userId));
-        this.socketService.listen('messageRead').subscribe(messageId => {
+        this.socketService.listen('messageRead').subscribe(data => {
             this.messages = this.messages.map(message => {
-                if (/*message.creator._id === this.me &&*/ !message.read && message._id === messageId) {
-                    message.read = true;
-                }
+                if (message._id === data.id) message.read.push(data.user);
                 return message;
             });
             this.countOfUnread();
@@ -133,7 +134,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             if (changes['unreadInRooms']) {
                 this.overallUnreadMessages = this.unreadInRooms;
             }
-            console.log('gamno')
         }
     }
 
@@ -150,7 +150,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
         this.currentScrollPosition = +LocalStorageService.getScrollPosition(this.currentRoom._id);
         const to = setTimeout(() => {
             this.scrollY(this.currentScrollPosition);
-            console.log(this.currentScrollPosition);
             clearTimeout(to);
         }, 200);
     }
@@ -175,9 +174,9 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     public countOfUnread(): void {
         this.amountOfUnread = 0;
         this.messages.forEach(message => {
-           if (!message.read && this.me !== message.creator._id) {
-               this.amountOfUnread += 1;
-           }
+            if (message.read.indexOf(this.me) === -1 && this.me !== message.creator._id) {
+                this.amountOfUnread += 1;
+            }
         });
         this.unreadMessages.emit({
             unread: this.amountOfUnread,
@@ -200,7 +199,12 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             });
         } else {
             this.currentRoom.users.forEach(user => {
-                this.users[user._id] = {name: user.name, online: user.isOnline, premium: user.isPremium, userId: user._id};
+                this.users[user._id] = {
+                    name: user.name,
+                    online: user.isOnline,
+                    premium: user.isPremium,
+                    userId: user._id
+                };
             });
         }
         this.updateList();
@@ -220,7 +224,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     public onScroll(event: any): void {
-        console.log("SCROLL")
         LocalStorageService.setScrollPosition(this.currentRoom._id, event.target.scrollTop);
         this.currentScrollPosition = event.target.scrollTop;
     }
@@ -228,21 +231,20 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     public messageRequest(scroll?: boolean): void {
         const [mesOff, mesLim] = [this.messages.length, this.messages.length < 50 ? 50 : 20];
         this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(messages => {
-            this.messages = this.messages.filter(message => message.room !== '');
-            this.messages = [...messages, ...this.messages];
-            this.messages.unshift(this.loadMessage);
-            this.countOfUnread();
-                console.log(1);
-        },
-            error => {},
+                this.messages = this.messages.filter(message => message.room !== '');
+                this.messages = [...messages, ...this.messages];
+                this.messages.unshift(this.loadMessage);
+                this.countOfUnread();
+            },
+            error => {
+            },
             () => {
-                console.log(2);
                 this.setScroll();
             });
         if (scroll) this.scrollY(1600);
     }
 
-    private updateList(): void{
+    private updateList(): void {
         this.chatService.currentRoomUsers.next(Object.values(this.users));
     }
 

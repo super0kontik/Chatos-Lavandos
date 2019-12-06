@@ -34,7 +34,7 @@
                 </span>
                 <div class="message-text" snInViewport (inViewportChange)="viewportChange($event)">
                     <p>{{message.content}}</p>
-                    <mat-icon *ngIf="message.creator._id === me">{{message['read'] ? 'done_all' : 'done'}}</mat-icon>
+                    <mat-icon *ngIf="message.creator._id === me">{{message.read.length > 0 ? 'done_all' : 'done'}}</mat-icon>
                 </div>
                 <small class="message-date">
                     <span>{{message.createdAt | date: 'HH:mm' : ''}}</span>
