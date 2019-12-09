@@ -90,10 +90,15 @@
 }
 
 .light {
-    transition: .5s;
+    transition: .3s;
     background: #e6e7f2;
 
-    ::ng-deep .mat-drawer-container, .mat-drawer {
+    ::ng-deep .mat-drawer {
+        background: #e6e7f2;
+    }
+
+    ::ng-deep .mat-drawer-container {
+        transition: 0.3s;
         background: #e6e7f2;
     }
 
@@ -141,12 +146,18 @@
 }
 
 .dark {
-    transition: .5s;
+    transition: .3s;
     background: #273038;
 
-    ::ng-deep .mat-drawer-container, .mat-drawer {
+    ::ng-deep .mat-drawer {
         background: #273038;
     }
+
+    ::ng-deep .mat-drawer-container {
+        transition: 0.3s;
+        background: #273038;
+    }
+
 
     .add-btn {
         background: rgba(0, 0, 0, 0.18);

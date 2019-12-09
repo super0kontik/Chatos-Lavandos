@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {Room} from "../../shared/models/Room";
 import {ChatService} from "../../shared/services/chat.service";
 import {SocketService} from "../../shared/services/socket.service";
@@ -8,7 +8,6 @@ import {DialogAddingRoomComponent} from "../../dialog-adding-room/dialog-adding-
 import {DialogInvitationComponent} from "../../dialog-invitation/dialog-invitation.component";
 import {LocalStorageService} from "../../shared/services/local-storage.service";
 import {MatBadge} from "@angular/material/badge";
-import { DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
     selector: 'app-chat',
@@ -18,6 +17,7 @@ import { DeviceDetectorService} from "ngx-device-detector";
 export class ChatComponent implements OnInit {
     @ViewChild('search', {static: false}) search: ElementRef;
     @ViewChild(MatBadge, {static: false}) badge: MatBadge;
+    @Output() showParticipants: EventEmitter<any> = new EventEmitter<any>();
 
     public opened: boolean = false;
     public rooms: Room[];
@@ -28,23 +28,17 @@ export class ChatComponent implements OnInit {
     public theme: string = 'dark';
     public listOfRooms: Room[] = [];
     public overallUnreadMessages: number = 0;
-    public device: object = {isDesktop: 1, isMobile: 0, isTablet: 0};
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
                 private authService: AuthService,
                 public dialog: MatDialog,
-                private cdr: ChangeDetectorRef,
-                private deviceDetector: DeviceDetectorService) {
+                private cdr: ChangeDetectorRef) {
     }
 
     public ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-            this.device = {
-                isDesktop: this.deviceDetector.isDesktop(),
-                isMobile: this.deviceDetector.isMobile(),
-                isTablet: this.deviceDetector.isTablet(),
-            };
+
             this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
             this.me = LocalStorageService.getUser()['id'];
             this.socketService.listen('join').subscribe(data => {

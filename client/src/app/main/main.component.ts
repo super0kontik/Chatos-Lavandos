@@ -17,6 +17,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     public isLoaded: boolean = false;
     public content: string = '';
     public theme: string = 'dark';
+    public opened: boolean = false;
 
     constructor(private chatService: ChatService,
                 private authService: AuthService,
@@ -28,13 +29,9 @@ export class MainComponent implements OnInit, AfterViewInit {
 
     public ngOnInit(): void {
         this.chatService.init();
-        this.chatService.theme.subscribe(selectedTheme => {
-            this.theme = selectedTheme;
-        });
+        this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
         this.chatService.flipCard.subscribe(() => {
-            if (this.isLoaded) {
-                this.flipCardToggle();
-            }
+            if (this.isLoaded) this.flipCardToggle();
         });
         const aSub = this.chatService.getBlacklist().subscribe(blacklist => {
             LocalStorageService.setBlacklist(blacklist);
@@ -44,6 +41,10 @@ export class MainComponent implements OnInit, AfterViewInit {
 
     public ngAfterViewInit(): void {
         this.isLoaded = true;
+    }
+
+    public showSideNav(): void {
+        this.opened = !this.opened;
     }
 
     public flipCardToggle(): void {

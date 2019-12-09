@@ -45,6 +45,19 @@
         }
     }
 
+    .theme-chooser {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 20px;
+
+        mat-icon {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
     ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content {
         padding: 0;
     }
@@ -167,6 +180,13 @@
         }
     }
 
+    .theme-icon {
+        transition: 0.3s;
+        user-select: none;
+        font-size: 30px;
+        color: black;
+    }
+
     .room-list-item {
         .unread {
             color: black;
@@ -252,6 +272,13 @@
         color: white;
     }
 
+    .theme-icon {
+        transition: 0.3s;
+        user-select: none;
+        font-size: 30px;
+        color: white;
+    }
+
     .add-btn {
         transition: 0.3s;
         background: rgba(0, 0, 0, 0.38);
@@ -303,7 +330,6 @@
     ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
         background-color: #a97010;
     }
-
 
 
     .room-list-item {

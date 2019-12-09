@@ -3,7 +3,7 @@
         <mat-drawer-container autosize class="sidenav-wrapper">
             <mat-drawer class="sidenav-content"
                         [(opened)]="opened"
-                        [mode]="device['isDesktop'] ? 'side' : 'over'">
+                        [mode]="chatService.device['isDesktop'] ? 'side' : 'over'">
                 <app-room-list [rooms]="rooms | updateRooms"
                                [unread]="unreadInRooms"
                                (onSelectedRoom)="toggleRoom($event)"
@@ -16,7 +16,8 @@
                       [unreadInRooms]="overallUnreadMessages"
                       (leaveFromChat)="leaveRoom($event)"
                       (unreadMessages)="changeUnreadByRoomId($event)"
-                      (openList)="openSideNav()">
+                      (openList)="openSideNav()"
+                      (showParticipants)="showParticipants.emit()">
             </app-room>
         </mat-drawer-container>
     </ng-container>

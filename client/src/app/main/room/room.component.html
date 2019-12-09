@@ -13,10 +13,12 @@
                     </mat-icon>
                 </button>
                 <span class="room-title">
-                <mat-icon>meeting_room</mat-icon>
+                    <mat-icon>meeting_room</mat-icon>
                     {{currentRoom.title}}
-            </span>
+                    <button mat-button (click)="showParticipants.emit()"><mat-icon>people_alt</mat-icon></button>
+                </span>
             </div>
+
             <mat-list class="menu-items">
                 <mat-list-item matRipple [matRippleColor]="'rgba(51, 51, 70, 0.2)'" (click)="inviteUsers()">
                     <mat-icon>person_add</mat-icon>

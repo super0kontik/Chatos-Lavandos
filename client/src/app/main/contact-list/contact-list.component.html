@@ -1,19 +1,26 @@
 <div class="contact-list-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="list-title">
+        <button mat-button matRipple (click)="closeParticipants.emit()">
+            <mat-icon class="close-sidenav">
+                arrow_forward_ios
+            </mat-icon>
+        </button>
         <p>Participants</p>
     </div>
     <ng-container *ngIf="!isDisplayed">
         <perfect-scrollbar [config]="config">
             <div id="contextmenu-control">
                 <div id="contextmenutarget">
-                    <mat-list>
+                    <mat-list class="contact-list">
                         <mat-list-item *ngFor="let item of list" (contextmenu)="onContactRightClick(item)">
                             <mat-icon *ngIf="item.online">brightness_1</mat-icon>
-                            <mat-icon *ngIf="item['creator']">person</mat-icon>
                             <div class="avatar">
                                 <img [src]="item['avatar']" alt="">
                             </div>
-                            <p class="contact-list-item" [ngClass]="{'creator': item['creator']}">{{item.name}}</p>
+                            <div class="list-item">
+                                <p class="contact-list-item">{{item.name}}</p>
+                                <small *ngIf="item['creator']">Creator</small>
+                            </div>
                             <mat-divider></mat-divider>
                         </mat-list-item>
                         <ejs-contextmenu

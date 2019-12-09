@@ -1,14 +1,24 @@
 <div class="main-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
-    <app-chat></app-chat>
-    <div class="flip-card">
-        <div class="flip-card-inner" #cardInner>
-            <div class="flip-card-front">
-                <app-contact-list [isDisplayed]="isFlipped"></app-contact-list>
+
+    <mat-drawer-container autosize class="sidenav-wrapper">
+        <app-chat (showParticipants)="showSideNav()"></app-chat>
+        <mat-drawer class="sidenav-content"
+                    position="end"
+                    [(opened)]="opened"
+                    [mode]="chatService.device['isDesktop'] ? 'side' : 'over'">
+            <div class="flip-card">
+                <div class="flip-card-inner" #cardInner>
+                    <div class="flip-card-front">
+                        <app-contact-list [isDisplayed]="isFlipped"
+                                          (closeParticipants)="showSideNav()"></app-contact-list>
+                    </div>
+                    <div class="flip-card-back">
+                        <app-smiles (closeParticipants)="showSideNav()"></app-smiles>
+                    </div>
+                </div>
             </div>
-            <div class="flip-card-back">
-                <app-smiles></app-smiles>
-            </div>
-        </div>
-    </div>
+        </mat-drawer>
+    </mat-drawer-container>
+
 </div>
 

@@ -1,7 +1,7 @@
 import {
-    Component,
+    Component, EventEmitter,
     Input,
-    OnInit,
+    OnInit, Output,
     ViewChild,
 } from '@angular/core';
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
@@ -21,6 +21,7 @@ import {LocalStorageService} from "../../shared/services/local-storage.service";
 })
 export class ContactListComponent implements OnInit {
     @Input() isDisplayed: boolean;
+    @Output() closeParticipants: EventEmitter<any> = new EventEmitter<any>();
     @ViewChild('contextmenu', {static: false}) public contextmenu: ContextMenuComponent;
 
     private me: string = LocalStorageService.getUser()['id'];

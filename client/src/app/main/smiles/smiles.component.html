@@ -1,6 +1,11 @@
 <div class="smiles-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="title">
-        <p><span>👑</span>SMILES<span>👑</span></p>
+        <button mat-button matRipple (click)="closeParticipants.emit()">
+            <mat-icon class="close-sidenav">
+                arrow_forward_ios
+            </mat-icon>
+        </button>
+        <p>SMILES</p>
     </div>
     <perfect-scrollbar [config]="config">
         <div class="smiles-list">

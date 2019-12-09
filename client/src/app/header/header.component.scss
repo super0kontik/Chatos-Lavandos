@@ -4,11 +4,11 @@
 
 .nav-wrapper {
     z-index: 100;
-    height: 10%;
+    height: 6%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 60px 5px 0;
+    padding: 10px 60px 5px 30px;
     border-bottom: 1px solid black;
     position: relative;
 
@@ -28,17 +28,7 @@
         }
     }
 
-    .theme-chooser {
-        width: 150px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
 
-        mat-icon {
-            width: 35px;
-            height: 35px;
-        }
-    }
 
     .nav-links {
         display: flex;
@@ -100,7 +90,7 @@
 }
 
 .light {
-    transition: .5s;
+    transition: .3s;
     background: #e6e7f2;
 
     .brand-logo {
@@ -113,29 +103,14 @@
         }
     }
 
-    .theme-icon {
-        transition: 0.3s;
-        user-select: none;
-        font-size: 35px;
-        color: black;
-    }
-
     .c-white {
         transition: 0.3s;
         color: black;
     }
-
-    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-        background-color: #a0c334;
-    }
-
-    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-        background-color: #759427;
-    }
 }
 
 .dark {
-    transition: .5s;
+    transition: .3s;
     background: #273038;
 
     .brand-logo {
@@ -148,24 +123,12 @@
         }
     }
 
-    .theme-icon {
-        transition: 0.3s;
-        font-size: 35px;
-        color: white;
-    }
-
     .c-white {
         transition: 0.3s;
         color: white;
     }
 
-    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-        background-color: #f3a311;
-    }
 
-    ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-        background-color: #a97010;
-    }
 }
 
 .auth-block {

@@ -1,6 +1,6 @@
 .main-wrapper {
     display: flex;
-    height: 88.4%;
+    height: 92.4%;
     background: #273038;
 }
 
@@ -16,8 +16,27 @@ app-smiles {
     width: 20%;
 }
 
+.sidenav-wrapper {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.sidenav-content {
+    display: flex;
+    height: 100%;
+    width: 300px;
+    align-items: center;
+    justify-content: center;
+
+    ::ng-deep .mat-drawer-inner-container{
+        overflow: hidden;
+    }
+}
+
 .flip-card {
-    width: 20%;
+    height: 100%;
+    width: 100%;
     background-color: #273038;
     perspective: 1000px; /* Remove this if you don't want the 3D effect */
 }
@@ -28,7 +47,6 @@ app-smiles {
     border-left: 1px solid rgba(0, 0, 0, 0.2);
     width: 100%;
     height: 100%;
-    text-align: center;
     transition: transform 0.8s;
     transform-style: preserve-3d;
 }
@@ -48,7 +66,7 @@ app-smiles {
 
 /* Style the front side (fallback if image is missing) */
 .flip-card-front {
-    transition: 0.8s;
+    transition: 0.3s;
     color: black;
 }
 
@@ -59,19 +77,19 @@ app-smiles {
 }
 
 .light {
-    transition: 0.5s;
+    transition: 0.3s;
     background-color: #e6e7f2;
     .flip-card {
-        transition: 0.5s;
+        transition: 0.3s;
         background-color: #e6e7f2;
     }
 }
 
 .dark {
-    transition: 0.5s;
+    transition: 0.3s;
     background-color: #273038;
     .flip-card {
-        transition: 0.5s;
+        transition: 0.3s;
         background-color: #273038;
     }
 }

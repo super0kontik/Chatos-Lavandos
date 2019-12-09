@@ -8,22 +8,30 @@
     flex-direction: column;
 
     .title {
+        padding: 0 20px;
+        box-sizing: border-box;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         font-family: 'Montserrat Alternates', sans-serif;
         align-items: center;
         width: 100%;
         color: white;
         height: 48px;
+        min-height: 48px;
         background: rgba(0, 0, 0, 0.51);
 
         span {
             font-family: Roboto, "Noto Color Emoji" ,"Helvetica Neue", sans-serif;
         }
 
+        .close-sidenav {
+            font-size: 24px;
+        }
+
         p {
-            font-weight: 300;
-            font-size: 1.8vw;
+            margin: 0;
+            font-weight: 400;
+            font-size: 30px;
         }
     }
 
@@ -70,9 +78,11 @@
 }
 
 .light {
+    transition: 0.3s;
+    background-color: #e6e7f2;
     .title {
         background: rgba(0, 0, 0, 0.37);
-
+        color: black;
     }
 
     .smiles-list {
@@ -83,9 +93,11 @@
 }
 
 .dark {
+    transition: 0.3s;
+    background-color: #273038;
     .title {
         background: rgba(0, 0, 0, 0.51);
-
+        color: white;
     }
 
     .smiles-list {

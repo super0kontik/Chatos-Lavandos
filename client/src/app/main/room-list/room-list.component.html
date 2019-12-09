@@ -1,11 +1,22 @@
 <div class="room-list-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="list-title">
-        <p>Room-list</p>
+        <p>Main menu</p>
         <button mat-button matRipple (click)="closeList.emit()">
-            <mat-icon>keyboard_backspace</mat-icon>
+            <mat-icon>arrow_back_ios</mat-icon>
         </button>
     </div>
+
     <div class="search-rooms">
+        <div class="theme-chooser">
+            <mat-icon class="theme-icon">wb_sunny</mat-icon>
+            <mat-slide-toggle
+                class="example-margin"
+                [checked]="theme === 'dark'"
+                (change)="toggleTheme()"
+            >
+            </mat-slide-toggle>
+            <mat-icon class="theme-icon">brightness_3</mat-icon>
+        </div>
         <div class="add-btn" (click)="createRoom()" matRipple>
             <mat-icon>add</mat-icon>
             <span>Create new room</span>

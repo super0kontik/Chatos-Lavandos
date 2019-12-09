@@ -12,21 +12,27 @@
     }
 
     .list-title {
+        padding: 0 20px;
+        box-sizing: border-box;
         user-select: none;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         font-family: 'Montserrat Alternates', sans-serif;
         align-items: center;
         width: 100%;
-        color: white;
+
         height: 48px;
         background: rgba(0, 0, 0, 0.51);
         min-height: 48px;
 
         p {
-            font-weight: 300;
-            font-size: 1.8vw;
+            margin: 0;
+            font-weight: 400;
+            font-size: 30px;
+        }
 
+        .close-sidenav {
+            font-size: 24px;
         }
     }
 
@@ -35,8 +41,8 @@
     }
 
     mat-icon {
-        position: relative;
-        top: 5px;
+        width: auto;
+        height: auto;
     }
 
     .avatar {
@@ -62,8 +68,15 @@
         overflow: hidden;
         text-overflow: ellipsis;
         color: white;
-        margin-left: 10px;
+        margin: 0 0 0 10px;
     }
+
+    .list-item {
+        small {
+            margin-left: 10px;
+        }
+    }
+
 
     ::ng-deep .ps__thumb-y {
         background-color: rgba(0, 0, 0, 0.73);
@@ -77,16 +90,14 @@
         font-size: 15px;
     }
 
-
-    .creator  {
-        font-weight: 600;
-    }
 }
 
 .light {
+    transition: 0.3s;
+    background-color: #e6e7f2;
     .list-title {
         transition: 0.3s;
-        color: #ffffff;
+        color: #000000;
         background: rgba(0, 0, 0, 0.38);
 
     }
@@ -96,18 +107,25 @@
         color: #000000;
     }
 
-    .material-icons {
-        transition: 0.3s;
-        color: #3071c2;
+    .contact-list {
+        .material-icons {
+            transition: 0.3s;
+            color: #3071c2;
+        }
     }
 
-    .creator  {
-        transition: 0.3s;
-        border-bottom: 2px solid #000000;
+
+    .list-item {
+        small {
+            transition: 0.3s;
+            color: black;
+        }
     }
 }
 
 .dark {
+    transition: 0.3s;
+    background-color: #273038;
     .list-title {
         transition: 0.3s;
         color: white;
@@ -119,23 +137,28 @@
         color: white;
     }
 
-    .material-icons {
-        transition: 0.3s;
-        color: #ff6162;
+    .contact-list {
+        .material-icons {
+            transition: 0.3s;
+            color: #ff6162;
+        }
     }
 
-    .creator  {
-        transition: 0.3s;
-        border-bottom: 2px solid #ffffff;
+
+    .list-item {
+        small {
+            transition: 0.3s;
+            color: white;
+        }
     }
 }
 
 @font-face {
     font-family: "FontAwesome";
     font-weight: normal;
-    font-style : normal;
-    src : url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?v=4.3.0");
-    src : url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?#iefix&v=4.3.0") format("embedded-opentype"),
+    font-style: normal;
+    src: url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?v=4.3.0");
+    src: url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?#iefix&v=4.3.0") format("embedded-opentype"),
     url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.woff2?v=4.3.0") format("woff2"),
     url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.woff?v=4.3.0") format("woff"),
     url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.ttf?v=4.3.0") format("truetype"),
@@ -173,6 +196,7 @@
         font-size: 12px;
     }
 }
+
 /* custom code end*/
 .e-menu-item .e-ban::before {
     content: '\f05e';

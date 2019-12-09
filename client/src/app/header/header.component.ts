@@ -6,8 +6,6 @@ import {SocketService} from "../shared/services/socket.service";
 import {ChatService} from "../shared/services/chat.service";
 import {User} from "../shared/models/User";
 
-const themes = {0: 'light', 1: 'dark'};
-
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
@@ -55,15 +53,5 @@ export class HeaderComponent implements OnInit{
         this.isUser = false;
         this.socketService.disconnect();
         this.router.navigate(['/auth']);
-    }
-
-    public toggleTheme(): void {
-        if (this.theme === themes[0]) {
-            this.socketService.emit('changeColor', {theme: themes[1]});
-            //this.chatService.theme.next(themes[1]);
-        } else {
-            this.socketService.emit('changeColor', {theme: themes[0]});
-            //this.chatService.theme.next(themes[0]);
-        }
     }
 }

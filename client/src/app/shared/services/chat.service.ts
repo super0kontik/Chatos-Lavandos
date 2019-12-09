@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {config} from "../config";
 import {Message} from "../models/Message";
 import {SocketService} from "./socket.service";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Injectable({
     providedIn: 'root'
@@ -12,11 +13,20 @@ export class ChatService {
     public flipCard: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public currentRoomUsers: BehaviorSubject<object[]> = new BehaviorSubject<object[]>([]);
     public theme: BehaviorSubject<string> = new BehaviorSubject<string>('light');
+    public device: object = {isDesktop: 1, isMobile: 0, isTablet: 0};
 
-    constructor(private http: HttpClient, private socketService: SocketService) {
+    constructor(private http: HttpClient,
+                private socketService: SocketService,
+                private deviceDetector: DeviceDetectorService) {
     }
 
     public init(): void {
+        this.device = {
+            isDesktop: this.deviceDetector.isDesktop(),
+            isMobile: this.deviceDetector.isMobile(),
+            isTablet: this.deviceDetector.isTablet(),
+        };
+        console.log(this.device);
         this.socketService.listen('colorChanged').subscribe(theme => {
             this.theme.next(theme);
         });
@@ -31,9 +41,7 @@ export class ChatService {
     }
 
     public addToBlacklist(id: string): Observable<string[]> {
-        return this.http.post<string[]>(`${config.API_URL}/blacklist`, {
-            blacklistedId: id,
-        });
+        return this.http.post<string[]>(`${config.API_URL}/blacklist`, {blacklistedId: id});
     }
 
     public deleteFromBlacklist(id: string): Observable<any> {

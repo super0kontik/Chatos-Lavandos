@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {SMILES} from "../../shared/data";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {ChatService} from "../../shared/services/chat.service";
@@ -9,6 +9,7 @@ import {ChatService} from "../../shared/services/chat.service";
     styleUrls: ['./smiles.component.scss']
 })
 export class SmilesComponent implements OnInit {
+    @Output() closeParticipants: EventEmitter<any> = new EventEmitter<any>();
     public smiles: string[] = [];
     public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.5, scrollingThreshold: 0,};
     public theme: string = 'dark';

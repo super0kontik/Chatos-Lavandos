@@ -24,6 +24,8 @@ import {EmojifyPipe} from "angular-emojify";
 import {DialogRoomSettingsComponent} from "../../dialog-room-settings/dialog-room-settings.component";
 import {log} from "util";
 
+
+
 @Component({
     selector: 'app-room',
     templateUrl: './room.component.html',
@@ -36,6 +38,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     @Output() leaveFromChat: EventEmitter<any> = new EventEmitter<any>();
     @Output() unreadMessages: EventEmitter<any> = new EventEmitter<any>();
     @Output() openList: EventEmitter<any> = new EventEmitter<any>();
+    @Output() showParticipants: EventEmitter<any> = new EventEmitter<any>();
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
@@ -245,6 +248,8 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     private updateList(): void {
         this.chatService.currentRoomUsers.next(Object.values(this.users));
     }
+
+
 
     private animateSmile(): void {
         if (!this.isSmiles) {
