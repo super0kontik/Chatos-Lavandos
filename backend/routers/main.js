@@ -1,15 +1,7 @@
 const router = require('express').Router();
-const {signIn, callback, checkJWT} = require('../controllers/http/auth');
 const {roomContent} = require('../controllers/http/messages');
 const {addToBlacklist, removeFromBlacklist, getBlacklist} = require('../controllers/http/user');
-const passport = require('passport');
-
-router.get('/auth', signIn);
-
-router.get(
-    '/auth/callback',
-    passport.authenticate('google', { failureRedirect: '/' }),
-    callback);
+const {checkJWT} = require('../controllers/http/auth');
 
 router.use(checkJWT);
 

@@ -16,7 +16,7 @@ module.exports.roomContent = async (req,res)=>{
         while (+req.query.offset === 0) {
             const message = await Message.find({room: req.params.id}).skip(limit).limit(1).sort('-createdAt');
             if (message[0] && !message[0].read.find(i => String(i) === req.decoded.id)) {
-                limit += 50;
+                limit += 15;
             }else {
                 break;
             }

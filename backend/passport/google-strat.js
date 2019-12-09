@@ -1,12 +1,16 @@
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const {callbackURL, clientID, clientSecret, SECRET_WORD} = require('../config/config');
+const {googleCallbackURL, googleClientID, googleClientSecret, SECRET_WORD} = require('../config/config');
 const User = require('../models/user');
-
+//console.log('cb: ',googleCallbackURL);
 passport.use(
     'google',
-    new GoogleStrategy({callbackURL,clientID,clientSecret}, async (accessToken, refreshToken, profile, done) => {
+    new GoogleStrategy({
+        callbackURL: "http://localhost:8080/auth/google/callback" ,//googleCallbackURL,
+        clientID: googleClientID,
+        clientSecret: googleClientSecret,
+    }, async (accessToken, refreshToken, profile, done) => {
         try {
             let user = await User.findOne({id: profile.id});
             if (!user) {
@@ -20,7 +24,7 @@ passport.use(
                 token: token,
                 blacklist: user.blacklist,
                 colorTheme: user.colorTheme,
-                avatar: profile._json.picture
+                avatar: user.avatar
             });
         }catch (e){
             throw new Error(e.message)
