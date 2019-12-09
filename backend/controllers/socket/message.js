@@ -48,7 +48,6 @@ module.exports = {
                 return console.log('message already read');
             }
             message.read.push(socket.decoded_token.id);
-            console.log(message.read)
             await message.save();
             return io.to(String(message.room._id)).emit('messageRead', {id: params.messageId, user: socket.decoded_token.id});
         }catch (e) {
