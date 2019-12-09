@@ -12,6 +12,9 @@ passport.use('github',new GitHubStrategy({
     async (accessToken, refreshToken, profile, done) => {
         try {
             let user = await User.findOne({id: profile.id});
+            if(user && user.avatar !== profile._json.picture){
+                await user.update({avatar: profile._json.picture})
+            }
             if (!user) {
                 user = await User.create({id: profile.id, name: profile.username, avatar: profile._json.avatar_url});
             }
@@ -23,7 +26,7 @@ passport.use('github',new GitHubStrategy({
                 token: token,
                 blacklist: user.blacklist,
                 colorTheme: user.colorTheme,
-                avatar: user.avatar
+                avatar: profile._json.avatar_url
             });
         }catch (e){
             throw new Error(e.message)
