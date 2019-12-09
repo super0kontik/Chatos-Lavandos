@@ -37,7 +37,6 @@ export class HeaderComponent implements OnInit{
             }
         });
         const user = LocalStorageService.getUser() as User;
-        console.log(user)
         if (user && this.authService.isAuthenticated()) {
             this.user = user;
             this.isUser = true;
@@ -60,14 +59,10 @@ export class HeaderComponent implements OnInit{
 
     public toggleTheme(): void {
         if (this.theme === themes[0]) {
-            this.socketService.emit('changeColor', {
-                theme: themes[1]
-            });
+            this.socketService.emit('changeColor', {theme: themes[1]});
             //this.chatService.theme.next(themes[1]);
         } else {
-            this.socketService.emit('changeColor', {
-                theme: themes[0]
-            });
+            this.socketService.emit('changeColor', {theme: themes[0]});
             //this.chatService.theme.next(themes[0]);
         }
     }

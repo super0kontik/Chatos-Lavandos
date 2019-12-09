@@ -6,38 +6,31 @@
             <div class="part-wrapper">
                 <h2 mat-dialog-title>Add users below</h2>
                 <button type="button" mat-button (click)="addParticipant()">
-                    <i class="material-icons">
-                        add
-                    </i>
+                    <i class="material-icons">add</i>
                 </button>
             </div>
 
             <div formArrayName="participants">
                 <div *ngFor="let item of participants.controls; let pointIndex=index" [formGroupName]="pointIndex">
-
                     <mat-form-field class="part-input">
                         <label>
                             <input matInput [placeholder]="'Participant - ' + (pointIndex + 1)"
                                    formControlName="name"
                                    (click)="selectedInput = pointIndex"
-                                   [matAutocomplete]="auto"
-                            >
+                                   [matAutocomplete]="auto">
                         </label>
-
                         <mat-autocomplete #auto="matAutocomplete">
                             <mat-option *ngFor="let state of searchedUsers"
                                         [value]="state.name"
-                                        (click)="pushId(state._id)"
-                            >
+                                        (click)="pushId(state._id)">
+                                <img [src]="state.avatar" alt="" height="23">
                                 <span >{{state.name}}</span>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
                     <mat-icon *ngIf="userIds[pointIndex]" class="done">done</mat-icon>
                     <button type="button" mat-button (click)="deleteParticipant(pointIndex)">
-                        <i class="material-icons">
-                            delete
-                        </i>
+                        <i class="material-icons">delete</i>
                     </button>
                 </div>
             </div>
@@ -45,15 +38,12 @@
 
         <div mat-dialog-actions>
             <button mat-button (click)="onNoClick()" class="close-btn">
-                <i class="material-icons">
-                    clear
-                </i>
+                <i class="material-icons">clear</i>
             </button>
-            <button mat-button (click)="onCreate()" class="create-btn" [disabled]="!addUsersForm.valid
+            <button mat-button (click)="onInvite()" class="create-btn" [disabled]="!addUsersForm.valid
                 || addUsersForm.untouched
                 || !validateInputs()
-                || participants.length < 1
-            ">Invite</button>
+                || participants.length < 1">Invite</button>
         </div>
     </div>
 </div>

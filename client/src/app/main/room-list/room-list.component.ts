@@ -14,6 +14,7 @@ export class RoomListComponent implements OnInit {
     @Input() unread: object;
     @Output() onSelectedRoom: EventEmitter<any> = new EventEmitter<any>();
     @Output() onCreateRoom: EventEmitter<any> = new EventEmitter<any>();
+    @Output() closeList: EventEmitter<any> = new EventEmitter<any>();
     public searchedRooms: Room[];
     public searchText: string = '';
     public isSearchRoomList: boolean = false;

@@ -74,8 +74,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
-                public dialog: MatDialog) {
-    }
+                public dialog: MatDialog) {}
 
     public ngOnInit(): void {
         this.me = LocalStorageService.getUser()['id'];
@@ -103,7 +102,12 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
                         avatar: usr.avatar
                     };
                 } else {
-                    this.users[usr._id] = {name: usr.name, online: usr.isOnline, premium: usr.isPremium, avatar: usr.avatar};
+                    this.users[usr._id] = {
+                        name: usr.name,
+                        online: usr.isOnline,
+                        premium: usr.isPremium,
+                        avatar: usr.avatar
+                    };
                 }
                 this.updateList();
             }
@@ -132,9 +136,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
                 LocalStorageService.setlastRoomId(this.currentRoom._id);
                 this.updateRoom();
             }
-            if (changes['unreadInRooms']) {
-                this.overallUnreadMessages = this.unreadInRooms;
-            }
+            if (changes['unreadInRooms']) this.overallUnreadMessages = this.unreadInRooms;
         }
     }
 
@@ -158,7 +160,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     public sendMessage(event: any): void {
         if (this.input.nativeElement.innerText.trim().length > 0) {
             if (event.code === 'Enter') event.preventDefault();
-
             const transformedMessage = this.emoji.transform(this.input.nativeElement.innerText);
             this.socketService.emit('createMessage', {
                 message: transformedMessage.trim(),
@@ -175,21 +176,15 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     public countOfUnread(): void {
         this.amountOfUnread = 0;
         this.messages.forEach(message => {
-            if (message.read.indexOf(this.me) === -1 && this.me !== message.creator._id) {
-                this.amountOfUnread += 1;
-            }
+            if (message.read.indexOf(this.me) === -1 && this.me !== message.creator._id) this.amountOfUnread += 1;
         });
-        this.unreadMessages.emit({
-            unread: this.amountOfUnread,
-            roomId: this.currentRoom._id
-        });
+        this.unreadMessages.emit({unread: this.amountOfUnread, roomId: this.currentRoom._id});
     }
 
     private updateRoom(): void {
         this.users = [];
         this.messages = [];
         if (this.currentRoom._id !== 'common') {
-            console.log(this.currentRoom.users)
             this.currentRoom.users.forEach(user => {
                 this.users[user._id] = {
                     name: user.name,
@@ -234,17 +229,16 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
 
     public messageRequest(scroll?: boolean): void {
         const [mesOff, mesLim] = [this.messages.length, this.messages.length < 50 ? 50 : 20];
-        this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(messages => {
+        this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(
+            messages => {
                 this.messages = this.messages.filter(message => message.room !== '');
                 this.messages = [...messages, ...this.messages];
                 this.messages.unshift(this.loadMessage);
                 this.countOfUnread();
             },
-            error => {
-            },
-            () => {
-                this.setScroll();
-            });
+            error => console.log(error),
+            () => this.setScroll()
+        );
         if (scroll) this.scrollY(1600);
     }
 
@@ -330,6 +324,5 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             }
             aSub.unsubscribe();
         });
-
     }
 }

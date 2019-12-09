@@ -9,9 +9,7 @@
         overflow: hidden;
     }
 
-    ::ng-deep .mat-drawer-container, .mat-drawer {
-        background: transparent;
-    }
+
 
     ::ng-deep .mat-drawer-side {
         border-right: 1px solid rgba(0, 0, 0, 0.2);
@@ -95,6 +93,10 @@
     transition: .5s;
     background: #e6e7f2;
 
+    ::ng-deep .mat-drawer-container, .mat-drawer {
+        background: #e6e7f2;
+    }
+
     .add-btn {
         background: rgba(0, 0, 0, 0.38);
 
@@ -141,6 +143,10 @@
 .dark {
     transition: .5s;
     background: #273038;
+
+    ::ng-deep .mat-drawer-container, .mat-drawer {
+        background: #273038;
+    }
 
     .add-btn {
         background: rgba(0, 0, 0, 0.18);

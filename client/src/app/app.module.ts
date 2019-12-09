@@ -48,6 +48,7 @@ import {NguiParallaxScrollModule} from "@ngui/parallax-scroll";
 import {InViewportModule} from "@thisissoon/angular-inviewport";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import { UpdateRoomsPipe } from './shared/pipes/update-rooms.pipe';
+import {DeviceDetectorModule} from "ngx-device-detector";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -103,7 +104,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		MatBadgeModule,
 		NguiParallaxScrollModule,
 		InViewportModule,
-		MatSidenavModule
+		MatSidenavModule,
+        DeviceDetectorModule.forRoot()
 	],
     entryComponents: [
         DialogAddingRoomComponent,

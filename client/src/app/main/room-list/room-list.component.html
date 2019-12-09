@@ -1,6 +1,9 @@
 <div class="room-list-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="list-title">
         <p>Room-list</p>
+        <button mat-button matRipple (click)="closeList.emit()">
+            <mat-icon>keyboard_backspace</mat-icon>
+        </button>
     </div>
     <div class="search-rooms">
         <div class="add-btn" (click)="createRoom()" matRipple>

@@ -25,19 +25,13 @@ export class DialogInvitingRoomComponent implements OnInit {
                 private chatService: ChatService) {}
 
     public ngOnInit(): void {
-        this.chatService.theme.subscribe(selectedTheme => {
-            this.theme = selectedTheme;
-        });
+        this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
         this.addUsersForm = this.fb.group({
             participants: this.fb.array([this.fb.group({
-                name: ['',
-                    [Validators.required]
-                ]
+                name: ['', [Validators.required]]
             })])
         });
-
         this.onSearch();
-
         this.socketService.listen('searchResult').subscribe(users => {
             if (users.length === 1 && this.addUsersForm.get('participants').value[this.selectedInput].name === users[0].name) {
                 let flag = false;
@@ -78,9 +72,7 @@ export class DialogInvitingRoomComponent implements OnInit {
 
     public addParticipant(): void {
         this.participants.push(this.fb.group({
-            name: ['',
-                [Validators.required]
-            ]
+            name: ['', [Validators.required]]
         }));
         this.userIds.push(false);
     }
@@ -95,7 +87,7 @@ export class DialogInvitingRoomComponent implements OnInit {
         this.dialogRef.close(false);
     }
 
-    public onCreate(): void {
+    public onInvite(): void {
         this.userIds = this.userIds.filter(userId => {
             let flag = false;
             for (let roomUser of this.data.users) {
@@ -106,16 +98,11 @@ export class DialogInvitingRoomComponent implements OnInit {
                     break;
                 }
             }
-            if (!userId) {
-                flag = false;
-            }
+            if (!userId) flag = false;
             return flag;
         });
         this.userIds = Array.from(new Set(this.userIds));
-        this.dialogRef.close({
-            roomId: this.data._id,
-            participants: this.userIds,
-        });
+        this.dialogRef.close({roomId: this.data._id, participants: this.userIds,});
     }
 
     public onSearch(): void {

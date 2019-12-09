@@ -29,17 +29,18 @@
     }
 
     .list-title {
+        padding: 0 20px;
+        box-sizing: border-box;
         user-select: none;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         font-family: 'Montserrat Alternates', sans-serif;
         align-items: center;
         width: 100%;
-        color: white;
         height: 48px;
 
         p {
-            font-weight: 300;
+            font-weight: 400;
             font-size: 30px;
         }
     }
@@ -79,7 +80,7 @@
     }
 
     .search-rooms {
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.24);
+        //box-shadow: 0 0 15px rgba(0, 0, 0, 0.24);
         padding: 20px;
 
         input {
@@ -152,7 +153,9 @@
 .light {
 
     .list-title {
+        transition: 0.3s;
         background: rgba(0, 0, 0, 0.39);
+        color: black;
     }
 
     .add-btn {
@@ -243,8 +246,10 @@
 
 .dark {
 
-    .list-title {transition: 0.3s;
+    .list-title {
+        transition: 0.3s;
         background: rgba(0, 0, 0, 0.51);
+        color: white;
     }
 
     .add-btn {

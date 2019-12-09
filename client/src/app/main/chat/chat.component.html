@@ -3,11 +3,12 @@
         <mat-drawer-container autosize class="sidenav-wrapper">
             <mat-drawer class="sidenav-content"
                         [(opened)]="opened"
-                        mode="side">
+                        [mode]="device['isDesktop'] ? 'side' : 'over'">
                 <app-room-list [rooms]="rooms | updateRooms"
                                [unread]="unreadInRooms"
                                (onSelectedRoom)="toggleRoom($event)"
-                               (onCreateRoom)="createRoom()">
+                               (onCreateRoom)="createRoom()"
+                               (closeList)="openSideNav()">
                 </app-room-list>
             </mat-drawer>
             <app-room [currentRoom]="selectedRoom"
