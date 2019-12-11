@@ -40,7 +40,7 @@ module.exports = {
 
     inviteUsers: async (io, socket, params) => {
         try{
-            const room = await Room.findOne({_id:params.roomId, users: socket.decoded_token.id});
+            const room = await Room.findOne({_id:params.roomId, users: socket.decoded_token.id, isFavorites: false});
             if(!room){
                 throw new Error('Room not found');
             }
@@ -90,7 +90,7 @@ module.exports = {
             if(!roomId || roomTitle.length < 3 || roomTitle.length > 20){
                 throw new Error('Invalid data')
             }
-            const room = await Room.findById(roomId);
+            const room = await Room.findOne({_id: roomId, isFavorites: false});
             if (!room || String(room.creator) !== socket.decoded_token.id) {
                 throw new Error("Room not found or you don't have permission")
             }
@@ -116,7 +116,7 @@ module.exports = {
             if(!roomId || roomPublicity === undefined){
                 throw new Error('Invalid data')
             }
-            const room = await Room.findById(roomId);
+            const room = await Room.findOne({_id:roomId, isFavorites: false});
             if (!room || String(room.creator) !== socket.decoded_token.id) {
                 throw new Error("Room not found or you don't have permission")
             }
@@ -137,7 +137,7 @@ module.exports = {
 
     roomDelete: async (io, socket, params) => {
         try {
-            const room = await Room.findById(params.roomId).populate('users');
+            const room = await Room.findOne({_id: params.roomId, isFavorites: false}).populate('users');
             if(!room || String(room.creator) !== socket.decoded_token.id){
                 throw new Error ("Room not found or you don't have permission")
             }
@@ -159,7 +159,7 @@ module.exports = {
 
     deleteParticipant: async (io, socket, params) => {
         try{
-            const room = await Room.findById(params.roomId).populate('creator');
+            const room = await Room.findOne({_id: params.roomId, isFavorites: false}).populate('creator');
             if(!room || String(room.creator._id) !== socket.decoded_token.id){
                 throw new Error ("Room not found or you don't have permission")
             }
@@ -168,6 +168,17 @@ module.exports = {
                 throw new Error('User is not in the room')
             }
             room.users.pull(deletedUserId);
+            if(room.users.length === 1){
+                const lastUser = await room.populate('users').execPopulate();
+                io.to(getUserSocketsRoom(lastUser.users[0])).emit('userLeft', {userId: lastUser.users[0]._id, roomId: params.roomId});
+                lastUser.users[0].socketIds.forEach(socketId=>{
+                    const socket = io.sockets.connected[socketId];
+                    if(socket){
+                        socket.leave(params.roomId)
+                    }
+                });
+                return await room.remove();
+            }
             await room.save();
             const deletedUser = await User.findById(deletedUserId);
             const content = `${room.creator.name} deleted ${deletedUser.name} from the room`;
@@ -182,7 +193,7 @@ module.exports = {
                 }
             });
             return io.to(params.roomId).emit('newMessage', {message:{content, createdAt:Date.now(), isSystemMessage:true,creator: room.creator},
-                room: params.roomId })
+                room: params.roomId });
         }catch(e){
             console.log(e);
             io.to(socket.id).emit('error', {type: e.message})

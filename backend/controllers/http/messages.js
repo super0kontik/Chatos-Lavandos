@@ -13,7 +13,7 @@ module.exports.roomContent = async (req,res)=>{
         if(!room){
             throw new Error('Not Allowed')
         }
-        while (+req.query.offset === 0) {
+        while (+req.query.offset === 0 && !room.isFavorites) {
             const message = await Message.find({room: req.params.id}).skip(limit).limit(1).sort('-createdAt');
             if (message[0] && !message[0].read.find(i => String(i) === req.decoded.id)) {
                 limit += 15;

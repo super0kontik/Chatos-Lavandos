@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const GitHubStrategy = require('passport-github2').Strategy;
 const {githubCallbackURL, githubClientID, githubClientSecret, SECRET_WORD} = require('../config/config');
 const User = require('../models/user');
+const Room = require('../models/room');
 
 passport.use('github',new GitHubStrategy({
         clientID: githubClientID,
@@ -17,6 +18,14 @@ passport.use('github',new GitHubStrategy({
             }
             if (!user) {
                 user = await User.create({id: profile.id, name: profile.username, avatar: profile._json.avatar_url});
+                await Room.create({
+                    title:'Favorites',
+                    creator: user._id,
+                    users:[String(user._id)],
+                    isFavorites: true,
+                    isPublic: false,
+                    lastAction:Date.now()
+                })
             }
             const token = jwt.sign({id: user._id, name: user.name},SECRET_WORD);
             return done(null, {

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {googleSignIn, callback,  githubSignIn,} = require('../controllers/http/auth');
+const {googleSignIn, callback,  githubSignIn} = require('../controllers/http/auth');
 const passport = require('passport');
 
 router.get('/google', googleSignIn);

@@ -21,6 +21,10 @@ const roomSchema = new Schema({
     isPublic:{
         type:Boolean,
         default:true
+    },
+    isFavorites:{
+        type:Boolean,
+        default:false
     }
 });
 module.exports = mongoose.model('Room',roomSchema);

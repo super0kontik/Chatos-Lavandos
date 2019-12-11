@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const {googleCallbackURL, googleClientID, googleClientSecret, SECRET_WORD} = require('../config/config');
 const User = require('../models/user');
-//console.log('cb: ',googleCallbackURL);
+const Room = require('../models/room');
 passport.use(
     'google',
     new GoogleStrategy({
@@ -14,10 +14,18 @@ passport.use(
         try {
             let user = await User.findOne({id: profile.id});
             if(user && user.avatar !== profile._json.picture){
-                await user.update({avatar: profile._json.picture})
+                await user.update({avatar: profile._json.picture});
             }
             if (!user) {
                 user = await User.create({id: profile.id, name: profile.displayName, avatar: profile._json.picture});
+                await Room.create({
+                    title:'Favorites',
+                    creator: user._id,
+                    users:[String(user._id)],
+                    isFavorites: true,
+                    isPublic: false,
+                    lastAction:Date.now()
+                })
             }
             const token = jwt.sign({id: user._id, name: user.name},SECRET_WORD);
             return done(null, {

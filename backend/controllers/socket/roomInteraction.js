@@ -26,7 +26,7 @@ module.exports = {
 
     joinRoom: async (io, socket, params) => {
         try {
-            let room = await Room.findOne({_id: params.roomId, users:{$ne:socket.decoded_token.id}, isPublic:true});
+            let room = await Room.findOne({_id: params.roomId, users:{$ne:socket.decoded_token.id}, isPublic:true, isFavorites: false});
             const user = await User.findById(socket.decoded_token.id);
             if(room && user) {
                 room.users.push(user);
@@ -57,7 +57,7 @@ module.exports = {
         try {
             const id = socket.decoded_token.id;
             const user = await User.findById(id);
-            let room = await Room.findById(params.roomId);
+            let room = await Room.findOne({_id: params.roomId, isFavorites: false});
             if (room && room.users.indexOf(id) !== -1) {
                 room.users.pull(id);
                 room.lastAction = Date.now();
