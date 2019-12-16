@@ -78,7 +78,7 @@ module.exports = {
             // if(!message){
             //     throw new Error('Not allowed');
             // }
-            return io.to(params.roomId).emit('messageDeleted', {id: params.messageId, room: params.roomId, newContent: params.newContent});
+            return io.to(params.roomId).emit('messageDeleted', {id: params.messageId, room: params.roomId});
         }catch (e) {
             console.log(e);
             io.to(socket.id).emit('error',{error:{type: e.message}});
