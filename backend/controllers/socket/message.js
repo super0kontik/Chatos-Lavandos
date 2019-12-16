@@ -54,5 +54,34 @@ module.exports = {
             console.log(e);
             io.to(socket.id).emit('error',{error:{type: e.message}});
         }
+    },
+
+    updateMessage: async (io, socket, params) => {
+        try{
+            const message = await Message.findOne({id: params.messageId, creator: socket.decoded_token.id});
+            if(!message){
+                throw new Error('Not allowed');
+            }
+            const content = crypto.AES.encrypt(validator.escape(params.newContent), MESSAGE_KEY).toString();
+            await message.update({content});
+            return io.to(params.roomId).emit('messageUpdated', {id: params.messageId, room: params.roomId, newContent: params.newContent});
+        }catch (e) {
+            console.log(e);
+            io.to(socket.id).emit('error',{error:{type: e.message}});
+        }
+    },
+
+    deleteMessage: async (io, socket, params) => {
+        try{
+            const res = await Message.deleteOne({id: params.messageId, creator: socket.decoded_token.id});
+            console.log(res);
+            // if(!message){
+            //     throw new Error('Not allowed');
+            // }
+            return io.to(params.roomId).emit('messageDeleted', {id: params.messageId, room: params.roomId, newContent: params.newContent});
+        }catch (e) {
+            console.log(e);
+            io.to(socket.id).emit('error',{error:{type: e.message}});
+        }
     }
 };

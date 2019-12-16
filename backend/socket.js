@@ -18,7 +18,9 @@ const {
 
 const {
     createMessage,
-    readMessage
+    readMessage,
+    updateMessage,
+    deleteMessage
 } = require('./controllers/socket/message');
 
 const {
@@ -68,6 +70,10 @@ module.exports = server => {
         socket.on('changeColor', async params => await changeColor(io, socket, params));
 
         socket.on('readMessage', async params => await readMessage(io, socket, params));
+
+        socket.on('updateMessage', async params => await updateMessage(io, socket, params));
+
+        socket.on('deleteMessage', async params => await deleteMessage(io, socket, params));
 
         socket.on('disconnect', async () => await disconnect(io, socket));
     });
