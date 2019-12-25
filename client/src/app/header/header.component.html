@@ -1,15 +1,15 @@
-<div class="nav-wrapper" [ngClass]="{'center': !isUser, 'dark': theme === 'dark', 'light': theme === 'light'}">
-<!--    <span class="brand-logo">CHATOS-LAVANDOS</span>-->
+<ng-container *ngIf="authService.isAuthenticated()">
+    <div class="nav-wrapper" [ngClass]="{'center': !isUser, 'dark': theme === 'dark', 'light': theme === 'light'}">
+        <!--    <span class="brand-logo">CHATOS-LAVANDOS</span>-->
 
-
-
-    <div class="nav-links" *ngIf="isUser">
-        <div class="c-white">
-            <div class="avatar"><img [src]="user.avatar" alt=""></div>
-            {{user.name}}
-        </div>
-        <div class="nav-link" (click)="logOut()">
-            <span>Log out</span>
+        <div class="nav-links" *ngIf="isUser">
+            <div class="c-white">
+                <div class="avatar"><img [src]="user.avatar" alt=""></div>
+                {{user.name}}
+            </div>
+            <div class="nav-link" (click)="logOut()">
+                <span>Log out</span>
+            </div>
         </div>
     </div>
-</div>
+</ng-container>

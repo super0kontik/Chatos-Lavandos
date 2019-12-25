@@ -26,7 +26,6 @@ export class ChatService {
             isMobile: this.deviceDetector.isMobile(),
             isTablet: this.deviceDetector.isTablet(),
         };
-        console.log(this.device);
         this.socketService.listen('colorChanged').subscribe(theme => {
             this.theme.next(theme);
         });

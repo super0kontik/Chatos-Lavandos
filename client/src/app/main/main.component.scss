@@ -1,3 +1,32 @@
+$screen-sm-min: 320px;
+$screen-md-min: 768px;
+$screen-lg-min: 992px;
+$screen-xl-min: 1200px;
+
+@mixin sm {
+    @media (min-width: #{$screen-sm-min}) {
+        @content;
+    }
+}
+
+@mixin md {
+    @media (min-width: #{$screen-md-min}) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @media (min-width: #{$screen-lg-min}) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @media (min-width: #{$screen-xl-min}) {
+        @content;
+    }
+}
+
 .main-wrapper {
     display: flex;
     height: 92.4%;
@@ -9,11 +38,11 @@ app-chat {
 }
 
 app-contact-list {
-    width: 20%;
+    width: 100%;
 }
 
 app-smiles {
-    width: 20%;
+    width: 100%;
 }
 
 .sidenav-wrapper {
@@ -36,9 +65,16 @@ app-smiles {
 
 .flip-card {
     height: 100%;
-    width: 100%;
     background-color: #273038;
-    perspective: 1000px; /* Remove this if you don't want the 3D effect */
+    perspective: 1000px;
+
+    @include sm{
+        width: 100%;
+    }
+
+    @include md {
+        width: 24%;
+    }
 }
 
 /* This container is needed to position the front and back side */
@@ -51,10 +87,7 @@ app-smiles {
     transform-style: preserve-3d;
 }
 
-/* Do an horizontal flip when you move the mouse over the flip box container */
-.flip-card:hover .flip-card-inner {
-    //transform: rotateY(180deg);
-}
+
 
 /* Position the front and back side */
 .flip-card-front, .flip-card-back {

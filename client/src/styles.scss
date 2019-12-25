@@ -10,3 +10,16 @@ html, body {
     overflow: hidden !important;
 }
 body { margin: 0; font-family: Roboto, "Noto Color Emoji" ,"Helvetica Neue", sans-serif; }
+
+.mat-menu-panel {
+    background: #e6e7f2;
+
+    .mat-icon {
+        color: black;
+    }
+
+    .mat-menu-item {
+        font-family: 'Quicksand', "Noto Color Emoji" ,"Helvetica Neue", sans-serif;
+        font-weight: 500;
+    }
+}

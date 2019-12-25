@@ -1,11 +1,11 @@
 <div class="smiles-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
-    <div class="title">
-        <button mat-button matRipple (click)="closeParticipants.emit()">
-            <mat-icon class="close-sidenav" *ngIf="chatService.device['isMobile']">
-                arrow_forward_ios
-            </mat-icon>
+    <div class="head">
+        <h2>Smiles collection</h2>
+        <button mat-button (click)="onClose($event)" class="close-btn">
+            <i class="material-icons">
+                clear
+            </i>
         </button>
-        <p>SMILES</p>
     </div>
     <perfect-scrollbar [config]="config">
         <div class="smiles-list">

@@ -23,8 +23,9 @@ import {DialogInvitingRoomComponent} from "../../dialog-inviting-room/dialog-inv
 import {EmojifyPipe} from "angular-emojify";
 import {DialogRoomSettingsComponent} from "../../dialog-room-settings/dialog-room-settings.component";
 import {log} from "util";
-
-
+import {MatBottomSheet} from "@angular/material/bottom-sheet";
+import {SmilesComponent} from "../smiles/smiles.component";
+import {MobileSmileComponent} from "../mobile-smile/mobile-smile.component";
 
 @Component({
     selector: 'app-room',
@@ -74,10 +75,12 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     public users: object[] = [];
     public config: PerfectScrollbarConfigInterface = {scrollingThreshold: 0};
     public theme: string = 'dark';
+    public isActiveMenu: boolean = false;
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
-                public dialog: MatDialog) {}
+                public dialog: MatDialog,
+                private bottomSheet: MatBottomSheet) {}
 
     public ngOnInit(): void {
         this.me = LocalStorageService.getUser()['id'];
@@ -91,7 +94,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
                 if (message._id === data.id) message.read.push(data.user);
                 return message;
             });
-            this.countOfUnread();
+            this.calculateUnread();
         });
         this.socketService.listen('userJoined').subscribe(data => {
             if (this.currentRoom._id === data.roomId) {
@@ -133,7 +136,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             if (changes['newMessage'])
                 if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
                     this.messages.push(changes['newMessage'].currentValue.message);
-                    this.countOfUnread();
+                    this.calculateUnread();
                 }
             if (changes['currentRoom']) {
                 LocalStorageService.setlastRoomId(this.currentRoom._id);
@@ -176,10 +179,11 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
         }
     }
 
-    public countOfUnread(): void {
+    public calculateUnread(): void {
         this.amountOfUnread = 0;
         this.messages.forEach(message => {
-            if (message.read.indexOf(this.me) === -1 && this.me !== message.creator._id) this.amountOfUnread += 1;
+            if (message.read.indexOf(this.me) === -1 && this.me !== message.creator._id)
+                this.amountOfUnread += 1;
         });
         this.unreadMessages.emit({unread: this.amountOfUnread, roomId: this.currentRoom._id});
     }
@@ -210,7 +214,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             });
         }
         this.updateList();
-        this.chatService.flipCard.subscribe((flag) => this.isLoadedTemplate && flag ? this.animateSmile() : false);
+        this.chatService.flipCard.subscribe(flag => this.isLoadedTemplate && flag ? this.animateSmile() : false);
         if (this.currentRoom._id !== 'common') this.messageRequest();
     }
 
@@ -219,7 +223,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             if (this.currentRoom._id !== 'common') {
                 if (event.inView) {
                     this.socketService.emit('readMessage', {messageId: event.id});
-                    this.countOfUnread();
+                    this.calculateUnread();
                 }
             }
         }
@@ -237,7 +241,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
                 this.messages = this.messages.filter(message => message.room !== '');
                 this.messages = [...messages, ...this.messages];
                 this.messages.unshift(this.loadMessage);
-                this.countOfUnread();
+                this.calculateUnread();
             },
             error => console.log(error),
             () => this.setScroll()
@@ -248,8 +252,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     private updateList(): void {
         this.chatService.currentRoomUsers.next(Object.values(this.users));
     }
-
-
 
     private animateSmile(): void {
         if (!this.isSmiles) {
@@ -285,16 +287,21 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
                 this.socketService.emit('inviteUsers', {roomId: data.roomId, participants: data.participants});
             aSub.unsubscribe();
         });
+    }
 
+    public openSmilesList(): void {
+        const bSheet =  this.bottomSheet.open(MobileSmileComponent, {
+            disableClose: false,
+        });
+
+        const aSub = bSheet.afterDismissed().subscribe(data => {
+            aSub.unsubscribe();
+        });
     }
 
     public leaveRoom(): void {
         this.socketService.emit('leaveRoom', {roomId: this.currentRoom._id});
         this.leaveFromChat.emit(this.currentRoom._id);
-    }
-
-    public openRoomList(): void {
-        this.openList.emit();
     }
 
     private changeUserStatusOnline(connection: boolean, userId: string): void {

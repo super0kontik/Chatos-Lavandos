@@ -1,4 +1,4 @@
-$screen-sm-min: 576px;
+$screen-sm-min: 320px;
 $screen-md-min: 768px;
 $screen-lg-min: 992px;
 $screen-xl-min: 1200px;
@@ -33,6 +33,28 @@ $screen-xl-min: 1200px;
     height: 100%;
     overflow: hidden;
 
+    mat-icon {
+        width: auto;
+        height: auto;
+    }
+
+    button {
+        transition: 0.3s;
+        cursor: pointer;
+        background: transparent;
+        border: 0;
+        outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        padding: 0;
+        min-height: 0;
+        min-width: 0;
+        border-radius: 50px;
+    }
+
     ::ng-deep .mat-list {
         display: flex;
         flex-direction: column;
@@ -42,11 +64,28 @@ $screen-xl-min: 1200px;
         overflow: hidden;
     }
 
+    .custom-menu {
+
+    }
+
     .chat-menu {
+        position: relative;
         display: flex;
         justify-content: space-between;
-        padding-right: 15px;
         min-height: 48px;
+
+        @include sm {
+            padding: 0;
+        }
+
+        @include md {
+        }
+
+        .menu-btn {
+            position: absolute;
+            top: 0;
+            right: 5px;
+        }
 
         .room-info {
             display: flex;
@@ -61,14 +100,11 @@ $screen-xl-min: 1200px;
 
             .room-title {
                 mat-icon {
-                    position: relative;
-                    bottom: 2px;
-                    margin-right: 20px;
                     font-size: 28px;
                 }
                 display: flex;
                 align-items: center;
-                margin-left: 35px;
+                justify-content: space-between;
                 font-family: 'Montserrat Alternates', sans-serif;
                 font-weight: 400;
 
@@ -77,11 +113,22 @@ $screen-xl-min: 1200px;
                 }
                 @include md {
                     font-size: 24px;
+                    margin-left: 20px;
                 }
 
-            }
-            button {
-                height: 100%;
+                .room-title-text {
+                    margin: 0 20px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    text-overflow: ellipsis;
+
+                    small {
+                        font-size: 12px;
+                        font-weight: 500;
+                    }
+                }
+
             }
         }
 
@@ -97,39 +144,109 @@ $screen-xl-min: 1200px;
     }
 
     .input-area {
+        width: 100%;
+        max-width: 100%;
         box-sizing: border-box;
         display: flex;
-        align-items: center;
-        padding: 20px 0 20px 40px;
-        height: auto;
+
+
+        @include sm {
+            height: auto;
+            padding: 10px;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        @include md {
+            height: auto;
+            padding: 20px 20px 20px 40px;
+            justify-content: flex-start;
+            align-items: center;
+        }
 
         .input-message {
             transition: 0.5s;
-            display: inline-block;
-            width: 70%;
+            display: flex;
             height: auto;
-            border-radius: 30px;
             font-size: 19px;
             box-sizing: border-box;
+            position: relative;
+
+            @include sm{
+                width: 80%;
+                padding-right: 7px;
+                border-radius: 30px 0 0 30px;
+            }
+
+            @include md {
+                width: 70%;
+                max-width: 70%;
+                border-radius: 30px;
+            }
 
             &:focus {
                 transition: 0.5s;
                 box-shadow: 0 0 15px black;
             }
+
+            .send-mobile {
+                z-index: 5;
+                position: relative;
+                left: 17px;
+                bottom: 5px;
+                cursor: pointer;
+                display: flex;
+                align-self: flex-end;
+                width: 30px;
+                height: 30px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                mat-icon {
+                    transform: rotateY(180deg);
+                    font-size: 30px;
+                }
+            }
+        }
+
+        .right-corner {
+            z-index: 3;
+            position: absolute;
+            bottom: 0;
+            right: -20px;
+            vertical-align: middle;
+            //margin: 0 5px;
+            display: flex;
+            width: 0;
+            height: auto;
+            border-left: 20px solid white;
+            border-bottom: 20px solid transparent;
+            border-top: 20px solid transparent;
         }
 
         .composer_rich_textarea {
             border: 0;
             outline: none;
-            padding: 10px 25px 10px 20px;
+            padding: 10px 0 10px 20px;
             margin: 0;
             line-height: 20px;
-            width: 100%;
             height: auto;
             min-height: 40px;
             max-height: 250px;
             box-sizing: border-box;
             font-family: 'Quicksand', "Noto Color Emoji" ,"Helvetica Neue", sans-serif;
+            width: 100%;
+
+            @include sm {
+                padding: 10px 0 10px 20px;
+            }
+
+            @include md {
+                padding: 10px 25px 10px 20px;
+            }
         }
 
         .wrap-btn {
@@ -138,10 +255,19 @@ $screen-xl-min: 1200px;
             z-index: 2;
             background: transparent;
             border-radius: 50px;
-            width: 70px;
-            height: 70px;
+
             margin: 0 0 0 20px;
             text-align: center;
+
+            @include sm {
+                width: 40px;
+                height: 40px;
+            }
+
+            @include md {
+                width: 70px;
+                height: 70px;
+            }
 
             .send-btn {
                 transition: 0.3s;
@@ -151,6 +277,11 @@ $screen-xl-min: 1200px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
+                .send-img {
+                    width: 80%;
+                    height: 80%;
+                }
             }
 
             .smile-btn {
@@ -161,6 +292,18 @@ $screen-xl-min: 1200px;
                 justify-content: center;
                 align-items: center;
 
+                .smile-img {
+
+                    @include sm {
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    @include md {
+                        width: 80%;
+                        height: 80%;
+                    }
+                }
             }
         }
     }
@@ -172,7 +315,7 @@ $screen-xl-min: 1200px;
 .mt-lst {
 
     .message-item {
-        max-width: 80% !important;
+        max-width: 90% !important;
     }
 
     ::ng-deep .mat-list-item {
@@ -220,6 +363,12 @@ $screen-xl-min: 1200px;
 
         ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
             background-color: #2a529c;
+        }
+
+        .custom-menu-btn {
+            mat-icon {
+                color: black;
+            }
         }
 
         .theme-icon {
@@ -320,6 +469,12 @@ $screen-xl-min: 1200px;
 .dark {
     .chat-menu {
         transition: 0.3s;
+
+        .custom-menu-btn {
+            mat-icon {
+                color: #f3a311;
+            }
+        }
 
         .room-info {
 

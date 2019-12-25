@@ -1,7 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {SMILES} from "../../shared/data";
 import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
 import {ChatService} from "../../shared/services/chat.service";
+import {MAT_BOTTOM_SHEET_DATA} from "@angular/material/bottom-sheet";
 
 @Component({
     selector: 'app-smiles',

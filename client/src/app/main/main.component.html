@@ -1,24 +1,30 @@
 <div class="main-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
-
-    <mat-drawer-container autosize class="sidenav-wrapper">
+    <ng-container *ngIf="chatService.device['isDesktop']; else ifMobile">
         <app-chat (showParticipants)="showSideNav()"></app-chat>
-        <mat-drawer class="sidenav-content"
-                    position="end"
-                    [(opened)]="opened"
-                    [mode]="chatService.device['isDesktop'] ? 'side' : 'over'">
-            <div class="flip-card">
-                <div class="flip-card-inner" #cardInner>
-                    <div class="flip-card-front">
-                        <app-contact-list [isDisplayed]="isFlipped"
-                                          (closeParticipants)="showSideNav()"></app-contact-list>
-                    </div>
-                    <div class="flip-card-back">
-                        <app-smiles (closeParticipants)="showSideNav()"></app-smiles>
-                    </div>
+        <div class="flip-card">
+            <div class="flip-card-inner" #cardInner>
+                <div class="flip-card-front">
+                    <app-contact-list [isDisplayed]="isFlipped"
+                                      (closeParticipants)="showSideNav()"></app-contact-list>
+                </div>
+                <div class="flip-card-back">
+                    <app-smiles (closeParticipants)="showSideNav()"></app-smiles>
                 </div>
             </div>
-        </mat-drawer>
-    </mat-drawer-container>
+        </div>
+    </ng-container>
 
+    <ng-template #ifMobile>
+        <mat-drawer-container autosize class="sidenav-wrapper">
+            <app-chat (showParticipants)="showSideNav()"></app-chat>
+            <mat-drawer class="sidenav-content"
+                        position="end"
+                        [(opened)]="opened"
+                        [mode]="chatService.device['isDesktop'] ? 'side' : 'over'">
+                            <app-contact-list [isDisplayed]="isFlipped"
+                                              (closeParticipants)="showSideNav()"></app-contact-list>
+            </mat-drawer>
+        </mat-drawer-container>
+    </ng-template>
 </div>
 

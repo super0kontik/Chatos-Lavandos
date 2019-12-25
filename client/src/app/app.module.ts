@@ -49,6 +49,9 @@ import {InViewportModule} from "@thisissoon/angular-inviewport";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import { UpdateRoomsPipe } from './shared/pipes/update-rooms.pipe';
 import {DeviceDetectorModule} from "ngx-device-detector";
+import {MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, MatBottomSheetModule} from "@angular/material/bottom-sheet";
+import {MatMenuModule} from "@angular/material/menu";
+import { MobileSmileComponent } from './main/mobile-smile/mobile-smile.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -74,44 +77,48 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         DialogRoomSettingsComponent,
         MessageItemComponent,
         UpdateRoomsPipe,
+        MobileSmileComponent,
     ],
-	imports: [
-		BrowserModule,
-		BrowserAnimationsModule,
-		ReactiveFormsModule,
-		MatToolbarModule,
-		MatListModule,
-		MatTabsModule,
-		MatFormFieldModule,
-		MatInputModule,
-		PerfectScrollbarModule,
-		HttpClientModule,
-		MatCardModule,
-		AppRoutingModule,
-		FormsModule,
-		MatDialogModule,
-		MatButtonModule,
-		MatChipsModule,
-		MatIconModule,
-		MatRippleModule,
-		MatAutocompleteModule,
-		MatSlideToggleModule,
-		MatProgressSpinnerModule,
-		EmojifyModule,
-		MatCheckboxModule,
-		MatButtonToggleModule,
-		ContextMenuModule,
-		MatBadgeModule,
-		NguiParallaxScrollModule,
-		InViewportModule,
-		MatSidenavModule,
-        DeviceDetectorModule.forRoot()
-	],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatListModule,
+        MatTabsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        PerfectScrollbarModule,
+        HttpClientModule,
+        MatCardModule,
+        AppRoutingModule,
+        FormsModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatChipsModule,
+        MatIconModule,
+        MatRippleModule,
+        MatAutocompleteModule,
+        MatSlideToggleModule,
+        MatProgressSpinnerModule,
+        EmojifyModule,
+        MatCheckboxModule,
+        MatButtonToggleModule,
+        ContextMenuModule,
+        MatBadgeModule,
+        NguiParallaxScrollModule,
+        InViewportModule,
+        MatSidenavModule,
+        DeviceDetectorModule.forRoot(),
+        MatBottomSheetModule,
+        MatMenuModule,
+    ],
     entryComponents: [
         DialogAddingRoomComponent,
         DialogInvitationComponent,
         DialogInvitingRoomComponent,
         DialogRoomSettingsComponent,
+        MobileSmileComponent
     ],
     providers: [
         {
@@ -123,7 +130,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
             multi: true,
             useClass: TokenInterceptor
         },
-        {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+        {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
+        {provide: MAT_BOTTOM_SHEET_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}}
     ],
     bootstrap: [AppComponent]
 })
