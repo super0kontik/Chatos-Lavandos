@@ -39,6 +39,9 @@ export class RoomListComponent implements OnInit {
     public goToRoom(searchedRoom: Room): void {
         if (!this.isSearchRoomList) {
             this.onSelectedRoom.emit(searchedRoom._id);
+            if (this.chatService.device['isMobile']) {
+                this.closeList.emit();
+            }
         }
         // else {
         //     searchedRoom = searchedRoom as Room;

@@ -1,68 +1,68 @@
 <div class="room-wrapper" [ngClass]="{'dark': theme === 'dark', 'light': theme === 'light'}">
     <div class="chat-menu">
-        <ng-container *ngIf="currentRoom._id !== 'common'; else ifCommon">
-            <div class="room-info">
-                <button mat-button (click)="openList.emit()">
-                    <mat-icon [matBadge]="overallUnreadMessages.toString()"
-                              matBadgePosition="above before"
-                              [matBadgeHidden]="overallUnreadMessages === 0">
-                        vertical_split
-                    </mat-icon>
-                </button>
-                <div class="room-title">
-                    <mat-icon *ngIf="chatService.device['isDesktop']">meeting_room</mat-icon>
-                    <div class="room-title-text">
-                        {{currentRoom.title}}
-                        <small>{{currentRoom.users.length}} participants</small>
+        <ng-container *ngIf="(currentRoom._id !== 'common'); else ifCommon">
+            <ng-container *ngIf="!currentRoom.isFavorites; else ifCommon">
+                <div class="room-info">
+                    <button mat-button (click)="openList.emit()">
+                        <mat-icon [matBadge]="overallUnreadMessages.toString()"
+                                  matBadgePosition="above before"
+                                  [matBadgeHidden]="overallUnreadMessages === 0">
+                            vertical_split
+                        </mat-icon>
+                    </button>
+                    <div class="room-title">
+                        <mat-icon *ngIf="chatService.device['isDesktop']">meeting_room</mat-icon>
+                        <div class="room-title-text">
+                            {{currentRoom.title}}
+                            <small>{{currentRoom.users.length}} participants</small>
+                        </div>
+                        <button mat-button (click)="showParticipants.emit()">
+                            <mat-icon>people_alt</mat-icon>
+                        </button>
                     </div>
-                    <button mat-button (click)="showParticipants.emit()">
-                        <mat-icon>people_alt</mat-icon>
-                    </button>
                 </div>
-            </div>
+                <ng-container *ngIf="chatService.device['isDesktop']; else mobileMenu">
+                    <mat-list class="menu-items">
+                        <mat-list-item matRipple (click)="inviteUsers()">
+                            <mat-icon>person_add</mat-icon>
+                        </mat-list-item>
+                        <mat-divider vertical></mat-divider>
+                        <mat-list-item matRipple (click)="leaveRoom()">
+                            <mat-icon>exit_to_app</mat-icon>
+                        </mat-list-item>
+                        <mat-divider vertical *ngIf="currentRoom.creator._id === me"></mat-divider>
+                        <mat-list-item matRipple
+                                       (click)="roomSettings()"
+                                       *ngIf="currentRoom.creator._id === me">
+                            <mat-icon>settings</mat-icon>
+                        </mat-list-item>
+                    </mat-list>
+                </ng-container>
 
-            <ng-container *ngIf="chatService.device['isDesktop']; else mobileMenu">
-                <mat-list class="menu-items">
-                    <mat-list-item matRipple (click)="inviteUsers()">
-                        <mat-icon>person_add</mat-icon>
-                    </mat-list-item>
-                    <mat-divider vertical></mat-divider>
-                    <mat-list-item matRipple (click)="leaveRoom()">
-                        <mat-icon>exit_to_app</mat-icon>
-                    </mat-list-item>
-                    <mat-divider vertical *ngIf="currentRoom.creator._id === me"></mat-divider>
-                    <mat-list-item matRipple
-                                   (click)="roomSettings()"
-                                   *ngIf="currentRoom.creator._id === me">
-                        <mat-icon>settings</mat-icon>
-                    </mat-list-item>
-                </mat-list>
+                <ng-template #mobileMenu>
+                    <button mat-button class="menu-btn"
+                            (click)="isActiveMenu = true"
+                            [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button class="custom-menu-btn" mat-menu-item matRipple (click)="inviteUsers()">
+                            <mat-icon>person_add</mat-icon>
+                            <span>Add</span>
+                        </button>
+                        <button class="custom-menu-btn" mat-menu-item matRipple (click)="leaveRoom()">
+                            <mat-icon>exit_to_app</mat-icon>
+                            <span>Exit</span>
+                        </button>
+                        <button class="custom-menu-btn" mat-menu-item matRipple
+                                (click)="roomSettings()"
+                                *ngIf="currentRoom.creator._id === me">
+                            <mat-icon>settings</mat-icon>
+                            <span>Settings</span>
+                        </button>
+                    </mat-menu>
+                </ng-template>
             </ng-container>
-
-            <ng-template #mobileMenu>
-                <button mat-button class="menu-btn"
-                        (click)="isActiveMenu = true"
-                        [matMenuTriggerFor]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                    <button class="custom-menu-btn" mat-menu-item matRipple (click)="inviteUsers()">
-                        <mat-icon>person_add</mat-icon>
-                        <span>Add</span>
-                    </button>
-                    <button class="custom-menu-btn" mat-menu-item matRipple (click)="leaveRoom()">
-                        <mat-icon>exit_to_app</mat-icon>
-                        <span>Exit</span>
-                    </button>
-                    <button class="custom-menu-btn" mat-menu-item matRipple
-                            (click)="roomSettings()"
-                            *ngIf="currentRoom.creator._id === me">
-                        <mat-icon>settings</mat-icon>
-                        <span>Settings</span>
-                    </button>
-                </mat-menu>
-            </ng-template>
-
         </ng-container>
 
         <ng-template #ifCommon>
@@ -119,7 +119,6 @@
                 <span class="right-corner"></span>
             </ng-container>
         </div>
-
 
         <ng-container *ngIf="chatService.device['isDesktop']">
             <div class="wrap-btn">

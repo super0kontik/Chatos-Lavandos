@@ -125,6 +125,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             }
         });
         this.isInit = true;
+        console.log(this.currentRoom.isFavorites)
     }
 
     public ngOnChanges(changes: SimpleChanges): void {

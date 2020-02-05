@@ -54,7 +54,7 @@ export class DialogAddingRoomComponent implements OnInit {
     }
 
     public addParticipant(): void {
-        this.participants.push(this.fb.group({name:['', [Validators.required]]}));
+        this.participants.push(this.fb.group({name: ['', [Validators.required]]}));
         this.userIds.push(false);
     }
 
@@ -80,7 +80,7 @@ export class DialogAddingRoomComponent implements OnInit {
 
     public onSearch(): void {
         this.addRoomForm.valueChanges.subscribe(changes => {
-            if(this.selectedInput !== null) {
+            if (this.selectedInput !== null) {
                 if (changes.participants[this.selectedInput].name.length > 2) {
                     this.socketService.emit('searchUsers', changes.participants[this.selectedInput].name);
                 }

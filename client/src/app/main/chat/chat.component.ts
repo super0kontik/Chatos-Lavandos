@@ -56,6 +56,7 @@ export class ChatComponent implements OnInit {
                         return 0;
                     }
                 }) || this.rooms[0];
+                console.log(this.selectedRoom);
             });
             this.socketService.listen('newMessage').subscribe(data => {
                 this.newMessage = data;

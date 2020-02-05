@@ -18,7 +18,7 @@ export class LocalStorageService {
     }
 
     public static getBlacklist(): string[] {
-        return JSON.parse(localStorage.getItem('user'))['blacklist'];
+        return JSON.parse(localStorage.getItem('user'))['blacklist'] || [];
     }
 
     public static setBlacklist(blacklistIds: string[]): void {

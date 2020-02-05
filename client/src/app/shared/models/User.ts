@@ -1,9 +1,9 @@
 export interface User {
-    _id: string;
-    name: string;
-    isOnline: boolean;
-    isPremium: boolean;
-    socketId: string;
-    avatar: string;
+    _id?: string;
+    name?: string;
+    isOnline?: boolean;
+    isPremium?: boolean;
+    socketId?: string;
+    avatar?: string;
 }
 

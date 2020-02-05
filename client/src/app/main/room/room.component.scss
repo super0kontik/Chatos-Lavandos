@@ -267,6 +267,7 @@ $screen-xl-min: 1200px;
             @include md {
                 width: 70px;
                 height: 70px;
+                min-width: 70px;
             }
 
             .send-btn {

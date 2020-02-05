@@ -1,8 +1,8 @@
 export interface AddRoomProps {
-    title: string;
-    participants: Participant[];
+    title?: string;
+    participants?: Participant[];
 }
 
 export interface Participant {
-    id: string;
+    id?: string;
 }
