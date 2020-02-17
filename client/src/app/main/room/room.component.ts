@@ -26,6 +26,9 @@ import {log} from "util";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {SmilesComponent} from "../smiles/smiles.component";
 import {MobileSmileComponent} from "../mobile-smile/mobile-smile.component";
+import {MenuEventArgs, MenuItemModel} from "@syncfusion/ej2-navigations";
+import {Browser} from "@syncfusion/ej2-base";
+import {ContextMenuComponent} from "@syncfusion/ej2-angular-navigations";
 
 @Component({
     selector: 'app-room',
@@ -43,15 +46,19 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
+    @ViewChild('messagecontextmenu', {static: false}) public contextmenu: ContextMenuComponent;
 
+    private content: string = '';
     private emoji: EmojifyPipe = new EmojifyPipe();
     private isLoadedTemplate: boolean = false;
     private isBottom: boolean = false;
     private isInit: boolean = false;
     private isSet: boolean = false;
     private currentScrollPosition: number = 1;
+    private isEditing: boolean = false;
     private amountOfUnread: number = 0;
     private isSmiles: boolean = false;
+    private lastSelectedMessageId: string = '';
     private loadMessage: Message = {
         room: '',
         creator: {
@@ -76,11 +83,35 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     public config: PerfectScrollbarConfigInterface = {scrollingThreshold: 0};
     public theme: string = 'dark';
     public isActiveMenu: boolean = false;
+    public menuItems: MenuItemModel[] = [
+        {
+            id: 'edit',
+            text: 'Edit',
+            iconCss: 'e-cm-icons e-edit'
+        },
+        {
+            separator: true
+        },
+        {
+            id: 'delete',
+            text: 'Delete',
+            iconCss: 'e-cm-icons e-ban'
+        },
+        {
+            separator: true
+        },
+        {
+            id: 'some',
+            text: '------',
+            iconCss: 'e-cm-icons e-ban'
+        }];
+
 
     constructor(private chatService: ChatService,
                 private socketService: SocketService,
                 public dialog: MatDialog,
-                private bottomSheet: MatBottomSheet) {}
+                private bottomSheet: MatBottomSheet) {
+    }
 
     public ngOnInit(): void {
         this.me = LocalStorageService.getUser()['id'];
@@ -95,6 +126,16 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
                 return message;
             });
             this.calculateUnread();
+        });
+        this.socketService.listen('messageUpdated').subscribe(data => {
+            this.messages = this.messages.map(message => {
+                if (message._id === data.id) {
+                    return {
+                        ...message,
+                        content: data.newContent
+                    }
+                }
+            });
         });
         this.socketService.listen('userJoined').subscribe(data => {
             if (this.currentRoom._id === data.roomId) {
@@ -165,18 +206,36 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     public sendMessage(event: any): void {
-        if (this.input.nativeElement.innerText.trim().length > 0) {
-            if (event.code === 'Enter') event.preventDefault();
-            const transformedMessage = this.emoji.transform(this.input.nativeElement.innerText);
-            this.socketService.emit('createMessage', {
-                message: transformedMessage.trim(),
-                room: this.currentRoom._id,
-            });
-            this.input.nativeElement.innerText = '';
-            const to = setTimeout(() => {
-                this.scrollToBottom();
-                clearTimeout(to);
-            }, 250);
+        if (this.isEditing) {
+            if (this.input.nativeElement.innerText.trim().length > 0) {
+                if (event.code === 'Enter') event.preventDefault();
+                const editableMessage = this.messages.find(item => item._id === this.lastSelectedMessageId);
+                const transformedMessage = this.emoji.transform(this.input.nativeElement.innerText);
+                this.socketService.emit('updateMessage', {
+                    messageId: editableMessage._id,
+                    newContent: transformedMessage.trim(),
+                    roomId: this.currentRoom._id,
+                });
+                this.input.nativeElement.innerText = '';
+                const to = setTimeout(() => {
+                    this.scrollToBottom();
+                    clearTimeout(to);
+                }, 250);
+            }
+        } else {
+            if (this.input.nativeElement.innerText.trim().length > 0) {
+                if (event.code === 'Enter') event.preventDefault();
+                const transformedMessage = this.emoji.transform(this.input.nativeElement.innerText);
+                this.socketService.emit('createMessage', {
+                    message: transformedMessage.trim(),
+                    room: this.currentRoom._id,
+                });
+                this.input.nativeElement.innerText = '';
+                const to = setTimeout(() => {
+                    this.scrollToBottom();
+                    clearTimeout(to);
+                }, 250);
+            }
         }
     }
 
@@ -235,6 +294,10 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
         this.currentScrollPosition = event.target.scrollTop;
     }
 
+    public onMessageRightClick(message: Message): void {
+        this.lastSelectedMessageId = message._id;
+    }
+
     public messageRequest(scroll?: boolean): void {
         const [mesOff, mesLim] = [this.messages.length, this.messages.length < 50 ? 50 : 20];
         this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(
@@ -291,7 +354,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     public openSmilesList(): void {
-        const bSheet =  this.bottomSheet.open(MobileSmileComponent, {
+        const bSheet = this.bottomSheet.open(MobileSmileComponent, {
             disableClose: false,
         });
 
@@ -337,5 +400,41 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             }
             aSub.unsubscribe();
         });
+    }
+
+    public addDisabled(args: MenuEventArgs) {
+        if (args.item.text === 'Link') {
+            args.element.classList.add('e-disabled');
+        }
+    }
+
+    public onCreated(): void {
+        if (Browser.isDevice) {
+            this.content = 'Touch hold to open the ContextMenu';
+            this.contextmenu.animationSettings.effect = 'ZoomIn';
+        } else {
+            this.content = 'Right click / Touch hold to open the ContextMenu';
+            this.contextmenu.animationSettings.effect = 'SlideDown';
+        }
+    }
+
+    public onSelect(e): void {
+        switch (e.item.properties.id) {
+            case 'edit': {
+                console.log('EDIT');
+                this.isEditing = true;
+                const editableMessage = this.messages.find(item => item._id === this.lastSelectedMessageId);
+                this.input.nativeElement.innerText = editableMessage.content;
+                break;
+            }
+            case 'delete': {
+                console.log('DELETE');
+                break;
+            }
+            default: {
+                console.log('DEFAULT');
+                break;
+            }
+        }
     }
 }

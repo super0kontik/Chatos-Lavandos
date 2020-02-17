@@ -1,39 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d48f9a4d-7948-4ee2-ad8f-1f1ed9885cfd" name="Default Changelist" comment="">
+    <list default="true" id="d48f9a4d-7948-4ee2-ad8f-1f1ed9885cfd" name="Default Changelist" comment="message input has been refactored">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/dialog-overview-example-dialog/dialog-overview-example-dialog.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/dialog-overview-example-dialog/dialog-overview-example-dialog.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/dialog-overview-example-dialog/dialog-overview-example-dialog.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/app/shared/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/chat/chat.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/contact-list/contact-list.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/mobile-smile/mobile-smile.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/mobile-smile/mobile-smile.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/room-list/room-list.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room-list/room-list.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/room/message-item/message-item.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/message-item/message-item.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/room/message-item/message-item.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/message-item/message-item.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/room/message-item/message-item.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/message-item/message-item.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/room/room.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/room/room.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/room/room.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/room/room.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/main/smiles/smiles.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/services/chat.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/services/chat.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/shared/services/socket.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/shared/services/socket.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.html" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="UPDATE_TYPE" value="MERGE" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="front-remake" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="width" value="1027" />
-    <option name="height" value="1038" />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="ProjectId" id="1RsZvM1sDDTz44NPMQrEMHeTgo7" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="10.16.2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../WebSpy" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="ts.external.directory.path" value="C:\Users\cools\Documents\Chatos-Lavandos\client\node_modules\typescript\lib" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="ts.external.directory.path" value="C:\Users\Santanyan\Documents\Chatos-Lavandos-master\client\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -41,26 +57,16 @@
       <recent name="C:\Users\cools\Documents\Chatos-Lavandos\client\src\assets" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="ServiceViewManager">
-    <option name="allServicesViewState">
-      <serviceView>
-        <treeState>
-          <expand />
-          <select />
-        </treeState>
-      </serviceView>
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
     </option>
   </component>
   <component name="SvnConfiguration">
@@ -75,6 +81,46 @@
       <updated>1570457993857</updated>
       <workItem from="1570457996069" duration="638000" />
       <workItem from="1571130862882" duration="13046000" />
+      <workItem from="1571990851166" duration="13582000" />
+      <workItem from="1572260291383" duration="2566000" />
+      <workItem from="1572263211877" duration="4220000" />
+      <workItem from="1572344215361" duration="19309000" />
+      <workItem from="1572440488914" duration="14086000" />
+      <workItem from="1572512818352" duration="23321000" />
+      <workItem from="1572606121353" duration="11186000" />
+      <workItem from="1572862532349" duration="5883000" />
+      <workItem from="1572873208101" duration="2478000" />
+      <workItem from="1572939737040" duration="9790000" />
+      <workItem from="1573040812288" duration="1510000" />
+      <workItem from="1573044276867" duration="2143000" />
+      <workItem from="1573728272934" duration="12906000" />
+      <workItem from="1573808856609" duration="6436000" />
+      <workItem from="1574072536158" duration="4377000" />
+      <workItem from="1574084172614" duration="643000" />
+      <workItem from="1574086126125" duration="599000" />
+      <workItem from="1574097916612" duration="1000" />
+      <workItem from="1574147857124" duration="627000" />
+      <workItem from="1574685298384" duration="3545000" />
+      <workItem from="1574690615465" duration="685000" />
+      <workItem from="1574755554541" duration="2246000" />
+      <workItem from="1574850060012" duration="19293000" />
+      <workItem from="1574929506851" duration="17185000" />
+      <workItem from="1575026324690" duration="12699000" />
+      <workItem from="1575274369046" duration="28306000" />
+      <workItem from="1575365527773" duration="19209000" />
+      <workItem from="1575478658633" duration="1494000" />
+      <workItem from="1575537177908" duration="24253000" />
+      <workItem from="1575621426355" duration="23682000" />
+      <workItem from="1575881178307" duration="23642000" />
+      <workItem from="1575965415152" duration="15725000" />
+      <workItem from="1576490632471" duration="5481000" />
+      <workItem from="1577264740708" duration="22093000" />
+      <workItem from="1577350793784" duration="2561000" />
+      <workItem from="1577355962435" duration="4391000" />
+      <workItem from="1577363293479" duration="2304000" />
+      <workItem from="1580892610210" duration="3607000" />
+      <workItem from="1580897540805" duration="1000" />
+      <workItem from="1581936977302" duration="13166000" />
     </task>
     <task id="LOCAL-00001" summary="Initializing client">
       <created>1570458152887</created>
@@ -146,7 +192,189 @@
       <option name="project" value="LOCAL" />
       <updated>1571149172612</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="minor fixes">
+      <created>1571931842299</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1571931842299</updated>
+    </task>
+    <task id="LOCAL-00012" summary="fixed scrollbar behavior">
+      <created>1571992198162</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1571992198162</updated>
+    </task>
+    <task id="LOCAL-00013" summary="fixes">
+      <created>1571999315313</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1571999315313</updated>
+    </task>
+    <task id="LOCAL-00014" summary="changed logic of emitting message request">
+      <created>1572004346971</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1572004346971</updated>
+    </task>
+    <task id="LOCAL-00015" summary="added possibility of changing room settings">
+      <created>1572364492849</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1572364492849</updated>
+    </task>
+    <task id="LOCAL-00016" summary="added context menu">
+      <created>1572455504362</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1572455504362</updated>
+    </task>
+    <task id="LOCAL-00017" summary="fixed positioning of tabs when acquiring a new message">
+      <created>1572536792813</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1572536792814</updated>
+    </task>
+    <task id="LOCAL-00018" summary="the message became a component">
+      <created>1572540828646</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1572540828646</updated>
+    </task>
+    <task id="LOCAL-00019" summary="minor fixes">
+      <created>1572629943600</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1572629943600</updated>
+    </task>
+    <task id="LOCAL-00020" summary="minor fixes">
+      <created>1572969514722</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1572969514723</updated>
+    </task>
+    <task id="LOCAL-00021" summary="fixes">
+      <created>1574850302698</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1574850302698</updated>
+    </task>
+    <task id="LOCAL-00022" summary="major fixes of unread messages">
+      <created>1574958013383</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1574958013383</updated>
+    </task>
+    <task id="LOCAL-00023" summary="connected to changeColor endpoint">
+      <created>1575045657609</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1575045657609</updated>
+    </task>
+    <task id="LOCAL-00024" summary="finished reading messages">
+      <created>1575290519115</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1575290519115</updated>
+    </task>
+    <task id="LOCAL-00025" summary="initial">
+      <created>1575290844307</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1575290844307</updated>
+    </task>
+    <task id="LOCAL-00026" summary="remade room-list">
+      <created>1575306397679</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1575306397679</updated>
+    </task>
+    <task id="LOCAL-00027" summary="updated roomlist">
+      <created>1575565070140</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1575565070140</updated>
+    </task>
+    <task id="LOCAL-00028" summary="finished room-list logic">
+      <created>1575631319289</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1575631319289</updated>
+    </task>
+    <task id="LOCAL-00029" summary="prik">
+      <created>1575631658227</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1575631658227</updated>
+    </task>
+    <task id="LOCAL-00030" summary="fixes">
+      <created>1575642240932</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1575642240932</updated>
+    </task>
+    <task id="LOCAL-00031" summary="fixes">
+      <created>1575649002492</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1575649002492</updated>
+    </task>
+    <task id="LOCAL-00032" summary="message input has been refactored">
+      <created>1575891725498</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1575891725498</updated>
+    </task>
+    <task id="LOCAL-00033" summary="message input has been refactored">
+      <created>1575891938669</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1575891938669</updated>
+    </task>
+    <task id="LOCAL-00034" summary="message input has been refactored">
+      <created>1575910100968</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1575910100968</updated>
+    </task>
+    <task id="LOCAL-00035" summary="mobile view has been updated">
+      <created>1577286509285</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1577286509285</updated>
+    </task>
+    <task id="LOCAL-00036" summary="fixes">
+      <created>1580892674758</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1580892674758</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,8 +394,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Initializing client" />
-    <MESSAGE value="add message listener" />
     <MESSAGE value="minor changes" />
     <MESSAGE value="mf" />
     <MESSAGE value="test auth" />
@@ -175,6 +401,87 @@
     <MESSAGE value="add userJoined event" />
     <MESSAGE value="add author and date of message" />
     <MESSAGE value="added room creation" />
-    <option name="LAST_COMMIT_MESSAGE" value="added room creation" />
+    <MESSAGE value="fixed scrollbar behavior" />
+    <MESSAGE value="changed logic of emitting message request" />
+    <MESSAGE value="added possibility of changing room settings" />
+    <MESSAGE value="added context menu" />
+    <MESSAGE value="fixed positioning of tabs when acquiring a new message" />
+    <MESSAGE value="the message became a component" />
+    <MESSAGE value="minor fixes" />
+    <MESSAGE value="major fixes of unread messages" />
+    <MESSAGE value="connected to changeColor endpoint" />
+    <MESSAGE value="finished reading messages" />
+    <MESSAGE value="initial" />
+    <MESSAGE value="remade room-list" />
+    <MESSAGE value="updated roomlist" />
+    <MESSAGE value="finished room-list logic" />
+    <MESSAGE value="prik" />
+    <MESSAGE value="message input has been refactored" />
+    <MESSAGE value="mobile view has been updated" />
+    <MESSAGE value="fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2447" y="128" key="CommitChangelistDialog2" timestamp="1580893424743">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2447" y="128" key="CommitChangelistDialog2/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1580893424743" />
+    <state x="527" y="128" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1575910100515" />
+    <state x="572" y="133" key="CommitChangelistDialog2/62.0.1858.1080@62.0.1858.1080" timestamp="1577286508739" />
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1575281477323">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575281477323" />
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1576497751091">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1576497751091" />
+    <state x="667" y="139" key="SettingsEditor" timestamp="1575281449388">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="667" y="139" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1575281449388" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1575376851003">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1575376851003" />
+    <state x="2434" y="307" key="Vcs.Push.Dialog.v2" timestamp="1580892679296">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2434" y="307" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1580892679296" />
+    <state x="514" y="307" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1575910103163" />
+    <state x="559" y="319" key="Vcs.Push.Dialog.v2/62.0.1858.1080@62.0.1858.1080" timestamp="1577286511614" />
+    <state x="769" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1575376856374">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="769" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1575376856374" />
+    <state x="154" y="0" width="1750" height="1024" maximized="true" key="dock-window-1" timestamp="1577356491910">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="154" y="0" width="1750" height="1024" maximized="true" key="dock-window-1/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1577356491910" />
+    <state x="695" y="250" width="611" height="580" key="find.popup" timestamp="1577355049781">
+      <screen x="62" y="0" width="1858" height="1080" />
+    </state>
+    <state x="654" y="241" width="611" height="558" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1575638480298" />
+    <state x="695" y="250" width="611" height="580" key="find.popup/62.0.1858.1080@62.0.1858.1080" timestamp="1577355049781" />
+    <state x="2654" y="253" key="git4idea.branch.GitSmartOperationDialog" timestamp="1580894192995">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2654" y="253" key="git4idea.branch.GitSmartOperationDialog/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1580894192995" />
+    <state x="734" y="253" key="git4idea.branch.GitSmartOperationDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575631274002" />
+    <state x="665" y="298" key="git4idea.merge.GitPullDialog" timestamp="1581942683394">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="665" y="298" key="git4idea.merge.GitPullDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1581942683394" />
+    <state x="2585" y="298" key="git4idea.merge.GitPullDialog/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1580893437029" />
+    <state x="665" y="298" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1576491074722" />
+    <state x="706" y="309" key="git4idea.merge.GitPullDialog/62.0.1858.1080@62.0.1858.1080" timestamp="1577286569575" />
+    <state x="823" y="446" width="350" height="298" key="org.angular.cli.generate" timestamp="1575978484762">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="823" y="446" width="350" height="298" key="org.angular.cli.generate/0.0.1920.1040@0.0.1920.1040" timestamp="1575978484762" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1575539436137">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1575539436137" />
   </component>
 </project>

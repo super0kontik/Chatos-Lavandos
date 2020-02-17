@@ -167,6 +167,7 @@
     .list-title {
         transition: 0.3s;
         background: rgba(0, 0, 0, 0.39);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
         color: black;
     }
 
@@ -176,6 +177,7 @@
 
         mat-icon {
             transition: 0.3s;
+            color: black;
         }
     }
 
@@ -268,6 +270,7 @@
     .list-title {
         transition: 0.3s;
         background: rgba(0, 0, 0, 0.51);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
         color: white;
     }
 
@@ -285,6 +288,7 @@
 
         mat-icon {
             transition: 0.3s;
+            color: white;
         }
     }
 

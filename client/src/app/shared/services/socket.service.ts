@@ -20,7 +20,7 @@ export class SocketService {
             this.socket = io(this.uri, {query: `token=${LocalStorageService.getToken()}`});
             this.isConnected = true;
         } else {
-            console.log('Unauthorized');
+            console.error('---UNAUTHORIZED. SOCKET IS NOT CONNECTED');
         }
     }
 

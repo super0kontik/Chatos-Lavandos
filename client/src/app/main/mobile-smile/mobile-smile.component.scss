@@ -14,8 +14,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #e6e7f2;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.59);
         position: sticky;
         top: 0;
 
@@ -80,36 +78,56 @@
 }
 
 .light {
+    transition: .3s;
     background: #e6e7f2;
 
+    .head {
+        transition: .3s;
+        background: #e6e7f2;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+
     h2 {
+        transition: .3s;
         color: black;
     }
 
     .mat-divider {
+        transition: .3s;
         border-color: black;
     }
 
     .close-btn {
         i {
+            transition: .3s;
             color: black;
         }
     }
 }
 
 .dark {
+    transition: .3s;
     background: #273038;
 
+    .head {
+        transition: .3s;
+        background: #1b2129;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    }
+
     h2 {
+        transition: .3s;
         color: white;
     }
 
     .mat-divider {
+        transition: .3s;
         border-color: white;
     }
 
     .close-btn {
         i {
+            transition: .3s;
             color: white;
         }
     }

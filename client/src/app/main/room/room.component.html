@@ -83,20 +83,34 @@
     </div>
 
     <perfect-scrollbar [config]="config" (psScrollY)="onScroll($event)">
-        <mat-list class="mt-lst">
-            <mat-list-item *ngFor="let message of messages" [ngClass]="{
+        <div id="contextmenu-control">
+            <div id="messagecontextmenutarget">
+                <mat-list class="mt-lst">
+                    <mat-list-item *ngFor="let message of messages" [ngClass]="{
                 'own': message.creator._id === me && !message.isSystemMessage,
                 'foreign' : message.creator._id !== me && !message.isSystemMessage,
                 'system' : message.isSystemMessage}">
-                <div class="message-item">
-                    <app-message-item [message]="message"
-                                      [users]="users"
-                                      (loadRequest)="messageRequest($event)"
-                                      (viewChange)="onViewportChange($event)">
-                    </app-message-item>
-                </div>
-            </mat-list-item>
-        </mat-list>
+                        <div class="message-item">
+                            <app-message-item [message]="message"
+                                              [users]="users"
+                                              (loadRequest)="messageRequest($event)"
+                                              (viewChange)="onViewportChange($event)"
+                                              (contextmenu)="onMessageRightClick(message)">
+                            </app-message-item>
+
+                        </div>
+                    </mat-list-item>
+                    <ejs-contextmenu
+                        #messagecontextmenu
+                        target='#messagecontextmenutarget'
+                        [items]='menuItems'
+                        (select)="onSelect($event)"
+                        (beforeItemRender)="addDisabled($event)"
+                        (created)='onCreated()'>
+                    </ejs-contextmenu>
+                </mat-list>
+            </div>
+        </div>
     </perfect-scrollbar>
 
     <div class="input-area">

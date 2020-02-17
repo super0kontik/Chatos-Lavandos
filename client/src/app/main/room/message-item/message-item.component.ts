@@ -16,54 +16,15 @@ export class MessageItemComponent implements OnInit {
     @Input() users: any[];
     @Output() loadRequest: EventEmitter<any> = new EventEmitter<any>();
     @Output() viewChange: EventEmitter<object> = new EventEmitter<object>();
-    @ViewChild('contextmenu', {static: false}) public contextmenu: ContextMenuComponent;
     public me: string = '';
     public theme: string = 'dark';
-    private content: string = '';
-    public menuItems: MenuItemModel[] = [
-        {
-            id: 'update',
-            text: 'Edit',
-            iconCss: 'e-cm-icons e-edit'
-        },
-        {
-            separator: true
-        },
-        {
-            id: 'delete',
-            text: 'Delete',
-            iconCss: 'e-cm-icons e-delete'
-        }];
+
 
     constructor(private chatService: ChatService) {}
 
     public ngOnInit(): void {
         this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
         this.me = LocalStorageService.getUser()['id'];
-    }
-
-    public onMessageRightClick(e): void {
-        console.log('rightclick', e)
-    }
-
-    public addDisabled(args: MenuEventArgs) {
-        if (args.item.text === 'Link') {
-            args.element.classList.add('e-disabled');
-        }
-    }
-
-    public onCreated(): void {
-        if (Browser.isDevice) {
-            this.content = 'Touch hold to open the ContextMenu';
-            this.contextmenu.animationSettings.effect = 'ZoomIn';
-        } else {
-            this.content = 'Right click / Touch hold to open the ContextMenu';
-            this.contextmenu.animationSettings.effect = 'SlideDown';
-        }
-    }
-
-    public onSelect(e): void {
-        console.log('select', e)
     }
 
     public messageRequest(scroll?: boolean): void {

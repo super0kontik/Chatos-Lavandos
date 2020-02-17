@@ -4,7 +4,7 @@
         'system' : message.isSystemMessage,
         'dark': theme === 'dark', 'light': theme === 'light'}"
 >
-    <ng-container *ngIf="message.isSystemMessage" >
+    <ng-container *ngIf="message.isSystemMessage">
         <span class="sys-message"
               (click)="message.room === '' ? messageRequest(true) : false"
               snInViewport (inViewportChange)="viewportChange($event)">
@@ -12,13 +12,11 @@
         </span>
     </ng-container>
     <ng-container *ngIf="!message.isSystemMessage">
-        <div id="contextmenu-control">
-            <div id="contextmenutarget" (contextmenu)="onMessageRightClick($event)">
-                <div class="message-container">
-                    <div class="avatar" *ngIf="message.creator._id !== me">
-                        <img [src]="users[message.creator._id].avatar" alt="">
-                    </div>
-                    <div class="message-content">
+        <div class="message-container">
+            <div class="avatar" *ngIf="message.creator._id !== me">
+                <img [src]="users[message.creator._id].avatar" alt="">
+            </div>
+            <div class="message-content">
                 <span class="message-user">
                     <ng-container *ngIf="users[message.creator._id] === undefined">
                         <span class="online">Deleted</span>
@@ -34,26 +32,17 @@
                         <span class="online" *ngIf="users[message.creator._id].online && message.creator._id !== me">Online</span>
                     </ng-container>
                 </span>
-                        <div class="message-text" snInViewport (inViewportChange)="viewportChange($event)">
-                            <p>{{message.content}}</p>
-                            <mat-icon *ngIf="message.creator._id === me">{{message.read.length > 0 ? 'done_all' : 'done'}}</mat-icon>
-                        </div>
-                        <small class="message-date">
-                            <span>{{message.createdAt | date: 'HH:mm' : ''}}</span>
-                        </small>
-                    </div>
-                    <div class="avatar" *ngIf="message.creator._id === me">
-                        <img [src]="users[message.creator._id].avatar" alt="">
-                    </div>
+                <div class="message-text" snInViewport (inViewportChange)="viewportChange($event)">
+                    <p>{{message.content}}</p>
+                    <mat-icon
+                        *ngIf="message.creator._id === me">{{message.read.length > 0 ? 'done_all' : 'done'}}</mat-icon>
                 </div>
-                <ejs-contextmenu
-                    #contextmenu
-                    target='#contextmenutarget'
-                    [items]='menuItems'
-                    (select)="onSelect($event)"
-                    (beforeItemRender)="addDisabled($event)"
-                    (created)='onCreated()'>
-                </ejs-contextmenu>
+                <small class="message-date">
+                    <span>{{message.createdAt | date: 'HH:mm' : ''}}</span>
+                </small>
+            </div>
+            <div class="avatar" *ngIf="message.creator._id === me">
+                <img [src]="users[message.creator._id].avatar" alt="">
             </div>
         </div>
     </ng-container>
