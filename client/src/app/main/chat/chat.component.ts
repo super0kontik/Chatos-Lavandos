@@ -8,6 +8,7 @@ import {DialogAddingRoomComponent} from "../../dialog-adding-room/dialog-adding-
 import {DialogInvitationComponent} from "../../dialog-invitation/dialog-invitation.component";
 import {LocalStorageService} from "../../shared/services/local-storage.service";
 import {MatBadge} from "@angular/material/badge";
+import {SmilesComponent} from "../smiles/smiles.component";
 
 @Component({
     selector: 'app-chat',
@@ -15,8 +16,11 @@ import {MatBadge} from "@angular/material/badge";
     styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
+
+
     @ViewChild('search', {static: false}) search: ElementRef;
     @ViewChild(MatBadge, {static: false}) badge: MatBadge;
+
     @Output() showParticipants: EventEmitter<any> = new EventEmitter<any>();
 
     public opened: boolean = false;
@@ -29,7 +33,7 @@ export class ChatComponent implements OnInit {
     public listOfRooms: Room[] = [];
     public overallUnreadMessages: number = 0;
 
-    constructor(private chatService: ChatService,
+    constructor(public chatService: ChatService,
                 private socketService: SocketService,
                 private authService: AuthService,
                 public dialog: MatDialog,
@@ -38,7 +42,6 @@ export class ChatComponent implements OnInit {
 
     public ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-
             this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
             this.me = LocalStorageService.getUser()['id'];
             this.socketService.listen('join').subscribe(data => {
@@ -49,24 +52,11 @@ export class ChatComponent implements OnInit {
                     return {...room, index};
                 });
                 this.listOfRooms = this.rooms;
-                this.selectedRoom = this.rooms.find((room) => {
-                    if (room._id === LocalStorageService.getlastRoomId()) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                }) || this.rooms[0];
-                console.log(this.selectedRoom);
+                this.selectedRoom = this.rooms.find((room) => room._id === LocalStorageService.getlastRoomId()) || this.rooms[0];
             });
             this.socketService.listen('newMessage').subscribe(data => {
                 this.newMessage = data;
-                const tempRoom = this.rooms.find((room) => {
-                    if (room._id === data.room) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
+                const tempRoom = this.rooms.find((room) => room._id === data.room);
                 this.rooms = this.rooms.map((room) => {
                     if (room._id === tempRoom._id) {
                         room.lastAction = new Date();
@@ -93,6 +83,7 @@ export class ChatComponent implements OnInit {
             this.socketService.listen('roomDeleted').subscribe(data => {
                 this.rooms = this.rooms.filter(room => room._id !== data.id);
                 this.listOfRooms = this.rooms;
+                delete this.unreadInRooms[data.id];
                 this.selectedRoom = this.rooms[0];
             });
             this.socketService.listen('roomRename').subscribe(data => {

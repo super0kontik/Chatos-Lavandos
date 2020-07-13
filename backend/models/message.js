@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
-    createdAt:{
-        type:Date,
-        required:true
-    },
     creator:{
         type:Schema.Types.ObjectId,
         ref:'User'
@@ -23,5 +19,5 @@ const messageSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'User'
     }]
-});
+}, {timestamps: true});
 module.exports = mongoose.model('Message',messageSchema);

@@ -1,0 +1,8 @@
+<div [ngStyle]="locationCss" class="container">
+    <ul>
+        <li (click)="selectOption(option.id)" class="option" *ngFor="let option of options">
+            <mat-icon class="option-icon">{{option.icon}}</mat-icon>
+            {{option.title}}
+        </li>
+    </ul>
+</div>

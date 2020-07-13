@@ -15,7 +15,7 @@ export class SmilesComponent implements OnInit {
     public config: PerfectScrollbarConfigInterface = { wheelSpeed: 0.5, scrollingThreshold: 0,};
     public theme: string = 'dark';
 
-    constructor(private chatService: ChatService) {}
+    constructor(public chatService: ChatService) {}
 
     public ngOnInit(): void {
         this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);

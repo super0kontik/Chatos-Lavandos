@@ -3,7 +3,7 @@ import {
     Component,
     ElementRef, EventEmitter,
     Input,
-    OnChanges,
+    OnChanges, OnDestroy,
     OnInit, Output,
     SimpleChanges,
     ViewChild
@@ -29,31 +29,35 @@ import {MobileSmileComponent} from "../mobile-smile/mobile-smile.component";
 import {MenuEventArgs, MenuItemModel} from "@syncfusion/ej2-navigations";
 import {Browser} from "@syncfusion/ej2-base";
 import {ContextMenuComponent} from "@syncfusion/ej2-angular-navigations";
+import {iterativeBS} from "../../shared/utils/binarySearch";
+import {Subscription} from "rxjs";
+import {Option} from "../../shared/models/Option";
 
 @Component({
     selector: 'app-room',
     templateUrl: './room.component.html',
-    styleUrls: ['./room.component.scss']
+    styleUrls: ['./room.component.scss'],
 })
-export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
+export class RoomComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     @Input() currentRoom: Room;
     @Input() newMessage: object | boolean;
     @Input() unreadInRooms: number;
+
     @Output() leaveFromChat: EventEmitter<any> = new EventEmitter<any>();
     @Output() unreadMessages: EventEmitter<any> = new EventEmitter<any>();
     @Output() openList: EventEmitter<any> = new EventEmitter<any>();
     @Output() showParticipants: EventEmitter<any> = new EventEmitter<any>();
+
     @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef: PerfectScrollbarComponent;
     @ViewChild('smileImg', {static: false}) smileImg: ElementRef;
     @ViewChild('inputText', {static: false}) input: ElementRef;
     @ViewChild('messagecontextmenu', {static: false}) public contextmenu: ContextMenuComponent;
 
+    private aSub: Subscription = new Subscription();
     private content: string = '';
     private emoji: EmojifyPipe = new EmojifyPipe();
     private isLoadedTemplate: boolean = false;
-    private isBottom: boolean = false;
     private isInit: boolean = false;
-    private isSet: boolean = false;
     private currentScrollPosition: number = 1;
     private isEditing: boolean = false;
     private amountOfUnread: number = 0;
@@ -83,102 +87,49 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     public config: PerfectScrollbarConfigInterface = {scrollingThreshold: 0};
     public theme: string = 'dark';
     public isActiveMenu: boolean = false;
-    public menuItems: MenuItemModel[] = [
+    public menuItems: Option[] = [
         {
             id: 'edit',
-            text: 'Edit',
-            iconCss: 'e-cm-icons e-edit'
-        },
-        {
-            separator: true
+            title: 'Edit Message',
+            icon: 'edit'
         },
         {
             id: 'delete',
-            text: 'Delete',
-            iconCss: 'e-cm-icons e-ban'
+            title: 'Delete Message',
+            icon: 'delete'
         },
-        {
-            separator: true
-        },
-        {
-            id: 'some',
-            text: '------',
-            iconCss: 'e-cm-icons e-ban'
-        }];
+    ];
 
 
-    constructor(private chatService: ChatService,
-                private socketService: SocketService,
+    constructor(public chatService: ChatService,
                 public dialog: MatDialog,
+                private socketService: SocketService,
                 private bottomSheet: MatBottomSheet) {
     }
 
     public ngOnInit(): void {
         this.me = LocalStorageService.getUser()['id'];
         this.loadMessage.read.push(this.me);
-        this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme);
+        this.aSub.add(
+            this.chatService.emitOption.subscribe(optionId => this.onSelectOption(optionId))
+        );
+        this.aSub.add(
+            this.chatService.theme.subscribe(selectedTheme => this.theme = selectedTheme)
+        );
         this.updateRoom();
-        this.socketService.listen('userConnected').subscribe(userId => this.changeUserStatusOnline(true, userId));
-        this.socketService.listen('userDisconnected').subscribe(userId => this.changeUserStatusOnline(false, userId));
-        this.socketService.listen('messageRead').subscribe(data => {
-            this.messages = this.messages.map(message => {
-                if (message._id === data.id) message.read.push(data.user);
-                return message;
-            });
-            this.calculateUnread();
-        });
-        this.socketService.listen('messageUpdated').subscribe(data => {
-            this.messages = this.messages.map(message => {
-                if (message._id === data.id) {
-                    return {
-                        ...message,
-                        content: data.newContent
-                    }
-                }
-            });
-        });
-        this.socketService.listen('userJoined').subscribe(data => {
-            if (this.currentRoom._id === data.roomId) {
-                const usr = data.user;
-                if (this.currentRoom._id !== 'common') {
-                    this.users[usr._id] = {
-                        name: usr.name,
-                        online: usr.isOnline,
-                        premium: usr.isPremium,
-                        creator: this.currentRoom.creator._id === usr._id,
-                        avatar: usr.avatar
-                    };
-                } else {
-                    this.users[usr._id] = {
-                        name: usr.name,
-                        online: usr.isOnline,
-                        premium: usr.isPremium,
-                        avatar: usr.avatar
-                    };
-                }
-                this.updateList();
-            }
-        });
-        this.socketService.listen('userLeft').subscribe(data => {
-            if (this.currentRoom._id === data.roomId) {
-                delete this.users[data.userId];
-                this.updateList();
-            }
-        });
+        this.socketListeners();
         this.isInit = true;
-        console.log(this.currentRoom.isFavorites)
     }
 
     public ngOnChanges(changes: SimpleChanges): void {
-        if (!this.isSet) {
-            this.currentScrollPosition = +LocalStorageService.getScrollPosition(this.currentRoom._id);
-            this.isSet = true;
-        }
         if (this.isInit) {
             if (changes['newMessage'])
                 if (this.currentRoom._id === changes['newMessage'].currentValue.room) {
                     this.messages.push(changes['newMessage'].currentValue.message);
                     this.calculateUnread();
+                    if (changes['newMessage'].currentValue.message.creator._id === this.me) {
+                        this.scrollToBottom();
+                    }
                 }
             if (changes['currentRoom']) {
                 LocalStorageService.setlastRoomId(this.currentRoom._id);
@@ -191,36 +142,100 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     public ngAfterViewInit(): void {
         this.isLoadedTemplate = true;
         this.updateList();
-        const to = setTimeout(() => {
-            this.scrollY(this.currentScrollPosition);
-            clearTimeout(to);
-        }, 200);
+    }
+
+    public ngOnDestroy(): void  {
+        this.aSub.unsubscribe();
+    }
+
+    public socketListeners(): void {
+        this.aSub.add(
+            this.socketService.listen('userJoined').subscribe(data => {
+                if (this.currentRoom._id === data.roomId) {
+                    const usr = data.user;
+                    if (this.currentRoom._id !== 'common') {
+                        this.users[usr._id] = {
+                            name: usr.name,
+                            online: usr.isOnline,
+                            premium: usr.isPremium,
+                            creator: this.currentRoom.creator._id === usr._id,
+                            avatar: usr.avatar
+                        };
+                    } else {
+                        this.users[usr._id] = {
+                            name: usr.name,
+                            online: usr.isOnline,
+                            premium: usr.isPremium,
+                            avatar: usr.avatar
+                        };
+                    }
+                    this.updateList();
+                }
+            })
+        );
+
+        this.aSub.add(
+            this.socketService.listen('messageRead').subscribe(data => {
+                this.messages = this.messages.map(message => {
+                    if (message._id === data.id) message.read.push(data.user);
+                    return message;
+                });
+                this.calculateUnread();
+            })
+        );
+
+        this.aSub.add(
+            this.socketService.listen('messageUpdated').subscribe(data => {
+                const index = iterativeBS(this.messages, data);
+                if (index !== -1) {
+                    this.messages[index].content = data.newContent;
+                }
+            })
+        );
+
+        this.aSub.add(
+            this.socketService.listen('messageDeleted').subscribe(data => {
+                const index = this.messages.findIndex((mes) => mes._id === data.id);
+                delete this.messages[index];
+            })
+        );
+
+        this.aSub.add(
+            this.socketService.listen('userLeft').subscribe(data => {
+                if (this.currentRoom._id === data.roomId) {
+                    delete this.users[data.userId];
+                    this.updateList();
+                }
+            })
+        );
+
+        this.aSub.add(
+            this.socketService.listen('userConnected').subscribe(userId => this.changeUserStatusOnline(true, userId))
+        );
+
+        this.aSub.add(
+            this.socketService.listen('userDisconnected').subscribe(userId => this.changeUserStatusOnline(false, userId))
+        );
+
     }
 
     private setScroll(): void {
         this.currentScrollPosition = +LocalStorageService.getScrollPosition(this.currentRoom._id);
-        const to = setTimeout(() => {
-            this.scrollY(this.currentScrollPosition);
-            clearTimeout(to);
-        }, 200);
+        this.scrollY(this.currentScrollPosition);
     }
 
     public sendMessage(event: any): void {
         if (this.isEditing) {
             if (this.input.nativeElement.innerText.trim().length > 0) {
                 if (event.code === 'Enter') event.preventDefault();
-                const editableMessage = this.messages.find(item => item._id === this.lastSelectedMessageId);
                 const transformedMessage = this.emoji.transform(this.input.nativeElement.innerText);
                 this.socketService.emit('updateMessage', {
-                    messageId: editableMessage._id,
+                    messageId: this.lastSelectedMessageId,
                     newContent: transformedMessage.trim(),
                     roomId: this.currentRoom._id,
                 });
                 this.input.nativeElement.innerText = '';
-                const to = setTimeout(() => {
-                    this.scrollToBottom();
-                    clearTimeout(to);
-                }, 250);
+                this.isEditing = false;
             }
         } else {
             if (this.input.nativeElement.innerText.trim().length > 0) {
@@ -231,10 +246,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
                     room: this.currentRoom._id,
                 });
                 this.input.nativeElement.innerText = '';
-                const to = setTimeout(() => {
-                    this.scrollToBottom();
-                    clearTimeout(to);
-                }, 250);
             }
         }
     }
@@ -249,6 +260,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     private updateRoom(): void {
+        this.isEditing = false;
         this.users = [];
         this.messages = [];
         if (this.currentRoom._id !== 'common') {
@@ -274,7 +286,11 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
             });
         }
         this.updateList();
-        this.chatService.flipCard.subscribe(flag => this.isLoadedTemplate && flag ? this.animateSmile() : false);
+
+        this.aSub.add(
+            this.chatService.flipCard.subscribe(flag => this.isLoadedTemplate && flag ? this.animateSmile() : false)
+        );
+
         if (this.currentRoom._id !== 'common') this.messageRequest();
     }
 
@@ -295,21 +311,26 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     public onMessageRightClick(message: Message): void {
-        this.lastSelectedMessageId = message._id;
+        if (message.creator._id === this.me) {
+            this.lastSelectedMessageId = message._id;
+        }
     }
 
     public messageRequest(scroll?: boolean): void {
         const [mesOff, mesLim] = [this.messages.length, this.messages.length < 50 ? 50 : 20];
-        this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(
-            messages => {
-                this.messages = this.messages.filter(message => message.room !== '');
-                this.messages = [...messages, ...this.messages];
-                this.messages.unshift(this.loadMessage);
-                this.calculateUnread();
-            },
-            error => console.log(error),
-            () => this.setScroll()
+        this.aSub.add(
+            this.chatService.getRoomContent(this.currentRoom._id, mesOff, mesLim).subscribe(
+                messages => {
+                    this.messages = this.messages.filter(message => message.room !== '');
+                    this.messages = [...messages, ...this.messages];
+                    this.messages.unshift(this.loadMessage);
+                    this.calculateUnread();
+                },
+                error => console.log(error),
+                () => this.setScroll()
+            )
         );
+
         if (scroll) this.scrollY(1600);
     }
 
@@ -418,17 +439,16 @@ export class RoomComponent implements OnInit, AfterViewInit, OnChanges {
         }
     }
 
-    public onSelect(e): void {
-        switch (e.item.properties.id) {
+    public onSelectOption(option): void {
+        switch (option) {
             case 'edit': {
-                console.log('EDIT');
                 this.isEditing = true;
                 const editableMessage = this.messages.find(item => item._id === this.lastSelectedMessageId);
                 this.input.nativeElement.innerText = editableMessage.content;
                 break;
             }
             case 'delete': {
-                console.log('DELETE');
+                this.socketService.emit('deleteMessage', {messageId: this.lastSelectedMessageId});
                 break;
             }
             default: {

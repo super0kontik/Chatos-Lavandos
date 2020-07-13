@@ -90,24 +90,24 @@
                 'own': message.creator._id === me && !message.isSystemMessage,
                 'foreign' : message.creator._id !== me && !message.isSystemMessage,
                 'system' : message.isSystemMessage}">
-                        <div class="message-item">
+                        <div class="message-item" >
                             <app-message-item [message]="message"
                                               [users]="users"
                                               (loadRequest)="messageRequest($event)"
                                               (viewChange)="onViewportChange($event)"
-                                              (contextmenu)="onMessageRightClick(message)">
+                                              (contextmenu)="onMessageRightClick(message)"
+                                              [context-menu]="menuItems" [isMyMessage]="message.creator._id === me">
                             </app-message-item>
-
                         </div>
                     </mat-list-item>
-                    <ejs-contextmenu
-                        #messagecontextmenu
-                        target='#messagecontextmenutarget'
-                        [items]='menuItems'
-                        (select)="onSelect($event)"
-                        (beforeItemRender)="addDisabled($event)"
-                        (created)='onCreated()'>
-                    </ejs-contextmenu>
+                    <app-custom-context-menu></app-custom-context-menu>
+<!--                    <ejs-contextmenu-->
+<!--                        #messagecontextmenu-->
+<!--                        target='#messagecontextmenutarget'-->
+<!--                        [items]='menuItems'-->
+<!--                        (select)="onSelectOption($event)"-->
+<!--                        (beforeItemRender)="addDisabled($event)">-->
+<!--                    </ejs-contextmenu>-->
                 </mat-list>
             </div>
         </div>
@@ -125,8 +125,7 @@
             </perfect-scrollbar>
             <ng-container *ngIf="chatService.device['isMobile']">
                 <span class="send-mobile" matRipple (click)="sendMessage($event)">
-                    <img src="../../../assets/imgs/373675-200.png"
-                         alt="">
+                    <img src="../../../assets/imgs/373675-200.png" alt="">
                 </span>
             </ng-container>
             <ng-container *ngIf="chatService.device['isMobile']">
@@ -137,8 +136,7 @@
         <ng-container *ngIf="chatService.device['isDesktop']">
             <div class="wrap-btn">
                 <div class="send-btn" (click)="sendMessage($event)">
-                    <img class="send-img" src="../../../assets/imgs/373675-200.png"
-                         alt="">
+                    <img class="send-img" src="../../../assets/imgs/373675-200.png" alt="">
                 </div>
             </div>
         </ng-container>

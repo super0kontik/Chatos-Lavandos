@@ -5,6 +5,7 @@ import {config} from "../config";
 import {Message} from "../models/Message";
 import {SocketService} from "./socket.service";
 import {DeviceDetectorService} from "ngx-device-detector";
+import {Option} from "../models/Option";
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,8 @@ export class ChatService {
     public currentRoomUsers: BehaviorSubject<object[]> = new BehaviorSubject<object[]>([]);
     public theme: BehaviorSubject<string> = new BehaviorSubject<string>('light');
     public device: object = {isDesktop: 1, isMobile: 0, isTablet: 0};
+    public showContextMenu: BehaviorSubject<{ event: MouseEvent; options: Option[] }> = new BehaviorSubject<any>(null);
+    public emitOption: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
     constructor(private http: HttpClient,
                 private socketService: SocketService,

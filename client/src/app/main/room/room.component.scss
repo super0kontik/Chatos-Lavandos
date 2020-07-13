@@ -543,6 +543,7 @@ $screen-xl-min: 1200px;
                 &:hover {
                     transition: .3s;
                     filter: drop-shadow(0 5px 10px black);
+                    cursor: pointer;
                 }
             }
 
@@ -552,12 +553,15 @@ $screen-xl-min: 1200px;
                 &:hover {
                     transition: .3s;
                     filter: drop-shadow(0 5px 10px black);
+
                 }
+
             }
 
             &:hover {
                 transition: .3s;
                 background: rgba(255, 255, 255, 0.53);
+
             }
         }
     }
