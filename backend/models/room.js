@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const roomSchema = new Schema({
     title:{
         type:String,
-        required:true
+        required:true,
+        index: true
     },
     creator:{
         type:Schema.Types.ObjectId,

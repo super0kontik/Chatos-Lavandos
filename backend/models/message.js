@@ -4,11 +4,13 @@ const Schema = mongoose.Schema;
 const messageSchema = new Schema({
     creator:{
         type:Schema.Types.ObjectId,
-        ref:'User'
+        ref:'User',
+        index: true
     },
     room:{
         type:Schema.Types.ObjectId,
-        ref:'Room'
+        ref:'Room',
+        index: true
     },
     content:String,
     isSystemMessage:{

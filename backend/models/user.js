@@ -5,7 +5,8 @@ const userSchema = new Schema({
     id:String,
     name:{
         type:String,
-        required:true
+        required:true,
+        index: true
     },
     socketIds:[{
         type:String,
